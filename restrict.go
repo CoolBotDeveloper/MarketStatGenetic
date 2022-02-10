@@ -6,8 +6,8 @@ import (
 )
 
 type BotConfigRestriction struct {
-	HighBuyPercentage MinMaxFloat64
-	LowSellPercentage MinMaxFloat64
+	HighSellPercentage MinMaxFloat64
+	LowSellPercentage  MinMaxFloat64
 
 	AltCoinMinBuyFirstPeriodMinutes  MinMaxInt
 	AltCoinMinBuyFirstPercentage     MinMaxFloat64
@@ -49,7 +49,7 @@ type MinMaxFloat64 struct {
 
 func GetBotConfigRestrictions() BotConfigRestriction {
 	return BotConfigRestriction{
-		HighBuyPercentage: MinMaxFloat64{
+		HighSellPercentage: MinMaxFloat64{
 			min: 0.0,
 			max: 0.0,
 		},

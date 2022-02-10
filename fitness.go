@@ -14,7 +14,7 @@ func Fitness(botConfig BotConfig) float64 {
 	// todo: import datasets
 	// todo: iterate through each alt coin dataset using bitcoin dataset
 	// todo: do buys and sells
-	// todo:  return result
+	// todo: return result
 
 	return totalRevenue
 }

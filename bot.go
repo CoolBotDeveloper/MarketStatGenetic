@@ -5,9 +5,12 @@ import (
 	"math/rand"
 )
 
+const BITCOIN_SYMBOL = "BTCUSDT"
+const TOTAL_MONEY_AMOUNT = 100.0
+
 type BotConfig struct {
-	HighBuyPercentage float64
-	LowSellPercentage float64
+	HighSellPercentage float64
+	LowSellPercentage  float64
 
 	AltCoinMinBuyFirstPeriodMinutes  int
 	AltCoinMinBuyFirstPercentage     float64

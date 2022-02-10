@@ -10,7 +10,6 @@ func ImportDatasets() []Dataset {
 	dir := "./datasets"
 	dates := []string{
 		"2022-01",
-		"2022-01",
 	}
 
 	datasets := []Dataset{}
