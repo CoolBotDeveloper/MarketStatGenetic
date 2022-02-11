@@ -216,6 +216,39 @@ func (storage *Storage) getBuyBySymbol(symbol string) Buy {
 	return symbolBuy
 }
 
+type revenue struct {
+	value float64
+}
+
+func (storage *Storage) GetTotalRevenue() float64 {
+	rev := revenue{}
+	query := `
+		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
+		FROM sells 
+		GROUP BY symbol
+	`
+	row := (*storage).connect.QueryRow(query)
+	row.Scan(&rev.value)
+
+	return rev.value
+}
+
+type buysCount struct {
+	value int
+}
+
+func (storage *Storage) GetBuysCount() int {
+	count := buysCount{}
+	query := `
+		SELECT COUNT(id) AS c 
+		FROM buys 
+	`
+	row := (*storage).connect.QueryRow(query)
+	row.Scan(&count.value)
+
+	return count.value
+}
+
 // Exchange manager
 type ExchangeManager struct {
 	config  BotConfig
@@ -402,6 +435,14 @@ func (em *ExchangeManager) GetUnsoldBuys(symbol string, exchangeRate float64, cr
 
 func (em *ExchangeManager) CountUnsoldBuys(symbol string) int {
 	return em.storage.CountUnsoldBuys(symbol)
+}
+
+func (manager *ExchangeManager) GetTotalRevenue() float64 {
+	return (*manager).storage.GetTotalRevenue()
+}
+
+func (manager *ExchangeManager) GetBuysCount() int {
+	return (*manager).storage.GetBuysCount()
 }
 
 func (em *ExchangeManager) calcRevenue(coinsCount float64, exchangeRate float64) float64 {

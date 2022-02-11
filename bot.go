@@ -7,6 +7,7 @@ import (
 
 const BITCOIN_SYMBOL = "BTCUSDT"
 const TOTAL_MONEY_AMOUNT = 100.0
+const COMMISSION = 0.15
 
 type BotConfig struct {
 	HighSellPercentage float64
