@@ -18,7 +18,7 @@ func NewStorage() Storage {
 }
 
 func (storage *Storage) Open() {
-	storage.connect, _ = sql.Open("sqlite3", storage.name)
+	storage.connect, _ = sql.Open("sqlite3", ":memory:")
 
 	storage.CreateBuysTable()
 	storage.CreateSellsTable()

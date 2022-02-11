@@ -43,10 +43,11 @@ func candleHandler(candle Candle, btcCandle Candle, botConfig BotConfig) {
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
 	hasBuySignal := bot.HasBuySignal()
-	if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
+	if hasBuySignal {
+		/* candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		candleMarketStat.HasBtcBuyPercentage() &&
 		hasBuySignal &&
-		1 > exchangeManager.CountUnsoldBuys(candle.Symbol) {
+		1 > exchangeManager.CountUnsoldBuys(candle.Symbol)*/ //{
 
 		// Do buy
 		exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
