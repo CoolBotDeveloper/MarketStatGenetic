@@ -39,8 +39,9 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 func candleHandler(candle Candle, btcCandle Candle, botConfig BotConfig) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
-
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
+
+	updateBuys(candle)
 
 	hasBuySignal := bot.HasBuySignal()
 	if hasBuySignal {
@@ -51,5 +52,13 @@ func candleHandler(candle Candle, btcCandle Candle, botConfig BotConfig) {
 
 		// Do buy
 		exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
+	}
+}
+
+func updateBuys(candle Candle) {
+	exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice)
+
+	if candleMarketStat.HasBtcSellPercentage() {
+		exchangeManager.UpdateAllExitSymbols(candle.Symbol, candle.ClosePrice)
 	}
 }

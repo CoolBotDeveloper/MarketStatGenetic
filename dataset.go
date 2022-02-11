@@ -21,7 +21,7 @@ func ImportDatasets() []Dataset {
 			symbol := GetCoinSymbolFromCsvFileName(fileName)
 			datasets = append(datasets, Dataset{
 				AltCoinName:    symbol,
-				AltCoinCandles: CsvFileToCandles(date, symbol),
+				AltCoinCandles: CsvFileToCandles(fileName, symbol),
 				BtcCandles:     CsvFileToCandles(btcFileName, "BTCUSDT"),
 			})
 		}
