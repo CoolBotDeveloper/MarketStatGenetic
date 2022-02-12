@@ -127,7 +127,7 @@ func BotSliceFactory(rng *rand.Rand) eaopt.Genome {
 }
 
 func (bot BotConfigSlice) Evaluate() (float64, error) {
-	return 100 - Fitness(bot.GetBotConfig()), nil
+	return 1000 - Fitness(bot.GetBotConfig()), nil
 }
 
 func (bot BotConfigSlice) Mutate(rng *rand.Rand) {
