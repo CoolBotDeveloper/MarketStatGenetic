@@ -2,11 +2,6 @@ package main
 
 import "fmt"
 
-var dataSource DataSource
-var coinBotFactory CoinBotFactory
-var exchangeManager ExchangeManager
-var candleMarketStat CandleMarketStat
-
 func Fitness(botConfig BotConfig) float64 {
 	totalRevenue := 0.0
 	datasets := ImportDatasets()
@@ -20,13 +15,21 @@ func Fitness(botConfig BotConfig) float64 {
 }
 
 func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
-	dataSource = NewDataSource()
-	coinBotFactory = NewCoinBotFactory(&dataSource)
-	exchangeManager = NewExchangeManager(botConfig)
-	candleMarketStat = NewCandleMarketStat(botConfig, &dataSource)
+	dataSource := NewDataSource()
+	coinBotFactory := NewCoinBotFactory(&dataSource)
+	exchangeManager := NewExchangeManager(botConfig)
+	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
 
 	for candleNum, candle := range dataset.AltCoinCandles {
-		candleHandler(candle, dataset.BtcCandles[candleNum], botConfig)
+		candleHandler(
+			candle,
+			dataset.BtcCandles[candleNum],
+			botConfig,
+			dataSource,
+			coinBotFactory,
+			exchangeManager,
+			candleMarketStat,
+		)
 	}
 
 	rev := exchangeManager.GetTotalRevenue()
@@ -36,12 +39,20 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 	return rev - commission
 }
 
-func candleHandler(candle Candle, btcCandle Candle, botConfig BotConfig) {
+func candleHandler(
+	candle Candle,
+	btcCandle Candle,
+	botConfig BotConfig,
+	dataSource DataSource,
+	coinBotFactory CoinBotFactory,
+	exchangeManager ExchangeManager,
+	candleMarketStat CandleMarketStat,
+) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
-	updateBuys(candle)
+	updateBuys(candle, exchangeManager, candleMarketStat)
 
 	hasBuySignal := bot.HasBuySignal()
 	if hasBuySignal {
@@ -55,7 +66,7 @@ func candleHandler(candle Candle, btcCandle Candle, botConfig BotConfig) {
 	}
 }
 
-func updateBuys(candle Candle) {
+func updateBuys(candle Candle, exchangeManager ExchangeManager, candleMarketStat CandleMarketStat) {
 	exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice)
 
 	if candleMarketStat.HasBtcSellPercentage() {
