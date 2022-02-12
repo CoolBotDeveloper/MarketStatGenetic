@@ -55,13 +55,13 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		LowSellPercentage: MinMaxFloat64{
 			min: 0.5,
-			max: 15,
+			max: 5.0,
 		},
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 1,
-			max: 50,
+			min: 60,
+			max: 60 * 12,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
 			min: 0.15,
@@ -69,7 +69,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
 			min: 1,
-			max: 50,
+			max: 20,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
 			min: 0.15,
@@ -78,78 +78,78 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		BtcMinBuyPeriodMinutes: MinMaxInt{
-			min: 1,
-			max: 50,
+			min: 60,
+			max: 60 * 12,
 		},
 		BtcMinBuyPercentage: MinMaxFloat64{
-			min: 0.15,
-			max: 10,
+			min: -0.5,
+			max: 5,
 		},
 		BtcSellPeriodMinutes: MinMaxInt{
-			min: 1,
-			max: 50,
+			min: 60,
+			max: 60 * 15,
 		},
 		BtcSellPercentage: MinMaxFloat64{
-			min: 0.15,
-			max: 10,
+			min: -0.6,
+			max: 1.5,
 		},
 
 		// -----------------------------------------------------
 		UnsoldFirstSellDurationMinutes: MinMaxInt{
 			min: 1,
-			max: 50,
+			max: 10,
 		},
 		UnsoldFirstSellPercentage: MinMaxFloat64{
-			min: 0.15,
-			max: 5,
+			min: 0.2,
+			max: 3,
 		},
 		UnsoldFinalSellDurationMinutes: MinMaxInt{
-			min: 1,
-			max: 50,
+			min: 11,
+			max: 45,
 		},
 
 		// -----------------------------------------------------
 		AltCoinSuperTrendCandles: MinMaxInt{
-			min: 10,
-			max: 100,
+			min: 1,
+			max: 20,
 		},
 		AltCoinSuperMultiplier: MinMaxFloat64{
-			min: 1.0,
-			max: 100.0,
+			min: 0.5,
+			max: 50,
 		},
 
 		// -----------------------------------------------------
 		BtcSuperTrendCandles: MinMaxInt{
-			min: 10,
-			max: 100,
+			min: 5,
+			max: 15,
 		},
 		BtcSuperTrendMultiplier: MinMaxFloat64{
-			min: 1.0,
-			max: 100.0,
+			min: 10,
+			max: 35,
 		},
 
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
-			min: 1,
-			max: 1000,
+			min: 5,
+			max: 50,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 500,
-			max: 10000,
+			min: 1000,
+			max: 100000,
 		},
 
 		// -----------------------------------------------------
 		AdxDiLen: MinMaxInt{
-			min: 1,
-			max: 100,
+			min: 5,
+			max: 25,
 		},
 		AdxBottomThreshold: MinMaxFloat64{
 			min: 20,
-			max: 50,
+			max: 40,
 		},
 		AdxTopThreshold: MinMaxFloat64{
-			min: 50,
-			max: 80,
+			min: 40,
+			max: 90,
 		},
 	}
 }
