@@ -3,29 +3,38 @@ package main
 type Dataset struct {
 	AltCoinName    string
 	AltCoinCandles []Candle
-	BtcCandles     []Candle
+	BtcCandles     *[]Candle
 }
 
-func ImportDatasets() []Dataset {
-	dir := "./datasets"
-	dates := []string{
-		"2022-01",
-	}
+var datasets *[]Dataset
+var btcDatasetCandles *[]Candle
 
-	datasets := []Dataset{}
-	for _, date := range dates {
-		btcFileName := "./datasets/BTCUSDT-1m-" + date + ".csv"
-		csvFiles := GetCsvFileNamesInDir(dir, date)
-
-		for _, fileName := range csvFiles {
-			symbol := GetCoinSymbolFromCsvFileName(fileName)
-			datasets = append(datasets, Dataset{
-				AltCoinName:    symbol,
-				AltCoinCandles: CsvFileToCandles(fileName, symbol),
-				BtcCandles:     CsvFileToCandles(btcFileName, "BTCUSDT"),
-			})
+func ImportDatasets() *[]Dataset {
+	if datasets == nil {
+		dir := "./datasets"
+		dates := []string{
+			"2022-01",
 		}
-	}
+		locDatasets := []Dataset{}
+		for _, date := range dates {
+			btcFileName := "./datasets/BTCUSDT-1m-" + date + ".csv"
+			csvFiles := GetCsvFileNamesInDir(dir, date)
 
+			for _, fileName := range csvFiles {
+				symbol := GetCoinSymbolFromCsvFileName(fileName)
+				if btcDatasetCandles == nil {
+					bd := CsvFileToCandles(btcFileName, "BTCUSDT")
+					btcDatasetCandles = &bd
+				}
+
+				locDatasets = append(locDatasets, Dataset{
+					AltCoinName:    symbol,
+					AltCoinCandles: CsvFileToCandles(fileName, symbol),
+					BtcCandles:     btcDatasetCandles,
+				})
+			}
+		}
+		datasets = &locDatasets
+	}
 	return datasets
 }

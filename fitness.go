@@ -4,9 +4,9 @@ import "fmt"
 
 func Fitness(botConfig BotConfig) float64 {
 	totalRevenue := 0.0
-	datasets := ImportDatasets()
+	fitnessDatasets := ImportDatasets()
 
-	for _, dataset := range datasets {
+	for _, dataset := range *fitnessDatasets {
 		fmt.Println(dataset.AltCoinName)
 		totalRevenue += doBuysAndSells(dataset, botConfig)
 	}
@@ -21,9 +21,11 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
 
 	for candleNum, candle := range dataset.AltCoinCandles {
+		btcDataset := *dataset.BtcCandles
+
 		candleHandler(
 			candle,
-			dataset.BtcCandles[candleNum],
+			btcDataset[candleNum],
 			botConfig,
 			dataSource,
 			coinBotFactory,
