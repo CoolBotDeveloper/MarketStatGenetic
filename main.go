@@ -19,6 +19,9 @@ func main() {
 
 	// Add a custom print function to track progress
 	ga.Callback = func(ga *eaopt.GA) {
+		bestBot := ga.HallOfFame[0].Genome.(BotConfigSlice)
+		result := ga.HallOfFame[0].Fitness
+		BotConfigToCsv(bestBot.GetBotConfig(), result, int(ga.Generations))
 		fmt.Printf("Best fitness at generation %d: %f\n", ga.Generations, ga.HallOfFame[0].Fitness)
 	}
 

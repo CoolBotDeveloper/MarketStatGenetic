@@ -2,3 +2,4 @@
 datasets
 go_build_MarketStatGeneticOnNewLib
 *.db
+generation_*.csv
