@@ -6,9 +6,9 @@ import (
 	"math/rand"
 )
 
-const BEST_BOTS_COUNT = 5
-const BOTS_COUNT = 10
-const GENERATION_COUNT = 100
+const BEST_BOTS_COUNT = 10
+const BOTS_COUNT = 20
+const GENERATION_COUNT = 300
 
 func InitBotsDataFrame() *dataframe.DataFrame {
 	return dataframe.NewDataFrame(
