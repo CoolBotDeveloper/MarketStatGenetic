@@ -42,9 +42,6 @@ func (bot *CoinBot) initIndicators() {
 	superTrendIndicator := NewSuperTrendIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
 
-	//superTrendIndicatorSecond := NewSuperTrendIndicatorSecond(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicatorSecond)
-
 	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 

@@ -31,15 +31,6 @@ func (marketStat *CandleMarketStat) HasBtcSellPercentage() bool {
 	return false
 }
 
-//func (marketStat *CandleMarketStat) HasSymbolBuyPercentage(candle Candle) bool {
-//	percentage, hasPercentage := marketStat.GetSymbolPercentageForPeriod(candle, candle.Symbol, marketStat.config.SymbolCandleMarketStatBuyPeriodMinutes)
-//	if hasPercentage {
-//		return percentage >= marketStat.config.SymbolCandleMarketStatBuyPercentage
-//	}
-//
-//	return false
-//}
-
 func (marketStat *CandleMarketStat) GetSymbolPercentageForPeriod(candle Candle, symbol string, periodMinutes int) (float64, bool) {
 	candles := marketStat.dataSource.GetCandlesFor(symbol)
 	count := len(candles)

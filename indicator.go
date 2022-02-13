@@ -47,35 +47,6 @@ func (indicator *SuperTrendIndicator) hadRedTrendBefore(trend []bool) bool {
 	return trend[prevIdx] == false
 }
 
-// Second SuperTrend indicator
-//type SuperTrendIndicatorSecond struct {
-//	config BotConfig
-//}
-//
-//func NewSuperTrendIndicatorSecond(config BotConfig) SuperTrendIndicatorSecond {
-//	return SuperTrendIndicatorSecond{config: config}
-//}
-//
-//func (indicator *SuperTrendIndicatorSecond) HasBuySignal(candles []Candle) bool {
-//	count := len(candles)
-//	properCount := indicator.config.SuperTrendCandlesSecond + indicator.config.SuperTrendProperCount
-//	if count < properCount {
-//		return false
-//	}
-//
-//	trendCandles := properCount
-//	_, trend := taindic.SuperTrend(
-//		(*indicator).config.SuperTrendMultiplierSecond,
-//		(*indicator).config.SuperTrendCandlesSecond,
-//		GetHighPrice(candles, trendCandles),
-//		GetLowPrice(candles, trendCandles),
-//		GetClosePrice(candles, trendCandles),
-//	)
-//	lastTrendIdx := len(trend) - 1
-//
-//	return trend[lastTrendIdx]
-//}
-
 // Bitcoin Super trend indicator
 type BitcoinSuperTrendIndicator struct {
 	config BotConfig

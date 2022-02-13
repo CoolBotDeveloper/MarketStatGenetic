@@ -1,31 +1,5 @@
 package main
 
-import "github.com/MaxHalford/eaopt"
-
-func CrossGenFloat64Slice(maleGen, femaleGen *eaopt.Float64Slice) {
-	if shouldSwap() {
-		SwapGenFloat64Slice(maleGen, femaleGen)
-	}
-}
-
-func CrossGenIntSlice(maleGen, femaleGen *eaopt.IntSlice) {
-	if shouldSwap() {
-		SwapGenIntSlice(maleGen, femaleGen)
-	}
-}
-
-func SwapGenFloat64Slice(maleGen, femaleGen *eaopt.Float64Slice) {
-	maleValue := *maleGen
-	*maleGen = *femaleGen
-	*femaleGen = maleValue
-}
-
-func SwapGenIntSlice(maleGen, femaleGen *eaopt.IntSlice) {
-	maleValue := *maleGen
-	*maleGen = *femaleGen
-	*femaleGen = maleValue
-}
-
 func MutateLittleFloat64(current float64, minMax MinMaxFloat64) float64 {
 	if !shouldMutate() {
 		return current
@@ -78,10 +52,6 @@ func MutatePercentInt(current int) int {
 	}
 
 	return dir * mutateValue
-}
-
-func shouldSwap() bool {
-	return GetRandInt(0, 1) == 1
 }
 
 func shouldMutate() bool {
