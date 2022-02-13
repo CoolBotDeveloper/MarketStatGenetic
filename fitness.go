@@ -56,16 +56,10 @@ func candleHandler(
 
 	updateBuys(candle, exchangeManager, candleMarketStat)
 
-	//if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
-	//	candleMarketStat.HasBtcBuyPercentage() &&
-	//	1 > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
-	//	bot.HasBuySignal() {
-	//
-	//	// Do buy
-	//	exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
-	//}
-
-	if bot.HasBuySignal() {
+	if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
+		candleMarketStat.HasBtcBuyPercentage() &&
+		1 > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
+		bot.HasBuySignal() {
 
 		// Do buy
 		exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
