@@ -11,7 +11,7 @@ func Fitness(botConfig BotConfig) float64 {
 		totalRevenue += doBuysAndSells(dataset, botConfig)
 	}
 
-	return totalRevenue
+	return totalRevenue / float64(len(*fitnessDatasets))
 }
 
 func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
@@ -56,10 +56,16 @@ func candleHandler(
 
 	updateBuys(candle, exchangeManager, candleMarketStat)
 
-	if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
-		candleMarketStat.HasBtcBuyPercentage() &&
-		1 > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
-		bot.HasBuySignal() {
+	//if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
+	//	candleMarketStat.HasBtcBuyPercentage() &&
+	//	1 > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
+	//	bot.HasBuySignal() {
+	//
+	//	// Do buy
+	//	exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
+	//}
+
+	if bot.HasBuySignal() {
 
 		// Do buy
 		exchangeManager.Buy(candle.Symbol, candle.ClosePrice)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"time"
 )
@@ -169,6 +170,40 @@ func getCsvBody(botConfig BotConfig, result float64) string {
 	return body
 }
 
+func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfig {
+	return BotConfig{
+		HighSellPercentage: convertToFloat64(dataFrame["HighSellPercentage"]),
+		LowSellPercentage:  convertToFloat64(dataFrame["LowSellPercentage"]),
+
+		AltCoinMinBuyFirstPeriodMinutes:  convertToInt(dataFrame["AltCoinMinBuyFirstPeriodMinutes"]),
+		AltCoinMinBuyFirstPercentage:     convertToFloat64(dataFrame["AltCoinMinBuyFirstPercentage"]),
+		AltCoinMinBuySecondPeriodMinutes: convertToInt(dataFrame["AltCoinMinBuySecondPeriodMinutes"]),
+		AltCoinMinBuySecondPercentage:    convertToFloat64(dataFrame["AltCoinMinBuySecondPercentage"]),
+
+		BtcMinBuyPeriodMinutes: convertToInt(dataFrame["BtcMinBuyPeriodMinutes"]),
+		BtcMinBuyPercentage:    convertToFloat64(dataFrame["BtcMinBuyPercentage"]),
+		BtcSellPeriodMinutes:   convertToInt(dataFrame["BtcSellPeriodMinutes"]),
+		BtcSellPercentage:      convertToFloat64(dataFrame["BtcSellPercentage"]),
+
+		UnsoldFirstSellDurationMinutes: convertToInt(dataFrame["UnsoldFirstSellDurationMinutes"]),
+		UnsoldFirstSellPercentage:      convertToFloat64(dataFrame["UnsoldFirstSellPercentage"]),
+		UnsoldFinalSellDurationMinutes: convertToInt(dataFrame["UnsoldFinalSellDurationMinutes"]),
+
+		AltCoinSuperTrendCandles: convertToInt(dataFrame["AltCoinSuperTrendCandles"]),
+		AltCoinSuperMultiplier:   convertToFloat64(dataFrame["AltCoinSuperMultiplier"]),
+
+		BtcSuperTrendCandles:    convertToInt(dataFrame["BtcSuperTrendCandles"]),
+		BtcSuperTrendMultiplier: convertToFloat64(dataFrame["BtcSuperTrendMultiplier"]),
+
+		AverageVolumeCandles: convertToInt(dataFrame["AverageVolumeCandles"]),
+		AverageVolumeMinimal: convertToFloat64(dataFrame["AverageVolumeMinimal"]),
+
+		AdxDiLen:           convertToInt(dataFrame["AdxDiLen"]),
+		AdxBottomThreshold: convertToFloat64(dataFrame["AdxBottomThreshold"]),
+		AdxTopThreshold:    convertToFloat64(dataFrame["AdxTopThreshold"]),
+	}
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }
@@ -180,4 +215,20 @@ func getKlineCandleListFirstIdx(candles *[]Candle, candlesCount int) int {
 	}
 
 	return firstIdx
+}
+
+func convertToInt(value interface{}) int {
+	switch typeValue := value.(type) {
+	case int64:
+		return int(typeValue)
+	}
+	return 0
+}
+
+func convertToFloat64(value interface{}) float64 {
+	switch typeValue := value.(type) {
+	case float64:
+		return float64(typeValue)
+	}
+	return math.NaN()
 }

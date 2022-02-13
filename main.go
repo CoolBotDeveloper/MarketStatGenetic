@@ -1,34 +1,43 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/MaxHalford/eaopt"
+	"github.com/rocketlaunchr/dataframe-go"
+	"github.com/rocketlaunchr/dataframe-go/exports"
+	"os"
 )
 
 func main() {
-	var ga, err = eaopt.NewDefaultGAConfig().NewGA()
-	if err != nil {
-		fmt.Println(err)
-		return
+	bots := GetInitialBots()
+
+	for generation := 0; generation < GENERATION_COUNT; generation++ {
+		iterator := bots.ValuesIterator(dataframe.ValuesOptions{0, 1, true})
+		for {
+			botNumber, bot, _ := iterator()
+			if botNumber == nil {
+				break
+			}
+			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
+			botConfig := ConvertDataFrameToBotConfig(bot)
+			botRevenue := fixRevenue(Fitness(botConfig))
+			SetBotTotalRevenue(bots, *botNumber, botRevenue)
+			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f\n", generation, *botNumber, botRevenue))
+		}
+		bots = SortBestBots(bots)
+		botsCsvFile, _ := os.Create(fmt.Sprintf("generation_%d.csv", generation))
+		exports.ExportToCSV(context.Background(), botsCsvFile, bots)
+
+		bestBots := SelectNBots(BEST_BOTS_COUNT, bots)
+		bots = MakeChildren(bestBots)
 	}
 
-	// Set the number of generations to run for
-	ga.PopSize = 4
-	ga.NGenerations = 1000
-	ga.ParallelEval = true
+	fmt.Println("Done")
+}
 
-	// Add a custom print function to track progress
-	ga.Callback = func(ga *eaopt.GA) {
-		bestBot := ga.HallOfFame[0].Genome.(BotConfigSlice)
-		result := ga.HallOfFame[0].Fitness
-		BotConfigToCsv(bestBot.GetBotConfig(), result, int(ga.Generations))
-		fmt.Printf("Best fitness at generation %d: %f\n", ga.Generations, ga.HallOfFame[0].Fitness)
+func fixRevenue(revenue float64) float64 {
+	if revenue == 0.0 || revenue == -0.15 {
+		return -10000000
 	}
-
-	// Find the minimum
-	err = ga.Minimize(BotSliceFactory)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	return revenue
 }
