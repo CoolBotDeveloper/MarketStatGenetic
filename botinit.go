@@ -17,7 +17,7 @@ func InitBotConfig() BotConfig {
 		BtcSellPeriodMinutes:   GetRandIntConfig(restrict.BtcSellPeriodMinutes),
 		BtcSellPercentage:      GetRandFloat64Config(restrict.BtcSellPercentage),
 
-		UnsoldFirstSellDurationMinutes: GetRandIntConfig(restrict.BtcMinBuyPeriodMinutes),
+		UnsoldFirstSellDurationMinutes: GetRandIntConfig(restrict.UnsoldFirstSellDurationMinutes),
 		UnsoldFirstSellPercentage:      GetRandFloat64Config(restrict.UnsoldFirstSellPercentage),
 		UnsoldFinalSellDurationMinutes: GetRandIntConfig(restrict.UnsoldFinalSellDurationMinutes),
 

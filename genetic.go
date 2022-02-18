@@ -235,32 +235,32 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 0, &(botConfig.HighSellPercentage), restrict.HighSellPercentage)
 	mutateGenFloat64(randGenNumber, 1, &(botConfig.LowSellPercentage), restrict.LowSellPercentage)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.AltCoinMinBuyFirstPeriodMinutes), restrict.AltCoinMinBuyFirstPeriodMinutes)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.AltCoinMinBuyFirstPercentage), restrict.AltCoinMinBuyFirstPercentage)
-	mutateGenInt(randGenNumber, 1, &(botConfig.AltCoinMinBuySecondPeriodMinutes), restrict.AltCoinMinBuySecondPeriodMinutes)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.AltCoinMinBuySecondPercentage), restrict.AltCoinMinBuySecondPercentage)
+	mutateGenInt(randGenNumber, 2, &(botConfig.AltCoinMinBuyFirstPeriodMinutes), restrict.AltCoinMinBuyFirstPeriodMinutes)
+	mutateGenFloat64(randGenNumber, 3, &(botConfig.AltCoinMinBuyFirstPercentage), restrict.AltCoinMinBuyFirstPercentage)
+	mutateGenInt(randGenNumber, 4, &(botConfig.AltCoinMinBuySecondPeriodMinutes), restrict.AltCoinMinBuySecondPeriodMinutes)
+	mutateGenFloat64(randGenNumber, 5, &(botConfig.AltCoinMinBuySecondPercentage), restrict.AltCoinMinBuySecondPercentage)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.BtcMinBuyPeriodMinutes), restrict.BtcMinBuyPeriodMinutes)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.BtcMinBuyPercentage), restrict.BtcMinBuyPercentage)
-	mutateGenInt(randGenNumber, 1, &(botConfig.BtcSellPeriodMinutes), restrict.BtcSellPeriodMinutes)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.BtcSellPercentage), restrict.BtcSellPercentage)
+	mutateGenInt(randGenNumber, 6, &(botConfig.BtcMinBuyPeriodMinutes), restrict.BtcMinBuyPeriodMinutes)
+	mutateGenFloat64(randGenNumber, 7, &(botConfig.BtcMinBuyPercentage), restrict.BtcMinBuyPercentage)
+	mutateGenInt(randGenNumber, 8, &(botConfig.BtcSellPeriodMinutes), restrict.BtcSellPeriodMinutes)
+	mutateGenFloat64(randGenNumber, 9, &(botConfig.BtcSellPercentage), restrict.BtcSellPercentage)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.UnsoldFirstSellDurationMinutes), restrict.UnsoldFirstSellDurationMinutes)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.UnsoldFirstSellPercentage), restrict.UnsoldFirstSellPercentage)
-	mutateGenInt(randGenNumber, 1, &(botConfig.UnsoldFinalSellDurationMinutes), restrict.UnsoldFinalSellDurationMinutes)
+	mutateGenInt(randGenNumber, 10, &(botConfig.UnsoldFirstSellDurationMinutes), restrict.UnsoldFirstSellDurationMinutes)
+	mutateGenFloat64(randGenNumber, 11, &(botConfig.UnsoldFirstSellPercentage), restrict.UnsoldFirstSellPercentage)
+	mutateGenInt(randGenNumber, 12, &(botConfig.UnsoldFinalSellDurationMinutes), restrict.UnsoldFinalSellDurationMinutes)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.AltCoinSuperTrendCandles), restrict.AltCoinSuperTrendCandles)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.AltCoinSuperMultiplier), restrict.AltCoinSuperMultiplier)
+	mutateGenInt(randGenNumber, 13, &(botConfig.AltCoinSuperTrendCandles), restrict.AltCoinSuperTrendCandles)
+	mutateGenFloat64(randGenNumber, 14, &(botConfig.AltCoinSuperMultiplier), restrict.AltCoinSuperMultiplier)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.BtcSuperTrendCandles), restrict.BtcSuperTrendCandles)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.BtcSuperTrendMultiplier), restrict.BtcSuperTrendMultiplier)
+	mutateGenInt(randGenNumber, 15, &(botConfig.BtcSuperTrendCandles), restrict.BtcSuperTrendCandles)
+	mutateGenFloat64(randGenNumber, 16, &(botConfig.BtcSuperTrendMultiplier), restrict.BtcSuperTrendMultiplier)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.AverageVolumeCandles), restrict.AverageVolumeCandles)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.AverageVolumeMinimal), restrict.AverageVolumeMinimal)
+	mutateGenInt(randGenNumber, 17, &(botConfig.AverageVolumeCandles), restrict.AverageVolumeCandles)
+	mutateGenFloat64(randGenNumber, 18, &(botConfig.AverageVolumeMinimal), restrict.AverageVolumeMinimal)
 
-	mutateGenInt(randGenNumber, 1, &(botConfig.AdxDiLen), restrict.AdxDiLen)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.AdxBottomThreshold), restrict.AdxBottomThreshold)
-	mutateGenFloat64(randGenNumber, 1, &(botConfig.AdxTopThreshold), restrict.AdxTopThreshold)
+	mutateGenInt(randGenNumber, 19, &(botConfig.AdxDiLen), restrict.AdxDiLen)
+	mutateGenFloat64(randGenNumber, 20, &(botConfig.AdxBottomThreshold), restrict.AdxBottomThreshold)
+	mutateGenFloat64(randGenNumber, 21, &(botConfig.AdxTopThreshold), restrict.AdxTopThreshold)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
