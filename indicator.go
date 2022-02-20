@@ -124,5 +124,11 @@ func (indicator *AdxIndicator) HasBuySignal(candles []Candle) bool {
 	topThreshold := indicator.config.AdxTopThreshold
 	adxValue := adx[len(adx)-1]
 
-	return bottomThreshold < adxValue && adxValue < topThreshold
+	return bottomThreshold < adxValue && adxValue < topThreshold && indicator.hasGrowth(adx)
+}
+
+func (indicator *AdxIndicator) hasGrowth(adx []float64) bool {
+	lastAdx := adx[len(adx)-1]   // current candle adx value
+	prevAdx := adx[len(adx)-1-2] // N previous candle adx value
+	return prevAdx < lastAdx
 }

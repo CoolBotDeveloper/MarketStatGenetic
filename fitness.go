@@ -11,7 +11,7 @@ func Fitness(botConfig BotConfig) float64 {
 		totalRevenue += doBuysAndSells(dataset, botConfig)
 	}
 
-	return totalRevenue / float64(len(*fitnessDatasets))
+	return totalRevenue
 }
 
 func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
