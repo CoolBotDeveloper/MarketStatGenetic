@@ -1,30 +1,46 @@
 package main
 
 func MutateLittleFloat64(current float64, minMax MinMaxFloat64) float64 {
-	if !shouldMutate() {
-		return current
-	}
+	//if !shouldMutate() {
+	//	return current
+	//}
 
-	value := MutatePercentFloat(current)
-	result := current - value
+	result := current
 
-	if minMax.min > result || result > minMax.max {
-		return current
+	for {
+		value := MutatePercentFloat(current)
+		result = current - value
+
+		if minMax.min > result || result > minMax.max {
+			result = current
+		}
+
+		if result != current {
+			break
+		}
 	}
 
 	return result
 }
 
 func MutateLittleInt(current int, minMax MinMaxInt) int {
-	if !shouldMutate() {
-		return current
-	}
+	//if !shouldMutate() {
+	//	return current
+	//}
 
-	value := MutatePercentInt(current)
-	result := current - value
+	result := current
 
-	if minMax.min > result || result > minMax.max {
-		return current
+	for {
+		value := MutatePercentInt(current)
+		result = current - value
+
+		if minMax.min > result || result > minMax.max {
+			result = current
+		}
+
+		if result != current {
+			break
+		}
 	}
 
 	return result

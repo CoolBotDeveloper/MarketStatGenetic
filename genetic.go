@@ -199,7 +199,7 @@ func makeChild(
 		AdxTopThreshold:    GetFloatFatherOrMomGen(maleBotConfig.AdxTopThreshold, femaleBotConfig.AdxTopThreshold),
 	}
 
-	for i := 0; i < 7; i++ {
+	for i := 0; i < 5; i++ {
 		mutateGens(&childBotConfig, GetRandInt(0, 21))
 	}
 
