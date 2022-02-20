@@ -6,9 +6,10 @@ import (
 	"math/rand"
 )
 
-const BEST_BOTS_COUNT = 10
-const BOTS_COUNT = 20
+const BEST_BOTS_COUNT = 5
+const BOTS_COUNT = 10
 const GENERATION_COUNT = 300
+const DEFAULT_REVENUE = -10000000
 
 func InitBotsDataFrame() *dataframe.DataFrame {
 	return dataframe.NewDataFrame(
@@ -76,11 +77,23 @@ func SortBestBots(bots *dataframe.DataFrame) *dataframe.DataFrame {
 func SelectNBots(numberOfBots int, bots *dataframe.DataFrame) *dataframe.DataFrame {
 	botsDataFrame := InitBotsDataFrame()
 	iterator := bots.ValuesIterator(dataframe.ValuesOptions{0, 1, true})
+	alreadyHasRevenue := []float64{}
+
 	for {
 		botNumber, bot, _ := iterator()
-		if botNumber == nil || numberOfBots < (*botNumber+1) {
+		if botNumber == nil || numberOfBots < botsDataFrame.NRows()+1 {
 			break
 		}
+
+		botRevenue := convertToFloat64(bot["TotalRevenue"])
+		if InArray(botRevenue, &alreadyHasRevenue) {
+			continue
+		}
+
+		if botRevenue != 0.0 && botRevenue != DEFAULT_REVENUE {
+			alreadyHasRevenue = append(alreadyHasRevenue, botRevenue)
+		}
+
 		botsDataFrame.Append(nil, map[string]interface{}{
 			"HighSellPercentage": bot["HighSellPercentage"],
 			"LowSellPercentage":  bot["LowSellPercentage"],

@@ -113,6 +113,16 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 	}
 }
 
+func InArray(needle float64, array *[]float64) bool {
+	searchArray := *array
+	for _, element := range searchArray {
+		if needle == element {
+			return true
+		}
+	}
+	return false
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }

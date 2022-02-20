@@ -37,7 +37,7 @@ func main() {
 
 func fixRevenue(revenue float64) float64 {
 	if revenue == 0.0 || revenue == -0.15 {
-		return -10000000
+		return DEFAULT_REVENUE
 	}
 	return revenue
 }
