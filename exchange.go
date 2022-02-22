@@ -393,8 +393,7 @@ func (em *ExchangeManager) updateExitZombies(symbol string, exchangeRate float64
 	return reportUnsoldBuys
 }
 
-func (em *ExchangeManager) UpdateAllExitSymbols(symbol string, exchangeRate float64) []UnsoldBuy {
-	createdAt := time.Now().Format("2006-01-02 15:04:05")
+func (em *ExchangeManager) UpdateAllExitSymbols(symbol string, exchangeRate float64, createdAt string) []UnsoldBuy {
 	reportUnsoldBuys := []UnsoldBuy{}
 	exitZombies := em.getExitZombies(symbol, createdAt, 0)
 

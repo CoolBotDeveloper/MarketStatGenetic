@@ -70,6 +70,6 @@ func updateBuys(candle Candle, exchangeManager ExchangeManager, candleMarketStat
 	exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice)
 
 	if candleMarketStat.HasBtcSellPercentage() {
-		exchangeManager.UpdateAllExitSymbols(candle.Symbol, candle.ClosePrice)
+		exchangeManager.UpdateAllExitSymbols(candle.Symbol, candle.ClosePrice, candle.CloseTime)
 	}
 }

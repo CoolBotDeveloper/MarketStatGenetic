@@ -8,7 +8,7 @@ import (
 
 const BEST_BOTS_COUNT = 5
 const BOTS_COUNT = 10
-const GENERATION_COUNT = 300
+const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
 func InitBotsDataFrame() *dataframe.DataFrame {
@@ -86,7 +86,7 @@ func SelectNBots(numberOfBots int, bots *dataframe.DataFrame) *dataframe.DataFra
 		}
 
 		botRevenue := convertToFloat64(bot["TotalRevenue"])
-		if InArray(botRevenue, &alreadyHasRevenue) {
+		if 1 < CountInArray(botRevenue, &alreadyHasRevenue) {
 			continue
 		}
 

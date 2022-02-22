@@ -123,6 +123,17 @@ func InArray(needle float64, array *[]float64) bool {
 	return false
 }
 
+func CountInArray(needle float64, array *[]float64) int {
+	count := 0
+	searchArray := *array
+	for _, element := range searchArray {
+		if needle == element {
+			count++
+		}
+	}
+	return count
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }
