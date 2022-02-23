@@ -7,8 +7,9 @@ func Fitness(botConfig BotConfig) float64 {
 	fitnessDatasets := ImportDatasets()
 
 	for _, dataset := range *fitnessDatasets {
-		fmt.Println(dataset.AltCoinName)
-		totalRevenue += doBuysAndSells(dataset, botConfig)
+		datasetRevenue := doBuysAndSells(dataset, botConfig)
+		totalRevenue += datasetRevenue
+		fmt.Println(fmt.Sprintf("%s: DatasetRevenue: %f", dataset.AltCoinName, datasetRevenue))
 	}
 
 	return totalRevenue
