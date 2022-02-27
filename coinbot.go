@@ -21,6 +21,7 @@ func NewCoinBot(symbol string, config BotConfig, dataSource *DataSource) CoinBot
 }
 
 func (bot *CoinBot) HasBuySignal() bool {
+	// Так можно отключить супертренд по биткойну, смотри ниже
 	btcCandles := bot.dataSource.GetCandlesFor(BITCOIN_SYMBOL)
 	if !bot.bitcoinSuperTrendIndicator.HasBuySignal(btcCandles) {
 		return false
