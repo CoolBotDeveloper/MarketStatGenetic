@@ -10,6 +10,7 @@ import (
 
 func main() {
 	bots := GetInitialBots()
+	fitnessDatasets := ImportDatasets()
 
 	for generation := 0; generation < GENERATION_COUNT; generation++ {
 		var botRevenueChan = make(chan BotRevenue, 5)
@@ -22,7 +23,7 @@ func main() {
 			}
 			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
 			botConfig := ConvertDataFrameToBotConfig(bot)
-			go Fitness(botConfig, *botNumber, botRevenueChan)
+			go Fitness(botConfig, *botNumber, botRevenueChan, fitnessDatasets)
 		}
 
 		for i := 0; i < bots.NRows(); i++ {

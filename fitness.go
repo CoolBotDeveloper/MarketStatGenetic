@@ -7,9 +7,8 @@ type BotRevenue struct {
 	Revenue   float64
 }
 
-func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue) {
+func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue, fitnessDatasets *[]Dataset) {
 	totalRevenue := 0.0
-	fitnessDatasets := ImportDatasets()
 
 	for _, dataset := range *fitnessDatasets {
 		datasetRevenue := doBuysAndSells(dataset, botConfig)
