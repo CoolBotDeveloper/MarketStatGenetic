@@ -2,7 +2,12 @@ package main
 
 import "fmt"
 
-func Fitness(botConfig BotConfig) float64 {
+type BotRevenue struct {
+	BotNumber int
+	Revenue   float64
+}
+
+func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue) {
 	totalRevenue := 0.0
 	fitnessDatasets := ImportDatasets()
 
@@ -12,7 +17,11 @@ func Fitness(botConfig BotConfig) float64 {
 		fmt.Println(fmt.Sprintf("%s: DatasetRevenue: %f", dataset.AltCoinName, datasetRevenue))
 	}
 
-	return totalRevenue
+	botRevenue <- BotRevenue{
+		BotNumber: botNumber,
+		Revenue:   totalRevenue,
+	}
+	//return totalRevenue
 }
 
 func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {

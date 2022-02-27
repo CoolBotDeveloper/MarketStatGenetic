@@ -12,6 +12,8 @@ func main() {
 	bots := GetInitialBots()
 
 	for generation := 0; generation < GENERATION_COUNT; generation++ {
+		var botRevenueChan = make(chan BotRevenue, 5)
+
 		iterator := bots.ValuesIterator(dataframe.ValuesOptions{0, 1, true})
 		for {
 			botNumber, bot, _ := iterator()
@@ -20,10 +22,17 @@ func main() {
 			}
 			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
 			botConfig := ConvertDataFrameToBotConfig(bot)
-			botRevenue := fixRevenue(Fitness(botConfig))
-			SetBotTotalRevenue(bots, *botNumber, botRevenue)
-			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f\n", generation, *botNumber, botRevenue))
+			go Fitness(botConfig, *botNumber, botRevenueChan)
 		}
+
+		for i := 0; i < bots.NRows(); i++ {
+			botRevenue := <-botRevenueChan
+			rev := fixRevenue(botRevenue.Revenue)
+			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev)
+			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f\n", generation, botRevenue.BotNumber, rev))
+		}
+		close(botRevenueChan)
+
 		bots = SortBestBots(bots)
 		botsCsvFile, _ := os.Create(fmt.Sprintf("generation_%d.csv", generation))
 		exports.ExportToCSV(context.Background(), botsCsvFile, bots)
