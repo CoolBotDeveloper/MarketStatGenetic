@@ -56,6 +56,15 @@ func GetInitialBots() *dataframe.DataFrame {
 	return initialBotsDataFrame
 }
 
+func GetInitialBotsFromFile(fileName string) *dataframe.DataFrame {
+	initialBotsDataFrame := InitBotsDataFrame()
+	csvBotConfigs := ImportFromCsv(fileName)
+	for _, botConfig := range csvBotConfigs {
+		initialBotsDataFrame.Append(nil, GetBotConfigMapInterface(botConfig))
+	}
+	return initialBotsDataFrame
+}
+
 func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue float64) {
 	bots.UpdateRow(botNumber, nil, map[string]interface{}{
 		"TotalRevenue": revenue,

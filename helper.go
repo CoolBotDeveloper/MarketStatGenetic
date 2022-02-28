@@ -2,6 +2,7 @@ package main
 
 import (
 	"math"
+	"strconv"
 	"time"
 )
 
@@ -161,4 +162,14 @@ func convertToFloat64(value interface{}) float64 {
 		return float64(typeValue)
 	}
 	return math.NaN()
+}
+
+func convertStringToFloat64(typeValue string) float64 {
+	value, _ := strconv.ParseFloat(typeValue, 64)
+	return value
+}
+
+func convertStringToInt(typeValue string) int {
+	value, _ := strconv.ParseInt(typeValue, 10, 64)
+	return int(value)
 }
