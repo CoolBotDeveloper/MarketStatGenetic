@@ -6,8 +6,9 @@ import (
 	"math/rand"
 )
 
-const BEST_BOTS_COUNT = 7
-const BOTS_COUNT = 20
+const BEST_BOTS_COUNT = 5
+const BEST_BOTS_FROM_PREV_GEN = 2
+const BOTS_COUNT = 10
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -103,41 +104,70 @@ func SelectNBots(numberOfBots int, bots *dataframe.DataFrame) *dataframe.DataFra
 			alreadyHasRevenue = append(alreadyHasRevenue, botRevenue)
 		}
 
-		botsDataFrame.Append(nil, map[string]interface{}{
-			"HighSellPercentage": bot["HighSellPercentage"],
-			"LowSellPercentage":  bot["LowSellPercentage"],
-
-			"AltCoinMinBuyFirstPeriodMinutes":  bot["AltCoinMinBuyFirstPeriodMinutes"],
-			"AltCoinMinBuyFirstPercentage":     bot["AltCoinMinBuyFirstPercentage"],
-			"AltCoinMinBuySecondPeriodMinutes": bot["AltCoinMinBuySecondPeriodMinutes"],
-			"AltCoinMinBuySecondPercentage":    bot["AltCoinMinBuySecondPercentage"],
-
-			"BtcMinBuyPeriodMinutes": bot["BtcMinBuyPeriodMinutes"],
-			"BtcMinBuyPercentage":    bot["BtcMinBuyPercentage"],
-			"BtcSellPeriodMinutes":   bot["BtcSellPeriodMinutes"],
-			"BtcSellPercentage":      bot["BtcSellPercentage"],
-
-			"UnsoldFirstSellDurationMinutes": bot["UnsoldFirstSellDurationMinutes"],
-			"UnsoldFirstSellPercentage":      bot["UnsoldFirstSellPercentage"],
-			"UnsoldFinalSellDurationMinutes": bot["UnsoldFinalSellDurationMinutes"],
-
-			"AltCoinSuperTrendCandles": bot["AltCoinSuperTrendCandles"],
-			"AltCoinSuperMultiplier":   bot["AltCoinSuperMultiplier"],
-
-			"BtcSuperTrendCandles":    bot["BtcSuperTrendCandles"],
-			"BtcSuperTrendMultiplier": bot["BtcSuperTrendMultiplier"],
-
-			"AverageVolumeCandles": bot["AverageVolumeCandles"],
-			"AverageVolumeMinimal": bot["AverageVolumeMinimal"],
-
-			"AdxDiLen":           bot["AdxDiLen"],
-			"AdxBottomThreshold": bot["AdxBottomThreshold"],
-			"AdxTopThreshold":    bot["AdxTopThreshold"],
-
-			"TotalRevenue": bot["TotalRevenue"],
-		})
+		botsDataFrame.Append(nil, createBotDataFrameRow(bot))
 	}
 	return botsDataFrame
+}
+
+func CombineParentAndChildBots(
+	parentBots *dataframe.DataFrame,
+	childBots *dataframe.DataFrame,
+) *dataframe.DataFrame {
+	botsDataFrame := InitBotsDataFrame()
+	queueBots := []*dataframe.DataFrame{
+		parentBots,
+		childBots,
+	}
+
+	for _, bots := range queueBots {
+		iterator := bots.ValuesIterator(dataframe.ValuesOptions{0, 1, true})
+
+		for {
+			botNumber, bot, _ := iterator()
+			if botNumber == nil {
+				break
+			}
+			botsDataFrame.Append(nil, createBotDataFrameRow(bot))
+		}
+	}
+
+	return botsDataFrame
+}
+
+func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"HighSellPercentage": bot["HighSellPercentage"],
+		"LowSellPercentage":  bot["LowSellPercentage"],
+
+		"AltCoinMinBuyFirstPeriodMinutes":  bot["AltCoinMinBuyFirstPeriodMinutes"],
+		"AltCoinMinBuyFirstPercentage":     bot["AltCoinMinBuyFirstPercentage"],
+		"AltCoinMinBuySecondPeriodMinutes": bot["AltCoinMinBuySecondPeriodMinutes"],
+		"AltCoinMinBuySecondPercentage":    bot["AltCoinMinBuySecondPercentage"],
+
+		"BtcMinBuyPeriodMinutes": bot["BtcMinBuyPeriodMinutes"],
+		"BtcMinBuyPercentage":    bot["BtcMinBuyPercentage"],
+		"BtcSellPeriodMinutes":   bot["BtcSellPeriodMinutes"],
+		"BtcSellPercentage":      bot["BtcSellPercentage"],
+
+		"UnsoldFirstSellDurationMinutes": bot["UnsoldFirstSellDurationMinutes"],
+		"UnsoldFirstSellPercentage":      bot["UnsoldFirstSellPercentage"],
+		"UnsoldFinalSellDurationMinutes": bot["UnsoldFinalSellDurationMinutes"],
+
+		"AltCoinSuperTrendCandles": bot["AltCoinSuperTrendCandles"],
+		"AltCoinSuperMultiplier":   bot["AltCoinSuperMultiplier"],
+
+		"BtcSuperTrendCandles":    bot["BtcSuperTrendCandles"],
+		"BtcSuperTrendMultiplier": bot["BtcSuperTrendMultiplier"],
+
+		"AverageVolumeCandles": bot["AverageVolumeCandles"],
+		"AverageVolumeMinimal": bot["AverageVolumeMinimal"],
+
+		"AdxDiLen":           bot["AdxDiLen"],
+		"AdxBottomThreshold": bot["AdxBottomThreshold"],
+		"AdxTopThreshold":    bot["AdxTopThreshold"],
+
+		"TotalRevenue": bot["TotalRevenue"],
+	}
 }
 
 func MakeChildren(parentBots *dataframe.DataFrame) *dataframe.DataFrame {

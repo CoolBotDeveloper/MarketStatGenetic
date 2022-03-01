@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	bots := GetInitialBots()
+	bots := GetInitialBotsFromFile("generation_112.csv")
+	//bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 
 	for generation := 0; generation < GENERATION_COUNT; generation++ {
@@ -34,12 +35,17 @@ func main() {
 		}
 		close(botRevenueChan)
 
-		bots = SortBestBots(bots)
+		parentBots := SortBestBots(bots)
 		botsCsvFile, _ := os.Create(fmt.Sprintf("generation_%d.csv", generation))
-		exports.ExportToCSV(context.Background(), botsCsvFile, bots)
+		exports.ExportToCSV(context.Background(), botsCsvFile, parentBots)
 
-		bestBots := SelectNBots(BEST_BOTS_COUNT, bots)
-		bots = MakeChildren(bestBots)
+		bestBots := SelectNBots(BEST_BOTS_COUNT, parentBots)
+		childBots := MakeChildren(bestBots)
+
+		bots = CombineParentAndChildBots(
+			SelectNBots(BEST_BOTS_FROM_PREV_GEN, bestBots),
+			SelectNBots(BOTS_COUNT-BEST_BOTS_FROM_PREV_GEN, childBots),
+		)
 	}
 
 	fmt.Println("Done")
