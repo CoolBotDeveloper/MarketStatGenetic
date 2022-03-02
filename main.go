@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	bots := GetInitialBotsFromFile("generation_112.csv")
+	bots := GetInitialBotsFromFile("initial.csv")
 	//bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 
@@ -22,12 +22,26 @@ func main() {
 			if botNumber == nil {
 				break
 			}
+
+			if *botNumber < BEST_BOTS_FROM_PREV_GEN && generation > 0 {
+				rev := convertToFloat64(bot["TotalRevenue"])
+				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
+				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f\n", generation, *botNumber, rev))
+				SetBotTotalRevenue(bots, *botNumber, rev)
+				continue
+			}
+
 			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
 			botConfig := ConvertDataFrameToBotConfig(bot)
 			go Fitness(botConfig, *botNumber, botRevenueChan, fitnessDatasets)
 		}
 
-		for i := 0; i < bots.NRows(); i++ {
+		channelsCount := bots.NRows()
+		if generation > 0 {
+			channelsCount = channelsCount - BEST_BOTS_FROM_PREV_GEN
+		}
+
+		for i := 0; i < channelsCount; i++ {
 			botRevenue := <-botRevenueChan
 			rev := fixRevenue(botRevenue.Revenue)
 			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev)

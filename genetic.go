@@ -6,9 +6,9 @@ import (
 	"math/rand"
 )
 
-const BEST_BOTS_COUNT = 5
-const BEST_BOTS_FROM_PREV_GEN = 2
-const BOTS_COUNT = 10
+const BEST_BOTS_COUNT = 10
+const BEST_BOTS_FROM_PREV_GEN = 3
+const BOTS_COUNT = 25
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -238,7 +238,7 @@ func makeChild(
 		AdxTopThreshold:    GetFloatFatherOrMomGen(maleBotConfig.AdxTopThreshold, femaleBotConfig.AdxTopThreshold),
 	}
 
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 6; i++ {
 		mutateGens(&childBotConfig, GetRandInt(0, 21))
 	}
 
@@ -277,7 +277,7 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"AdxBottomThreshold": botConfig.AdxBottomThreshold,
 		"AdxTopThreshold":    botConfig.AdxTopThreshold,
 
-		"TotalRevenue": 0.0,
+		"TotalRevenue": botConfig.TotalRevenue,
 	}
 }
 

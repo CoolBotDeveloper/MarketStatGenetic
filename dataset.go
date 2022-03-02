@@ -14,6 +14,9 @@ func ImportDatasets() *[]Dataset {
 		dir := "./datasets"
 		dates := []string{
 			"2022-01",
+			"2021-11",
+			"2021-07",
+			"2021-03",
 		}
 		locDatasets := []Dataset{}
 		for _, date := range dates {

@@ -35,5 +35,7 @@ type BotConfig struct {
 	AdxBottomThreshold float64
 	AdxTopThreshold    float64
 
+	TotalRevenue float64
+
 	Restrictions BotConfigRestriction
 }

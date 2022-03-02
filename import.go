@@ -50,6 +50,8 @@ func ImportFromCsv(fileName string) []BotConfig {
 			AdxDiLen:           convertStringToInt(row[19]),
 			AdxBottomThreshold: convertStringToFloat64(row[20]),
 			AdxTopThreshold:    convertStringToFloat64(row[21]),
+
+			TotalRevenue: convertStringToFloat64(row[22]),
 		}
 
 		bots = append(bots, bot)
