@@ -96,7 +96,7 @@ func SelectNBots(numberOfBots int, bots *dataframe.DataFrame) *dataframe.DataFra
 		}
 
 		botRevenue := convertToFloat64(bot["TotalRevenue"])
-		if 1 < CountInArray(botRevenue, &alreadyHasRevenue) {
+		if 0 < CountInArray(botRevenue, &alreadyHasRevenue) {
 			continue
 		}
 
