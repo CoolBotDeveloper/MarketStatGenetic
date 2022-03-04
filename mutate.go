@@ -1,10 +1,13 @@
 package main
 
+const MAX_ATTEMPTS = 10
+
 func MutateLittleFloat64(current float64, minMax MinMaxFloat64) float64 {
 	//if !shouldMutate() {
 	//	return current
 	//}
 
+	attemptsCount := 0
 	result := current
 
 	for {
@@ -15,7 +18,8 @@ func MutateLittleFloat64(current float64, minMax MinMaxFloat64) float64 {
 			result = current
 		}
 
-		if result != current {
+		attemptsCount++
+		if result != current || attemptsCount > MAX_ATTEMPTS {
 			break
 		}
 	}
@@ -29,7 +33,7 @@ func MutateLittleInt(current int, minMax MinMaxInt) int {
 	//}
 
 	result := current
-
+	attemptsCount := 0
 	for {
 		value := MutatePercentInt(current)
 		result = current - value
@@ -38,7 +42,8 @@ func MutateLittleInt(current int, minMax MinMaxInt) int {
 			result = current
 		}
 
-		if result != current {
+		attemptsCount++
+		if result != current || attemptsCount > MAX_ATTEMPTS {
 			break
 		}
 	}

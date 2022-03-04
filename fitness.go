@@ -76,7 +76,7 @@ func candleHandler(
 }
 
 func updateBuys(candle Candle, exchangeManager ExchangeManager, candleMarketStat CandleMarketStat) {
-	exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice)
+	exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
 
 	if candleMarketStat.HasBtcSellPercentage() {
 		exchangeManager.UpdateAllExitSymbols(candle.Symbol, candle.ClosePrice, candle.CloseTime)
