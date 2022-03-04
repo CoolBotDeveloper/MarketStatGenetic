@@ -40,6 +40,17 @@ func (storage *Storage) CreateBuysTable() sql.Result {
 	`
 	result, _ := storage.connect.Exec(query)
 
+	fakeQuery := `
+		CREATE TABLE IF NOT EXISTS fake_buys (
+			id integer primary key AUTOINCREMENT,
+			symbol VARCHAR(255),
+			coins FLOAT,
+			exchange_rate FLOAT,
+			created_at DATETIME
+		);
+	`
+	storage.connect.Exec(fakeQuery)
+
 	return result
 }
 
@@ -57,6 +68,19 @@ func (storage *Storage) CreateSellsTable() sql.Result {
 	`
 	result, _ := storage.connect.Exec(query)
 
+	fakeQuery := `
+		CREATE TABLE IF NOT EXISTS fake_sells (
+			id integer primary key AUTOINCREMENT,
+			symbol VARCHAR(255),
+			coins FLOAT,
+			exchange_rate FLOAT,
+			revenue FLOAT,
+			buy_id INT,
+			created_at DATETIME
+		);
+	`
+	storage.connect.Exec(fakeQuery)
+
 	return result
 }
 
@@ -64,6 +88,17 @@ func (storage *Storage) AddBuy(symbol string, coinsCount float64, exchangeRate f
 	//createdAt := time.Now().Format("2006-01-02 15:04:05")
 	query := `
 		INSERT INTO buys (symbol, coins, exchange_rate, created_at) VALUES ($1, $2, $3, $4);
+	`
+
+	result, _ := storage.connect.Exec(query, symbol, coinsCount, exchangeRate, createdAt)
+
+	return result
+}
+
+func (storage *Storage) AddFakeBuy(symbol string, coinsCount float64, exchangeRate float64, createdAt string) sql.Result {
+	//createdAt := time.Now().Format("2006-01-02 15:04:05")
+	query := `
+		INSERT INTO fake_buys (symbol, coins, exchange_rate, created_at) VALUES ($1, $2, $3, $4);
 	`
 
 	result, _ := storage.connect.Exec(query, symbol, coinsCount, exchangeRate, createdAt)
@@ -82,6 +117,23 @@ func (storage *Storage) AddSell(
 	//createdAt := time.Now().Format("2006-01-02 15:04:05")
 	query := `
 		INSERT INTO sells (symbol, coins, exchange_rate, revenue, buy_id, created_at) VALUES ($1, $2, $3, $4, $5, $6);
+	`
+
+	result, _ := storage.connect.Exec(query, symbol, exchangeRate, coinsCount, revenue, buyId, createdAt)
+	return result
+}
+
+func (storage *Storage) AddFakeSell(
+	symbol string,
+	coinsCount float64,
+	exchangeRate float64,
+	revenue float64,
+	buyId int,
+	createdAt string,
+) sql.Result {
+	//createdAt := time.Now().Format("2006-01-02 15:04:05")
+	query := `
+		INSERT INTO fake_sells (symbol, coins, exchange_rate, revenue, buy_id, created_at) VALUES ($1, $2, $3, $4, $5, $6);
 	`
 
 	result, _ := storage.connect.Exec(query, symbol, exchangeRate, coinsCount, revenue, buyId, createdAt)

@@ -13,10 +13,7 @@ func ImportDatasets() *[]Dataset {
 	if datasets == nil {
 		dir := "./datasets"
 		dates := []string{
-			"2022-01",
-			"2021-11",
-			"2021-07",
-			"2021-03",
+			"2021-04",
 		}
 		locDatasets := []Dataset{}
 		for _, date := range dates {
@@ -30,11 +27,14 @@ func ImportDatasets() *[]Dataset {
 					btcDatasetCandles = &bd
 				}
 
-				locDatasets = append(locDatasets, Dataset{
-					AltCoinName:    symbol,
-					AltCoinCandles: CsvFileToCandles(fileName, symbol),
-					BtcCandles:     btcDatasetCandles,
-				})
+				altCoinCandles := CsvFileToCandles(fileName, symbol)
+				if len(*btcDatasetCandles) == len(altCoinCandles) {
+					locDatasets = append(locDatasets, Dataset{
+						AltCoinName:    symbol,
+						AltCoinCandles: CsvFileToCandles(fileName, symbol),
+						BtcCandles:     btcDatasetCandles,
+					})
+				}
 			}
 		}
 		datasets = &locDatasets
