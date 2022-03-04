@@ -33,5 +33,9 @@ func InitBotConfig() BotConfig {
 		AdxDiLen:           GetRandIntConfig(restrict.AdxDiLen),
 		AdxBottomThreshold: GetRandFloat64Config(restrict.AdxBottomThreshold),
 		AdxTopThreshold:    GetRandFloat64Config(restrict.AdxTopThreshold),
+
+		RealBuyTopResetReachRevenue:   GetRandFloat64Config(restrict.RealBuyTopResetReachRevenue),
+		RealBuyBottomStopReachRevenue: GetRandFloat64Config(restrict.RealBuyBottomStopReachRevenue),
+		FakeBuyReachStopRevenue:       GetRandFloat64Config(restrict.FakeBuyReachStopRevenue),
 	}
 }

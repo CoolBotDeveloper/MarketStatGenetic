@@ -35,6 +35,10 @@ type BotConfigRestriction struct {
 	AdxDiLen           MinMaxInt
 	AdxBottomThreshold MinMaxFloat64
 	AdxTopThreshold    MinMaxFloat64
+
+	RealBuyTopResetReachRevenue   MinMaxFloat64
+	RealBuyBottomStopReachRevenue MinMaxFloat64
+	FakeBuyReachStopRevenue       MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -150,6 +154,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		AdxTopThreshold: MinMaxFloat64{
 			min: 40,
 			max: 90,
+		},
+
+		// -----------------------------------------------------
+		RealBuyTopResetReachRevenue: MinMaxFloat64{
+			min: 0.5,
+			max: 5,
+		},
+		RealBuyBottomStopReachRevenue: MinMaxFloat64{
+			min: -1,
+			max: 2,
+		},
+		FakeBuyReachStopRevenue: MinMaxFloat64{
+			min: 0.0,
+			max: 5,
 		},
 	}
 }

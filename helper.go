@@ -111,6 +111,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		AdxDiLen:           convertToInt(dataFrame["AdxDiLen"]),
 		AdxBottomThreshold: convertToFloat64(dataFrame["AdxBottomThreshold"]),
 		AdxTopThreshold:    convertToFloat64(dataFrame["AdxTopThreshold"]),
+
+		RealBuyTopResetReachRevenue:   convertToFloat64(dataFrame["RealBuyTopResetReachRevenue"]),
+		RealBuyBottomStopReachRevenue: convertToFloat64(dataFrame["RealBuyBottomStopReachRevenue"]),
+		FakeBuyReachStopRevenue:       convertToFloat64(dataFrame["FakeBuyReachStopRevenue"]),
 	}
 }
 

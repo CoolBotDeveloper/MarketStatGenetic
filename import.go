@@ -51,7 +51,11 @@ func ImportFromCsv(fileName string) []BotConfig {
 			AdxBottomThreshold: convertStringToFloat64(row[20]),
 			AdxTopThreshold:    convertStringToFloat64(row[21]),
 
-			TotalRevenue: convertStringToFloat64(row[22]),
+			RealBuyTopResetReachRevenue:   convertStringToFloat64(row[22]),
+			RealBuyBottomStopReachRevenue: convertStringToFloat64(row[23]),
+			FakeBuyReachStopRevenue:       convertStringToFloat64(row[24]),
+
+			TotalRevenue: convertStringToFloat64(row[25]),
 		}
 
 		bots = append(bots, bot)
