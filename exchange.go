@@ -155,7 +155,6 @@ func (storage *Storage) FindUnsoldBuys(
 	lowerPercentage float64,
 	createdAt string,
 ) []Buy {
-	unsoldBuys := []Buy{}
 	query := `
 		SELECT b.*
 		FROM buys AS b 
@@ -171,6 +170,58 @@ func (storage *Storage) FindUnsoldBuys(
                 )
 	`
 
+	return storage.execFindUnsoldBuysQuery(
+		query,
+		symbol,
+		exchangeRate,
+		upperPercentage,
+		lowerPercentage,
+		createdAt,
+	)
+}
+
+func (storage *Storage) FindFakeUnsoldBuys(
+	symbol string,
+	exchangeRate float64,
+	upperPercentage float64,
+	lowerPercentage float64,
+	createdAt string,
+) []Buy {
+	query := `
+		SELECT b.*
+		FROM fake_buys AS b 
+        LEFT JOIN fake_sells AS s 
+        	ON s.buy_id = b.id 
+        WHERE s.id IS NULL 
+            AND b.symbol = $1 
+            AND (
+                	(
+                	    ((b.exchange_rate + ((b.exchange_rate * $2) / 100)) <= $3) OR 
+                		((b.exchange_rate - ((b.exchange_rate * $4) / 100)) >= $3)
+                	)
+                )
+	`
+
+	return storage.execFindUnsoldBuysQuery(
+		query,
+		symbol,
+		exchangeRate,
+		upperPercentage,
+		lowerPercentage,
+		createdAt,
+	)
+}
+
+func (storage *Storage) execFindUnsoldBuysQuery(
+	query string,
+	symbol string,
+	exchangeRate float64,
+	upperPercentage float64,
+	lowerPercentage float64,
+	createdAt string,
+) []Buy {
+	unsoldBuys := []Buy{}
+
 	rows, _ := storage.connect.Query(query, symbol, upperPercentage, exchangeRate, lowerPercentage)
 	defer rows.Close()
 
@@ -184,7 +235,6 @@ func (storage *Storage) FindUnsoldBuys(
 }
 
 func (storage *Storage) FindFirstSellZombies(symbol string, exchangeRate float64, createdAt string, minutes int, sellPercentage float64) []Buy {
-	unsoldBuys := []Buy{}
 	query := `
 		SELECT b.*
 		FROM buys AS b 
@@ -198,6 +248,28 @@ func (storage *Storage) FindFirstSellZombies(symbol string, exchangeRate float64
 				)
 	`
 
+	return storage.execFindFirstSellZombies(query, symbol, exchangeRate, createdAt, minutes, sellPercentage)
+}
+
+func (storage *Storage) FindFakeFirstSellZombies(symbol string, exchangeRate float64, createdAt string, minutes int, sellPercentage float64) []Buy {
+	query := `
+		SELECT b.*
+		FROM fake_buys AS b 
+        LEFT JOIN fake_sells AS s 
+        	ON s.buy_id = b.id 
+        WHERE s.id IS NULL 
+            AND b.symbol = $1 
+            AND b.created_at < $2
+			AND (
+			    	(b.exchange_rate + ((b.exchange_rate * $3) / 100)) <= $4
+				)
+	`
+
+	return storage.execFindFirstSellZombies(query, symbol, exchangeRate, createdAt, minutes, sellPercentage)
+}
+
+func (storage *Storage) execFindFirstSellZombies(query, symbol string, exchangeRate float64, createdAt string, minutes int, sellPercentage float64) []Buy {
+	unsoldBuys := []Buy{}
 	candleTime := ConvertDateStringToTime(createdAt)
 	zombieDuration := GetCurrentMinusTime(candleTime, minutes)
 
@@ -214,7 +286,6 @@ func (storage *Storage) FindFirstSellZombies(symbol string, exchangeRate float64
 }
 
 func (storage *Storage) FindExitZombies(symbol string, createdAt string, minutes int) []Buy {
-	unsoldBuys := []Buy{}
 	query := `
 		SELECT b.*
 		FROM buys AS b 
@@ -225,6 +296,25 @@ func (storage *Storage) FindExitZombies(symbol string, createdAt string, minutes
             AND b.created_at < $2
 	`
 
+	return storage.execFindExitZombies(query, symbol, createdAt, minutes)
+}
+
+func (storage *Storage) FindFakeExitZombies(symbol string, createdAt string, minutes int) []Buy {
+	query := `
+		SELECT b.*
+		FROM fake_buys AS b 
+        LEFT JOIN fake_sells AS s 
+        	ON s.buy_id = b.id 
+        WHERE s.id IS NULL 
+            AND b.symbol = $1 
+            AND b.created_at < $2
+	`
+
+	return storage.execFindExitZombies(query, symbol, createdAt, minutes)
+}
+
+func (storage *Storage) execFindExitZombies(query, symbol string, createdAt string, minutes int) []Buy {
+	unsoldBuys := []Buy{}
 	candleTime := ConvertDateStringToTime(createdAt)
 	zombieDuration := GetCurrentMinusTime(candleTime, minutes)
 
@@ -246,6 +336,20 @@ func (storage *Storage) CountUnsoldBuys(symbol string) int {
 		SELECT COUNT(b.id)
 		FROM buys AS b 
         LEFT JOIN sells AS s 
+        	ON s.buy_id = b.id 
+        WHERE b.symbol = $1 AND s.id IS NULL
+	`
+	(*storage).connect.QueryRow(query, symbol).Scan(&count)
+
+	return count
+}
+
+func (storage *Storage) CountFakeUnsoldBuys(symbol string) int {
+	var count int
+	query := `
+		SELECT COUNT(b.id)
+		FROM fake_buys AS b 
+        LEFT JOIN fake_sells AS s 
         	ON s.buy_id = b.id 
         WHERE b.symbol = $1 AND s.id IS NULL
 	`
@@ -283,6 +387,50 @@ func (storage *Storage) GetTotalRevenue() float64 {
 	row.Scan(&rev.value)
 
 	return rev.value
+}
+
+func (storage *Storage) GetFakeTotalRevenue(symbol string) float64 {
+	rev := revenue{}
+	query := `
+		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
+		FROM fake_sells 
+		where symbol = $1
+		GROUP BY symbol
+	`
+	row := (*storage).connect.QueryRow(query, symbol)
+	row.Scan(&rev.value)
+
+	return rev.value
+}
+
+func (storage *Storage) CalculateRevenueFromStartTime(symbol, startTime string) float64 {
+	rev := revenue{}
+	query := `
+		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
+		FROM sells 
+		WHERE symbol = $1 AND created_at > $2
+		GROUP BY symbol
+	`
+	row := (*storage).connect.QueryRow(query, symbol, startTime)
+	row.Scan(&rev.value)
+
+	return rev.value
+}
+
+func (storage *Storage) CleanFakeBuySellTables(symbol string) {
+	queryBuys := `
+		DELETE
+		FROM fake_buys 
+		WHERE symbol = $1
+	`
+	(*storage).connect.Query(queryBuys, symbol)
+
+	querySells := `
+		DELETE
+		FROM fake_sells 
+		WHERE symbol = $1
+	`
+	(*storage).connect.Query(querySells, symbol)
 }
 
 type buysCount struct {
@@ -342,8 +490,8 @@ func (em *ExchangeManager) Sell(symbol string, exchangeRate float64, createdAt s
 	}
 }
 
-func (em *ExchangeManager) UpdateBuys(symbol string, exchangeRate float64) []UnsoldBuy {
-	createdAt := time.Now().Format("2006-01-02 15:04:05")
+func (em *ExchangeManager) UpdateBuys(symbol string, exchangeRate float64, createdAt string) []UnsoldBuy {
+	//createdAt := time.Now().Format("2006-01-02 15:04:05")
 
 	normal := em.UpdateNormalBuys(symbol, exchangeRate, createdAt)
 	firstSell := em.updateFirstSellZombies(symbol, exchangeRate, createdAt)

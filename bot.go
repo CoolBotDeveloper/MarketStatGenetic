@@ -35,8 +35,9 @@ type BotConfig struct {
 	AdxBottomThreshold float64
 	AdxTopThreshold    float64
 
-	RealBuyReachRevenue float64
-	FakeBuyReachRevenue float64
+	RealBuyTopResetReachRevenue   float64
+	RealBuyBottomStopReachRevenue float64
+	FakeBuyReachStopRevenue       float64
 
 	TotalRevenue float64
 

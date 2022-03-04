@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type BotRevenue struct {
 	BotNumber int
@@ -28,6 +30,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 	coinBotFactory := NewCoinBotFactory(&dataSource)
 	exchangeManager := NewExchangeManager(botConfig)
 	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
+	positiveApproach := NewPositiveApproach(botConfig, &exchangeManager, &candleMarketStat)
 
 	for candleNum, candle := range dataset.AltCoinCandles {
 		btcDataset := *dataset.BtcCandles
@@ -40,6 +43,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 			coinBotFactory,
 			exchangeManager,
 			candleMarketStat,
+			positiveApproach,
 		)
 	}
 
@@ -58,20 +62,25 @@ func candleHandler(
 	coinBotFactory CoinBotFactory,
 	exchangeManager ExchangeManager,
 	candleMarketStat CandleMarketStat,
+	positiveApproach PositiveApproach,
 ) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
 	updateBuys(candle, exchangeManager, candleMarketStat)
+	//positiveApproach.UpdateBuys(candle)
 
 	if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		candleMarketStat.HasBtcBuyPercentage() &&
-		1 > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
 		bot.HasBuySignal() {
 
-		// Do buy
-		exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
+		//if positiveApproach.HasSignal(candle) {
+		if 1 > exchangeManager.CountUnsoldBuys(candle.Symbol) {
+			// Do buy
+			exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
+		}
+		//}
 	}
 }
 
