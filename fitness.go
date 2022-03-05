@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type BotRevenue struct {
 	BotNumber int
@@ -15,7 +13,6 @@ func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue, fit
 	for _, dataset := range *fitnessDatasets {
 		datasetRevenue := doBuysAndSells(dataset, botConfig)
 		totalRevenue += datasetRevenue
-		fmt.Println(fmt.Sprintf("%s: DatasetRevenue: %f", dataset.AltCoinName, datasetRevenue))
 	}
 
 	botRevenue <- BotRevenue{
@@ -48,10 +45,17 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 	}
 
 	rev := exchangeManager.GetTotalRevenue()
-	commission := float64(exchangeManager.GetBuysCount()) * COMMISSION
+	buyCount := exchangeManager.GetBuysCount()
+	success := exchangeManager.GetSuccessBuysCount()
+	commission := float64(buyCount) * COMMISSION
 	exchangeManager.Close()
 
-	return rev - commission
+	datasetRevenue := rev - commission
+	failed := buyCount - success
+
+	fmt.Println(fmt.Sprintf("%s: DatasetRevenue: %f, TotalBuys: %d, Success: %d, Failed: %d", dataset.AltCoinName, datasetRevenue, buyCount, success, failed))
+
+	return datasetRevenue
 }
 
 func candleHandler(

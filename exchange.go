@@ -453,6 +453,20 @@ func (storage *Storage) GetBuysCount() int {
 	return count.value
 }
 
+func (storage *Storage) GetSuccessBuysCount() int {
+	count := buysCount{}
+	query := `
+		SELECT COUNT(b.id) AS c
+		FROM buys AS b
+		INNER JOIN sells s ON b.id = s.buy_id
+		WHERE s.revenue > 100;
+	`
+	row := (*storage).connect.QueryRow(query)
+	row.Scan(&count.value)
+
+	return count.value
+}
+
 // Exchange manager
 type ExchangeManager struct {
 	config  BotConfig
@@ -646,6 +660,10 @@ func (manager *ExchangeManager) GetTotalRevenue() float64 {
 
 func (manager *ExchangeManager) GetBuysCount() int {
 	return (*manager).storage.GetBuysCount()
+}
+
+func (manager *ExchangeManager) GetSuccessBuysCount() int {
+	return (*manager).storage.GetSuccessBuysCount()
 }
 
 func (em *ExchangeManager) calcRevenue(coinsCount float64, exchangeRate float64) float64 {
