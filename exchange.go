@@ -170,14 +170,18 @@ func (storage *Storage) FindUnsoldBuys(
                 )
 	`
 
-	return storage.execFindUnsoldBuysQuery(
-		query,
-		symbol,
-		exchangeRate,
-		upperPercentage,
-		lowerPercentage,
-		createdAt,
-	)
+	unsoldBuys := []Buy{}
+
+	rows, _ := storage.connect.Query(query, symbol, upperPercentage, exchangeRate, lowerPercentage)
+	defer rows.Close()
+
+	for rows.Next() {
+		buy := Buy{}
+		rows.Scan(&buy.id, &buy.symbol, &buy.coins, &buy.exchangeRate, &buy.createdAt)
+		unsoldBuys = append(unsoldBuys, buy)
+	}
+
+	return unsoldBuys
 }
 
 func (storage *Storage) FindFakeUnsoldBuys(
@@ -202,24 +206,6 @@ func (storage *Storage) FindFakeUnsoldBuys(
                 )
 	`
 
-	return storage.execFindUnsoldBuysQuery(
-		query,
-		symbol,
-		exchangeRate,
-		upperPercentage,
-		lowerPercentage,
-		createdAt,
-	)
-}
-
-func (storage *Storage) execFindUnsoldBuysQuery(
-	query string,
-	symbol string,
-	exchangeRate float64,
-	upperPercentage float64,
-	lowerPercentage float64,
-	createdAt string,
-) []Buy {
 	unsoldBuys := []Buy{}
 
 	rows, _ := storage.connect.Query(query, symbol, upperPercentage, exchangeRate, lowerPercentage)
@@ -248,7 +234,20 @@ func (storage *Storage) FindFirstSellZombies(symbol string, exchangeRate float64
 				)
 	`
 
-	return storage.execFindFirstSellZombies(query, symbol, exchangeRate, createdAt, minutes, sellPercentage)
+	unsoldBuys := []Buy{}
+	candleTime := ConvertDateStringToTime(createdAt)
+	zombieDuration := GetCurrentMinusTime(candleTime, minutes)
+
+	rows, _ := (*storage).connect.Query(query, symbol, zombieDuration.Format("2006-01-02 15:04:05"), sellPercentage, exchangeRate)
+	defer rows.Close()
+
+	for rows.Next() {
+		buy := Buy{}
+		rows.Scan(&buy.id, &buy.symbol, &buy.coins, &buy.exchangeRate, &buy.createdAt)
+		unsoldBuys = append(unsoldBuys, buy)
+	}
+
+	return unsoldBuys
 }
 
 func (storage *Storage) FindFakeFirstSellZombies(symbol string, exchangeRate float64, createdAt string, minutes int, sellPercentage float64) []Buy {
@@ -265,10 +264,6 @@ func (storage *Storage) FindFakeFirstSellZombies(symbol string, exchangeRate flo
 				)
 	`
 
-	return storage.execFindFirstSellZombies(query, symbol, exchangeRate, createdAt, minutes, sellPercentage)
-}
-
-func (storage *Storage) execFindFirstSellZombies(query, symbol string, exchangeRate float64, createdAt string, minutes int, sellPercentage float64) []Buy {
 	unsoldBuys := []Buy{}
 	candleTime := ConvertDateStringToTime(createdAt)
 	zombieDuration := GetCurrentMinusTime(candleTime, minutes)
@@ -296,7 +291,20 @@ func (storage *Storage) FindExitZombies(symbol string, createdAt string, minutes
             AND b.created_at < $2
 	`
 
-	return storage.execFindExitZombies(query, symbol, createdAt, minutes)
+	unsoldBuys := []Buy{}
+	candleTime := ConvertDateStringToTime(createdAt)
+	zombieDuration := GetCurrentMinusTime(candleTime, minutes)
+
+	rows, _ := (*storage).connect.Query(query, symbol, zombieDuration.Format("2006-01-02 15:04:05"))
+	defer rows.Close()
+
+	for rows.Next() {
+		buy := Buy{}
+		rows.Scan(&buy.id, &buy.symbol, &buy.coins, &buy.exchangeRate, &buy.createdAt)
+		unsoldBuys = append(unsoldBuys, buy)
+	}
+
+	return unsoldBuys
 }
 
 func (storage *Storage) FindFakeExitZombies(symbol string, createdAt string, minutes int) []Buy {
@@ -310,10 +318,6 @@ func (storage *Storage) FindFakeExitZombies(symbol string, createdAt string, min
             AND b.created_at < $2
 	`
 
-	return storage.execFindExitZombies(query, symbol, createdAt, minutes)
-}
-
-func (storage *Storage) execFindExitZombies(query, symbol string, createdAt string, minutes int) []Buy {
 	unsoldBuys := []Buy{}
 	candleTime := ConvertDateStringToTime(createdAt)
 	zombieDuration := GetCurrentMinusTime(candleTime, minutes)
@@ -423,14 +427,14 @@ func (storage *Storage) CleanFakeBuySellTables(symbol string) {
 		FROM fake_buys 
 		WHERE symbol = $1
 	`
-	(*storage).connect.Query(queryBuys, symbol)
+	(*storage).connect.Exec(queryBuys, symbol)
 
 	querySells := `
 		DELETE
 		FROM fake_sells 
 		WHERE symbol = $1
 	`
-	(*storage).connect.Query(querySells, symbol)
+	(*storage).connect.Exec(querySells, symbol)
 }
 
 type buysCount struct {

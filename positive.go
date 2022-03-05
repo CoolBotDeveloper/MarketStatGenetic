@@ -151,8 +151,9 @@ func (pa *PositiveApproach) isRealBuyPositive(candle Candle) bool {
 	}
 
 	startTimeRevenue := pa.getStorage().CalculateRevenueFromStartTime(candle.Symbol, startTime)
+	realBuysCount := pa.getStorage().GetBuysCount()
 
-	return startTimeRevenue > pa.botConfig.RealBuyBottomStopReachRevenue
+	return realBuysCount == 0 || startTimeRevenue > pa.botConfig.RealBuyBottomStopReachRevenue
 }
 
 func (pa *PositiveApproach) isRealBuyReached(candle Candle) bool {
