@@ -3,26 +3,36 @@ package main
 import "fmt"
 
 type BotRevenue struct {
-	BotNumber int
-	Revenue   float64
+	BotNumber        int
+	Revenue          float64
+	TotalBuysCount   int
+	SuccessBuysCount int
+	FailedBuysCount  int
 }
 
 func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue, fitnessDatasets *[]Dataset) {
 	totalRevenue := 0.0
+	totalBuysCount := 0
+	totalSuccessBuysCount := 0
 
 	for _, dataset := range *fitnessDatasets {
-		datasetRevenue := doBuysAndSells(dataset, botConfig)
+		datasetRevenue, buyCount, successBuysCount := doBuysAndSells(dataset, botConfig)
 		totalRevenue += datasetRevenue
+		totalBuysCount += buyCount
+		totalSuccessBuysCount += successBuysCount
 	}
 
 	botRevenue <- BotRevenue{
-		BotNumber: botNumber,
-		Revenue:   totalRevenue,
+		BotNumber:        botNumber,
+		Revenue:          totalRevenue,
+		TotalBuysCount:   totalBuysCount,
+		SuccessBuysCount: totalSuccessBuysCount,
+		FailedBuysCount:  totalBuysCount - totalSuccessBuysCount,
 	}
 	//return totalRevenue
 }
 
-func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
+func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int) {
 	dataSource := NewDataSource()
 	coinBotFactory := NewCoinBotFactory(&dataSource)
 	exchangeManager := NewExchangeManager(botConfig)
@@ -55,7 +65,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) float64 {
 
 	fmt.Println(fmt.Sprintf("%s: DatasetRevenue: %f, TotalBuys: %d, Success: %d, Failed: %d", dataset.AltCoinName, datasetRevenue, buyCount, success, failed))
 
-	return datasetRevenue
+	return datasetRevenue, buyCount, success
 }
 
 func candleHandler(
