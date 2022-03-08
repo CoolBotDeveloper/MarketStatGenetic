@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	//bots := GetInitialBotsFromFile("initial.csv")
-	bots := GetInitialBots()
+	bots := GetInitialBotsFromFile("generation_19.csv")
+	//bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 
 	for generation := 0; generation < GENERATION_COUNT; generation++ {
@@ -45,7 +45,7 @@ func main() {
 			botRevenue := <-botRevenueChan
 			rev := fixRevenue(botRevenue.Revenue)
 			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev)
-			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f, Buys Count: %d, Success: %d, Failed: %d\n", generation, botRevenue.BotNumber, rev, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount))
+			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev))
 		}
 		close(botRevenueChan)
 
