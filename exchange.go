@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"time"
 )
@@ -539,6 +540,7 @@ func (em *ExchangeManager) UpdateNormalBuys(symbol string, exchangeRate float64,
 			Revenue:      calcedRevenue,
 		})
 
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s", symbol, createdAt))
 		em.storage.AddSell(
 			symbol,
 			buy.coins,
@@ -570,6 +572,7 @@ func (em *ExchangeManager) updateFirstSellZombies(symbol string, exchangeRate fl
 			Revenue:      calcedRevenue,
 		})
 
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s", symbol, createdAt))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,
@@ -598,6 +601,7 @@ func (em *ExchangeManager) updateExitZombies(symbol string, exchangeRate float64
 			Revenue:      calcedRevenue,
 		})
 
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s", symbol, createdAt))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,
@@ -623,6 +627,7 @@ func (em *ExchangeManager) UpdateAllExitSymbols(symbol string, exchangeRate floa
 			Revenue:      calcedRevenue,
 		})
 
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s", symbol, createdAt))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,

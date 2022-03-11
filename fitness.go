@@ -92,6 +92,8 @@ func candleHandler(
 		if positiveApproach.HasSignal(candle) {
 			if 1 > exchangeManager.CountUnsoldBuys(candle.Symbol) {
 				// Do buy
+
+				fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s", candle.Symbol, candle.CloseTime))
 				exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
 			}
 		}
