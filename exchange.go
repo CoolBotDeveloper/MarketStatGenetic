@@ -627,7 +627,7 @@ func (em *ExchangeManager) UpdateAllExitSymbols(symbol string, exchangeRate floa
 			Revenue:      calcedRevenue,
 		})
 
-		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s", symbol, createdAt))
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Revenue: %f", symbol, createdAt, calcedRevenue-100))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,
