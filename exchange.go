@@ -19,7 +19,7 @@ func NewStorage() Storage {
 }
 
 func (storage *Storage) Open() {
-	storage.connect, _ = sql.Open("sqlite3", ":memory:")
+	storage.connect, _ = sql.Open("sqlite3", storage.name)
 
 	storage.CreateBuysTable()
 	storage.CreateSellsTable()
@@ -488,8 +488,8 @@ func (em *ExchangeManager) Close() {
 	em.storage.Close()
 }
 
-func (em *ExchangeManager) Buy(symbol string, exchangeRate float64) {
-	createdAt := time.Now().Format("2006-01-02 15:04:05")
+func (em *ExchangeManager) Buy(symbol string, exchangeRate float64, createdAt string) {
+	//createdAt := time.Now().Format("2006-01-02 15:04:05")
 	coinsCount := TOTAL_MONEY_AMOUNT / exchangeRate
 
 	em.storage.AddBuy(symbol, coinsCount, exchangeRate, createdAt)

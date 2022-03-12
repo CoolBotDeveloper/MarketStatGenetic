@@ -94,7 +94,7 @@ func candleHandler(
 				// Do buy
 
 				fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s", candle.Symbol, candle.CloseTime))
-				exchangeManager.Buy(candle.Symbol, candle.ClosePrice)
+				exchangeManager.Buy(candle.Symbol, candle.ClosePrice, candle.CloseTime)
 			}
 		}
 	}
