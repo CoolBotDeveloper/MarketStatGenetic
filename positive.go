@@ -1,7 +1,5 @@
 package main
 
-import "time"
-
 type PositiveApproach struct {
 	botConfig                 BotConfig
 	exchangeManager           *ExchangeManager
@@ -29,7 +27,7 @@ func (pa *PositiveApproach) HasSignal(candle Candle) bool {
 			return true
 		}
 
-		pa.FakeBuy(symbol, exchangeRate)
+		pa.FakeBuy(symbol, exchangeRate, candle.CloseTime)
 		return false
 	}
 
@@ -42,7 +40,7 @@ func (pa *PositiveApproach) HasSignal(candle Candle) bool {
 		return true
 	}
 
-	pa.FakeBuy(symbol, exchangeRate)
+	pa.FakeBuy(symbol, exchangeRate, candle.CloseTime)
 	return false
 }
 
@@ -177,12 +175,11 @@ func (pa *PositiveApproach) resetRealBuyReached(candle Candle) {
 	pa.realReachedStartPointTime = candle.CloseTime
 }
 
-func (pa *PositiveApproach) FakeBuy(symbol string, exchangeRate float64) {
+func (pa *PositiveApproach) FakeBuy(symbol string, exchangeRate float64, createdAt string) {
 	pa.blockRealBuy()
 
 	unsoldBuysCount := pa.getStorage().CountFakeUnsoldBuys(symbol)
 	if 1 > unsoldBuysCount {
-		createdAt := time.Now().Format("2006-01-02 15:04:05")
 		coinsCount := TOTAL_MONEY_AMOUNT / exchangeRate
 		pa.getStorage().AddFakeBuy(symbol, coinsCount, exchangeRate, createdAt)
 	}
