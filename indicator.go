@@ -97,6 +97,27 @@ func (indicator *AverageVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	return avgVolume >= indicator.config.AverageVolumeMinimal
 }
 
+// Median volume indicator
+type MedianVolumeIndicator struct {
+	config BotConfig
+}
+
+func NewMedianVolumeIndicator(config BotConfig) MedianVolumeIndicator {
+	return MedianVolumeIndicator{config: config}
+}
+
+func (indicator *MedianVolumeIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	if count < indicator.config.AverageVolumeCandles {
+		return false
+	}
+
+	volumes := GetVolumes(candles, indicator.config.AverageVolumeCandles)
+	medianVolume := Median(volumes)
+
+	return medianVolume >= indicator.config.AverageVolumeMinimal
+}
+
 // Adx indicator
 type AdxIndicator struct {
 	config BotConfig

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/montanaflynn/stats"
 	"math"
 	"strconv"
 	"time"
@@ -137,6 +138,11 @@ func CountInArray(needle float64, array *[]float64) int {
 		}
 	}
 	return count
+}
+
+func Median(values []float64) float64 {
+	median, _ := stats.Median(values)
+	return median
 }
 
 func getKlineCandleListLastIdx(candles *[]Candle) int {
