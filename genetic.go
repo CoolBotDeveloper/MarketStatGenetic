@@ -7,8 +7,8 @@ import (
 )
 
 const BEST_BOTS_COUNT = 7
-const BEST_BOTS_FROM_PREV_GEN = 2
-const BOTS_COUNT = 20
+const BEST_BOTS_FROM_PREV_GEN = 3
+const BOTS_COUNT = 25
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -262,7 +262,7 @@ func makeChild(
 		CandleBodyHeightMaxPrice: GetFloatFatherOrMomGen(maleBotConfig.CandleBodyHeightMaxPrice, femaleBotConfig.CandleBodyHeightMaxPrice),
 	}
 
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 9; i++ {
 		mutateGens(&childBotConfig, GetRandInt(0, 27))
 	}
 
