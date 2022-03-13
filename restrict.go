@@ -177,15 +177,15 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		CandleBodyCandles: MinMaxInt{
 			min: 1,
-			max: 3,
+			max: 100,
 		},
-		CandleBodyHeightMinPrice: MinMaxFloat64{
-			min: 0.000001,
-			max: 5,
+		CandleBodyHeightMinPrice: MinMaxFloat64{ // В процентах
+			min: 0.01,
+			max: 50,
 		},
-		CandleBodyHeightMaxPrice: MinMaxFloat64{
-			min: 0.000001,
-			max: 5,
+		CandleBodyHeightMaxPrice: MinMaxFloat64{ // В процентах
+			min: 50,
+			max: 200,
 		},
 	}
 }

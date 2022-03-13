@@ -136,7 +136,7 @@ func (indicator *CandleBodyHeightIndicator) HasBuySignal(candles []Candle) bool 
 	diffs := GetOpenClosePriceDiffs(candles, indicator.config.CandleBodyCandles)
 	medianDiff := Median(diffs)
 
-	return indicator.config.CandleBodyHeightMinPrice <= medianDiff && medianDiff <= indicator.config.CandleBodyHeightMaxPrice
+	return indicator.config.CandleBodyHeightMinPrice < medianDiff && medianDiff < indicator.config.CandleBodyHeightMaxPrice
 }
 
 // Adx indicator

@@ -75,11 +75,19 @@ func GetOpenClosePriceDiffs(candles []Candle, count int) []float64 {
 	lastIdx := getKlineCandleListLastIdx(&candles)
 
 	for _, candle := range candles[firstIdx:lastIdx] {
-		openCloseDiff := candle.OpenPrice - candle.ClosePrice
+		openCloseDiff := math.Abs(CalcGrowth(candle.OpenPrice, candle.ClosePrice))
 		diffs = append(diffs, openCloseDiff)
 	}
 
 	return diffs
+}
+
+func CalcGrowth(startPrice, endPrice float64) float64 {
+	if startPrice == 0 || endPrice == 0 {
+		return 0.0
+	}
+
+	return ((endPrice * 100) / startPrice) - 100
 }
 
 func ConvertDateStringToTime(dateString string) time.Time {
