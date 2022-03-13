@@ -138,8 +138,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 50,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 1000,
-			max: 30000,
+			min: 35000,
+			max: 100000,
 		},
 
 		// -----------------------------------------------------
@@ -162,11 +162,11 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 5,
 		},
 		RealBuyBottomStopReachRevenue: MinMaxFloat64{
-			min: -1,
-			max: 2,
+			min: -2,
+			max: 3,
 		},
 		FakeBuyReachStopRevenue: MinMaxFloat64{
-			min: 0.0,
+			min: -0.5,
 			max: 5,
 		},
 	}
