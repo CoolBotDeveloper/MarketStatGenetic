@@ -39,6 +39,10 @@ type BotConfig struct {
 	RealBuyBottomStopReachRevenue float64
 	FakeBuyReachStopRevenue       float64
 
+	CandleBodyCandles        int
+	CandleBodyHeightMinPrice float64
+	CandleBodyHeightMaxPrice float64
+
 	TotalRevenue float64
 
 	Restrictions BotConfigRestriction

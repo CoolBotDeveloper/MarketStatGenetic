@@ -39,6 +39,10 @@ type BotConfigRestriction struct {
 	RealBuyTopResetReachRevenue   MinMaxFloat64
 	RealBuyBottomStopReachRevenue MinMaxFloat64
 	FakeBuyReachStopRevenue       MinMaxFloat64
+
+	CandleBodyCandles        MinMaxInt
+	CandleBodyHeightMinPrice MinMaxFloat64
+	CandleBodyHeightMaxPrice MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -167,6 +171,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		FakeBuyReachStopRevenue: MinMaxFloat64{
 			min: -0.5,
+			max: 5,
+		},
+
+		// -----------------------------------------------------
+		CandleBodyCandles: MinMaxInt{
+			min: 1,
+			max: 3,
+		},
+		CandleBodyHeightMinPrice: MinMaxFloat64{
+			min: 0.000001,
+			max: 5,
+		},
+		CandleBodyHeightMaxPrice: MinMaxFloat64{
+			min: 0.000001,
 			max: 5,
 		},
 	}

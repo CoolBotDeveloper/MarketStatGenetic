@@ -37,5 +37,9 @@ func InitBotConfig() BotConfig {
 		RealBuyTopResetReachRevenue:   GetRandFloat64Config(restrict.RealBuyTopResetReachRevenue),
 		RealBuyBottomStopReachRevenue: GetRandFloat64Config(restrict.RealBuyBottomStopReachRevenue),
 		FakeBuyReachStopRevenue:       GetRandFloat64Config(restrict.FakeBuyReachStopRevenue),
+
+		CandleBodyCandles:        GetRandIntConfig(restrict.CandleBodyCandles),
+		CandleBodyHeightMinPrice: GetRandFloat64Config(restrict.CandleBodyHeightMinPrice),
+		CandleBodyHeightMaxPrice: GetRandFloat64Config(restrict.CandleBodyHeightMaxPrice),
 	}
 }

@@ -118,6 +118,27 @@ func (indicator *MedianVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	return medianVolume >= indicator.config.AverageVolumeMinimal
 }
 
+// Candle body height indicator
+type CandleBodyHeightIndicator struct {
+	config BotConfig
+}
+
+func NewCandleBodyHeightIndicator(config BotConfig) CandleBodyHeightIndicator {
+	return CandleBodyHeightIndicator{config: config}
+}
+
+func (indicator *CandleBodyHeightIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	if count < indicator.config.CandleBodyCandles {
+		return false
+	}
+
+	diffs := GetOpenClosePriceDiffs(candles, indicator.config.CandleBodyCandles)
+	medianDiff := Median(diffs)
+
+	return indicator.config.CandleBodyHeightMinPrice <= medianDiff && medianDiff <= indicator.config.CandleBodyHeightMaxPrice
+}
+
 // Adx indicator
 type AdxIndicator struct {
 	config BotConfig

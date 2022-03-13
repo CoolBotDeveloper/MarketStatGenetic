@@ -68,6 +68,20 @@ func GetAvg(values []float64) float64 {
 	return total / float64(len(values))
 }
 
+func GetOpenClosePriceDiffs(candles []Candle, count int) []float64 {
+	var diffs []float64
+
+	firstIdx := getKlineCandleListFirstIdx(&candles, count)
+	lastIdx := getKlineCandleListLastIdx(&candles)
+
+	for _, candle := range candles[firstIdx:lastIdx] {
+		openCloseDiff := candle.OpenPrice - candle.ClosePrice
+		diffs = append(diffs, openCloseDiff)
+	}
+
+	return diffs
+}
+
 func ConvertDateStringToTime(dateString string) time.Time {
 	layout := "2006-01-02 15:04:05"
 	parsedTime, _ := time.Parse(layout, dateString)
@@ -116,6 +130,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		RealBuyTopResetReachRevenue:   convertToFloat64(dataFrame["RealBuyTopResetReachRevenue"]),
 		RealBuyBottomStopReachRevenue: convertToFloat64(dataFrame["RealBuyBottomStopReachRevenue"]),
 		FakeBuyReachStopRevenue:       convertToFloat64(dataFrame["FakeBuyReachStopRevenue"]),
+
+		CandleBodyCandles:        convertToInt(dataFrame["CandleBodyCandles"]),
+		CandleBodyHeightMinPrice: convertToFloat64(dataFrame["CandleBodyHeightMinPrice"]),
+		CandleBodyHeightMaxPrice: convertToFloat64(dataFrame["CandleBodyHeightMaxPrice"]),
 	}
 }
 

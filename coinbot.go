@@ -49,6 +49,9 @@ func (bot *CoinBot) initIndicators() {
 	medianVolumeIndicator := NewMedianVolumeIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &medianVolumeIndicator)
 
+	candleBodyHeightIndicator := NewCandleBodyHeightIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &candleBodyHeightIndicator)
+
 	adxIndicator := NewAdxIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &adxIndicator)
 

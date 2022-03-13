@@ -48,6 +48,10 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("RealBuyBottomStopReachRevenue", nil),
 		dataframe.NewSeriesFloat64("FakeBuyReachStopRevenue", nil),
 
+		dataframe.NewSeriesInt64("CandleBodyCandles", nil),
+		dataframe.NewSeriesFloat64("CandleBodyHeightMinPrice", nil),
+		dataframe.NewSeriesFloat64("CandleBodyHeightMaxPrice", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 	)
 }
@@ -174,6 +178,10 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"RealBuyBottomStopReachRevenue": bot["RealBuyBottomStopReachRevenue"],
 		"FakeBuyReachStopRevenue":       bot["FakeBuyReachStopRevenue"],
 
+		"CandleBodyCandles":        bot["CandleBodyCandles"],
+		"CandleBodyHeightMinPrice": bot["CandleBodyHeightMinPrice"],
+		"CandleBodyHeightMaxPrice": bot["CandleBodyHeightMaxPrice"],
+
 		"TotalRevenue": bot["TotalRevenue"],
 	}
 }
@@ -248,10 +256,14 @@ func makeChild(
 		RealBuyTopResetReachRevenue:   GetFloatFatherOrMomGen(maleBotConfig.RealBuyTopResetReachRevenue, femaleBotConfig.RealBuyTopResetReachRevenue),
 		RealBuyBottomStopReachRevenue: GetFloatFatherOrMomGen(maleBotConfig.RealBuyBottomStopReachRevenue, femaleBotConfig.RealBuyBottomStopReachRevenue),
 		FakeBuyReachStopRevenue:       GetFloatFatherOrMomGen(maleBotConfig.FakeBuyReachStopRevenue, femaleBotConfig.FakeBuyReachStopRevenue),
+
+		CandleBodyCandles:        GetIntFatherOrMomGen(maleBotConfig.CandleBodyCandles, femaleBotConfig.CandleBodyCandles),
+		CandleBodyHeightMinPrice: GetFloatFatherOrMomGen(maleBotConfig.CandleBodyHeightMinPrice, femaleBotConfig.CandleBodyHeightMinPrice),
+		CandleBodyHeightMaxPrice: GetFloatFatherOrMomGen(maleBotConfig.CandleBodyHeightMaxPrice, femaleBotConfig.CandleBodyHeightMaxPrice),
 	}
 
 	for i := 0; i < 6; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 24))
+		mutateGens(&childBotConfig, GetRandInt(0, 27))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -293,6 +305,10 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"RealBuyBottomStopReachRevenue": botConfig.RealBuyBottomStopReachRevenue,
 		"FakeBuyReachStopRevenue":       botConfig.FakeBuyReachStopRevenue,
 
+		"CandleBodyCandles":        botConfig.CandleBodyCandles,
+		"CandleBodyHeightMinPrice": botConfig.CandleBodyHeightMinPrice,
+		"CandleBodyHeightMaxPrice": botConfig.CandleBodyHeightMaxPrice,
+
 		"TotalRevenue": botConfig.TotalRevenue,
 	}
 }
@@ -333,6 +349,10 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 22, &(botConfig.RealBuyTopResetReachRevenue), restrict.RealBuyTopResetReachRevenue)
 	mutateGenFloat64(randGenNumber, 23, &(botConfig.RealBuyBottomStopReachRevenue), restrict.RealBuyBottomStopReachRevenue)
 	mutateGenFloat64(randGenNumber, 24, &(botConfig.FakeBuyReachStopRevenue), restrict.FakeBuyReachStopRevenue)
+
+	mutateGenInt(randGenNumber, 25, &(botConfig.CandleBodyCandles), restrict.CandleBodyCandles)
+	mutateGenFloat64(randGenNumber, 26, &(botConfig.CandleBodyHeightMinPrice), restrict.CandleBodyHeightMinPrice)
+	mutateGenFloat64(randGenNumber, 27, &(botConfig.CandleBodyHeightMaxPrice), restrict.CandleBodyHeightMaxPrice)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
