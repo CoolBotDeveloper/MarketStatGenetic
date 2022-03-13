@@ -19,7 +19,7 @@ func NewStorage() Storage {
 }
 
 func (storage *Storage) Open() {
-	storage.connect, _ = sql.Open("sqlite3", storage.name)
+	storage.connect, _ = sql.Open("sqlite3", ":memory:")
 
 	storage.CreateBuysTable()
 	storage.CreateSellsTable()
@@ -540,7 +540,7 @@ func (em *ExchangeManager) UpdateNormalBuys(symbol string, exchangeRate float64,
 			Revenue:      calcedRevenue,
 		})
 
-		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Revenue: %f", symbol, createdAt, calcedRevenue-100))
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, exchangeRate, calcedRevenue-100))
 		em.storage.AddSell(
 			symbol,
 			buy.coins,
@@ -572,7 +572,7 @@ func (em *ExchangeManager) updateFirstSellZombies(symbol string, exchangeRate fl
 			Revenue:      calcedRevenue,
 		})
 
-		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Revenue: %f", symbol, createdAt, expiredBuy.coins*exchangeRate-100))
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, exchangeRate, expiredBuy.coins*exchangeRate-100))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,
@@ -601,7 +601,7 @@ func (em *ExchangeManager) updateExitZombies(symbol string, exchangeRate float64
 			Revenue:      calcedRevenue,
 		})
 
-		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Revenue: %f", symbol, createdAt, expiredBuy.coins*exchangeRate-100))
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, exchangeRate, expiredBuy.coins*exchangeRate-100))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,
@@ -627,7 +627,7 @@ func (em *ExchangeManager) UpdateAllExitSymbols(symbol string, exchangeRate floa
 			Revenue:      calcedRevenue,
 		})
 
-		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Revenue: %f", symbol, createdAt, calcedRevenue-100))
+		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, exchangeRate, calcedRevenue-100))
 		em.storage.AddSell(
 			symbol,
 			expiredBuy.coins,

@@ -93,7 +93,7 @@ func candleHandler(
 			if 1 > exchangeManager.CountUnsoldBuys(candle.Symbol) {
 				// Do buy
 
-				fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s", candle.Symbol, candle.CloseTime))
+				fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f", candle.Symbol, candle.CloseTime, candle.ClosePrice))
 				exchangeManager.Buy(candle.Symbol, candle.ClosePrice, candle.CloseTime)
 			}
 		}
