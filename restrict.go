@@ -32,9 +32,10 @@ type BotConfigRestriction struct {
 	AverageVolumeCandles MinMaxInt
 	AverageVolumeMinimal MinMaxFloat64
 
-	AdxDiLen           MinMaxInt
-	AdxBottomThreshold MinMaxFloat64
-	AdxTopThreshold    MinMaxFloat64
+	AdxDiLen               MinMaxInt
+	AdxBottomThreshold     MinMaxFloat64
+	AdxTopThreshold        MinMaxFloat64
+	AdxMinGrowthPercentage MinMaxFloat64
 
 	RealBuyTopResetReachRevenue   MinMaxFloat64
 	RealBuyBottomStopReachRevenue MinMaxFloat64
@@ -59,7 +60,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 	return BotConfigRestriction{
 		HighSellPercentage: MinMaxFloat64{
 			min: 0.2,
-			max: 5.0,
+			max: 5.5,
 		},
 		LowSellPercentage: MinMaxFloat64{
 			min: 0.5,
@@ -138,12 +139,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
-			min: 5,
+			min: 1,
 			max: 50,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 35000,
-			max: 100000,
+			min: 50000,
+			max: 1000000,
 		},
 
 		// -----------------------------------------------------
@@ -157,6 +158,10 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		AdxTopThreshold: MinMaxFloat64{
 			min: 40,
+			max: 90,
+		},
+		AdxMinGrowthPercentage: MinMaxFloat64{
+			min: 0.0,
 			max: 90,
 		},
 

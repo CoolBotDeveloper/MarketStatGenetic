@@ -6,9 +6,9 @@ import (
 	"math/rand"
 )
 
-const BEST_BOTS_COUNT = 7
-const BEST_BOTS_FROM_PREV_GEN = 3
-const BOTS_COUNT = 25
+const BEST_BOTS_COUNT = 5
+const BEST_BOTS_FROM_PREV_GEN = 2
+const BOTS_COUNT = 15
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -43,6 +43,7 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("AdxDiLen", nil),
 		dataframe.NewSeriesFloat64("AdxBottomThreshold", nil),
 		dataframe.NewSeriesFloat64("AdxTopThreshold", nil),
+		dataframe.NewSeriesFloat64("AdxMinGrowthPercentage", nil),
 
 		dataframe.NewSeriesFloat64("RealBuyTopResetReachRevenue", nil),
 		dataframe.NewSeriesFloat64("RealBuyBottomStopReachRevenue", nil),
@@ -170,9 +171,10 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"AverageVolumeCandles": bot["AverageVolumeCandles"],
 		"AverageVolumeMinimal": bot["AverageVolumeMinimal"],
 
-		"AdxDiLen":           bot["AdxDiLen"],
-		"AdxBottomThreshold": bot["AdxBottomThreshold"],
-		"AdxTopThreshold":    bot["AdxTopThreshold"],
+		"AdxDiLen":               bot["AdxDiLen"],
+		"AdxBottomThreshold":     bot["AdxBottomThreshold"],
+		"AdxTopThreshold":        bot["AdxTopThreshold"],
+		"AdxMinGrowthPercentage": bot["AdxMinGrowthPercentage"],
 
 		"RealBuyTopResetReachRevenue":   bot["RealBuyTopResetReachRevenue"],
 		"RealBuyBottomStopReachRevenue": bot["RealBuyBottomStopReachRevenue"],
@@ -249,9 +251,10 @@ func makeChild(
 		AverageVolumeCandles: GetIntFatherOrMomGen(maleBotConfig.AverageVolumeCandles, femaleBotConfig.AverageVolumeCandles),
 		AverageVolumeMinimal: GetFloatFatherOrMomGen(maleBotConfig.AverageVolumeMinimal, femaleBotConfig.AverageVolumeMinimal),
 
-		AdxDiLen:           GetIntFatherOrMomGen(maleBotConfig.AdxDiLen, femaleBotConfig.AdxDiLen),
-		AdxBottomThreshold: GetFloatFatherOrMomGen(maleBotConfig.AdxBottomThreshold, femaleBotConfig.AdxBottomThreshold),
-		AdxTopThreshold:    GetFloatFatherOrMomGen(maleBotConfig.AdxTopThreshold, femaleBotConfig.AdxTopThreshold),
+		AdxDiLen:               GetIntFatherOrMomGen(maleBotConfig.AdxDiLen, femaleBotConfig.AdxDiLen),
+		AdxBottomThreshold:     GetFloatFatherOrMomGen(maleBotConfig.AdxBottomThreshold, femaleBotConfig.AdxBottomThreshold),
+		AdxTopThreshold:        GetFloatFatherOrMomGen(maleBotConfig.AdxTopThreshold, femaleBotConfig.AdxTopThreshold),
+		AdxMinGrowthPercentage: GetFloatFatherOrMomGen(maleBotConfig.AdxMinGrowthPercentage, femaleBotConfig.AdxMinGrowthPercentage),
 
 		RealBuyTopResetReachRevenue:   GetFloatFatherOrMomGen(maleBotConfig.RealBuyTopResetReachRevenue, femaleBotConfig.RealBuyTopResetReachRevenue),
 		RealBuyBottomStopReachRevenue: GetFloatFatherOrMomGen(maleBotConfig.RealBuyBottomStopReachRevenue, femaleBotConfig.RealBuyBottomStopReachRevenue),
@@ -297,9 +300,10 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"AverageVolumeCandles": botConfig.AverageVolumeCandles,
 		"AverageVolumeMinimal": botConfig.AverageVolumeMinimal,
 
-		"AdxDiLen":           botConfig.AdxDiLen,
-		"AdxBottomThreshold": botConfig.AdxBottomThreshold,
-		"AdxTopThreshold":    botConfig.AdxTopThreshold,
+		"AdxDiLen":               botConfig.AdxDiLen,
+		"AdxBottomThreshold":     botConfig.AdxBottomThreshold,
+		"AdxTopThreshold":        botConfig.AdxTopThreshold,
+		"AdxMinGrowthPercentage": botConfig.AdxMinGrowthPercentage,
 
 		"RealBuyTopResetReachRevenue":   botConfig.RealBuyTopResetReachRevenue,
 		"RealBuyBottomStopReachRevenue": botConfig.RealBuyBottomStopReachRevenue,
@@ -345,14 +349,15 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenInt(randGenNumber, 19, &(botConfig.AdxDiLen), restrict.AdxDiLen)
 	mutateGenFloat64(randGenNumber, 20, &(botConfig.AdxBottomThreshold), restrict.AdxBottomThreshold)
 	mutateGenFloat64(randGenNumber, 21, &(botConfig.AdxTopThreshold), restrict.AdxTopThreshold)
+	mutateGenFloat64(randGenNumber, 22, &(botConfig.AdxMinGrowthPercentage), restrict.AdxMinGrowthPercentage)
 
-	mutateGenFloat64(randGenNumber, 22, &(botConfig.RealBuyTopResetReachRevenue), restrict.RealBuyTopResetReachRevenue)
-	mutateGenFloat64(randGenNumber, 23, &(botConfig.RealBuyBottomStopReachRevenue), restrict.RealBuyBottomStopReachRevenue)
-	mutateGenFloat64(randGenNumber, 24, &(botConfig.FakeBuyReachStopRevenue), restrict.FakeBuyReachStopRevenue)
+	mutateGenFloat64(randGenNumber, 23, &(botConfig.RealBuyTopResetReachRevenue), restrict.RealBuyTopResetReachRevenue)
+	mutateGenFloat64(randGenNumber, 24, &(botConfig.RealBuyBottomStopReachRevenue), restrict.RealBuyBottomStopReachRevenue)
+	mutateGenFloat64(randGenNumber, 25, &(botConfig.FakeBuyReachStopRevenue), restrict.FakeBuyReachStopRevenue)
 
-	mutateGenInt(randGenNumber, 25, &(botConfig.CandleBodyCandles), restrict.CandleBodyCandles)
-	mutateGenFloat64(randGenNumber, 26, &(botConfig.CandleBodyHeightMinPrice), restrict.CandleBodyHeightMinPrice)
-	mutateGenFloat64(randGenNumber, 27, &(botConfig.CandleBodyHeightMaxPrice), restrict.CandleBodyHeightMaxPrice)
+	mutateGenInt(randGenNumber, 26, &(botConfig.CandleBodyCandles), restrict.CandleBodyCandles)
+	mutateGenFloat64(randGenNumber, 27, &(botConfig.CandleBodyHeightMinPrice), restrict.CandleBodyHeightMinPrice)
+	mutateGenFloat64(randGenNumber, 28, &(botConfig.CandleBodyHeightMaxPrice), restrict.CandleBodyHeightMaxPrice)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

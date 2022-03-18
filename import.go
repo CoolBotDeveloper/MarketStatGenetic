@@ -47,19 +47,20 @@ func ImportFromCsv(fileName string) []BotConfig {
 			AverageVolumeCandles: convertStringToInt(row[17]),
 			AverageVolumeMinimal: convertStringToFloat64(row[18]),
 
-			AdxDiLen:           convertStringToInt(row[19]),
-			AdxBottomThreshold: convertStringToFloat64(row[20]),
-			AdxTopThreshold:    convertStringToFloat64(row[21]),
+			AdxDiLen:               convertStringToInt(row[19]),
+			AdxBottomThreshold:     convertStringToFloat64(row[20]),
+			AdxTopThreshold:        convertStringToFloat64(row[21]),
+			AdxMinGrowthPercentage: convertStringToFloat64(row[22]),
 
-			RealBuyTopResetReachRevenue:   convertStringToFloat64(row[22]),
-			RealBuyBottomStopReachRevenue: convertStringToFloat64(row[23]),
-			FakeBuyReachStopRevenue:       convertStringToFloat64(row[24]),
+			RealBuyTopResetReachRevenue:   convertStringToFloat64(row[23]),
+			RealBuyBottomStopReachRevenue: convertStringToFloat64(row[24]),
+			FakeBuyReachStopRevenue:       convertStringToFloat64(row[25]),
 
-			CandleBodyCandles:        convertStringToInt(row[25]),
-			CandleBodyHeightMinPrice: convertStringToFloat64(row[26]),
-			CandleBodyHeightMaxPrice: convertStringToFloat64(row[27]),
+			CandleBodyCandles:        convertStringToInt(row[26]),
+			CandleBodyHeightMinPrice: convertStringToFloat64(row[27]),
+			CandleBodyHeightMaxPrice: convertStringToFloat64(row[28]),
 
-			TotalRevenue: convertStringToFloat64(row[28]),
+			TotalRevenue: convertStringToFloat64(row[29]),
 		}
 
 		bots = append(bots, bot)

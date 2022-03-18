@@ -30,9 +30,10 @@ func InitBotConfig() BotConfig {
 		AverageVolumeCandles: GetRandIntConfig(restrict.AverageVolumeCandles),
 		AverageVolumeMinimal: GetRandFloat64Config(restrict.AverageVolumeMinimal),
 
-		AdxDiLen:           GetRandIntConfig(restrict.AdxDiLen),
-		AdxBottomThreshold: GetRandFloat64Config(restrict.AdxBottomThreshold),
-		AdxTopThreshold:    GetRandFloat64Config(restrict.AdxTopThreshold),
+		AdxDiLen:               GetRandIntConfig(restrict.AdxDiLen),
+		AdxBottomThreshold:     GetRandFloat64Config(restrict.AdxBottomThreshold),
+		AdxTopThreshold:        GetRandFloat64Config(restrict.AdxTopThreshold),
+		AdxMinGrowthPercentage: GetRandFloat64Config(restrict.AdxMinGrowthPercentage),
 
 		RealBuyTopResetReachRevenue:   GetRandFloat64Config(restrict.RealBuyTopResetReachRevenue),
 		RealBuyBottomStopReachRevenue: GetRandFloat64Config(restrict.RealBuyBottomStopReachRevenue),

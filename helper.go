@@ -131,9 +131,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		AverageVolumeCandles: convertToInt(dataFrame["AverageVolumeCandles"]),
 		AverageVolumeMinimal: convertToFloat64(dataFrame["AverageVolumeMinimal"]),
 
-		AdxDiLen:           convertToInt(dataFrame["AdxDiLen"]),
-		AdxBottomThreshold: convertToFloat64(dataFrame["AdxBottomThreshold"]),
-		AdxTopThreshold:    convertToFloat64(dataFrame["AdxTopThreshold"]),
+		AdxDiLen:               convertToInt(dataFrame["AdxDiLen"]),
+		AdxBottomThreshold:     convertToFloat64(dataFrame["AdxBottomThreshold"]),
+		AdxTopThreshold:        convertToFloat64(dataFrame["AdxTopThreshold"]),
+		AdxMinGrowthPercentage: convertToFloat64(dataFrame["AdxMinGrowthPercentage"]),
 
 		RealBuyTopResetReachRevenue:   convertToFloat64(dataFrame["RealBuyTopResetReachRevenue"]),
 		RealBuyBottomStopReachRevenue: convertToFloat64(dataFrame["RealBuyBottomStopReachRevenue"]),
