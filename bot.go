@@ -31,9 +31,10 @@ type BotConfig struct {
 	AverageVolumeCandles int
 	AverageVolumeMinimal float64
 
-	AdxDiLen           int
-	AdxBottomThreshold float64
-	AdxTopThreshold    float64
+	AdxDiLen               int
+	AdxBottomThreshold     float64
+	AdxTopThreshold        float64
+	AdxMinGrowthPercentage float64
 
 	RealBuyTopResetReachRevenue   float64
 	RealBuyBottomStopReachRevenue float64

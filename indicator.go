@@ -167,11 +167,28 @@ func (indicator *AdxIndicator) HasBuySignal(candles []Candle) bool {
 	topThreshold := indicator.config.AdxTopThreshold
 	adxValue := adx[len(adx)-1]
 
-	return bottomThreshold < adxValue && adxValue < topThreshold && indicator.hasGrowth(adx)
+	return bottomThreshold < adxValue &&
+		adxValue < topThreshold &&
+		indicator.hasGrowth(adx) &&
+		indicator.config.AdxMinGrowthPercentage <= indicator.calcGrowthPercentage(adx)
 }
 
 func (indicator *AdxIndicator) hasGrowth(adx []float64) bool {
-	lastAdx := adx[len(adx)-1]   // current candle adx value
-	prevAdx := adx[len(adx)-1-2] // N previous candle adx value
+	candlesCount := 3
+	lastAdx := adx[len(adx)-1]              // current candle adx value
+	prevAdx := adx[len(adx)-1-candlesCount] // N previous candle adx value
+
 	return prevAdx < lastAdx
+}
+
+func (indicator *AdxIndicator) calcGrowthPercentage(adx []float64) float64 {
+	candlesCount := 3
+	lastAdx := adx[len(adx)-1]              // current candle adx value
+	prevAdx := adx[len(adx)-1-candlesCount] // N previous candle adx value
+
+	// growth angle
+	angle := (lastAdx - prevAdx) / float64(candlesCount)
+
+	// growth percentage
+	return (angle * 100) / 90
 }
