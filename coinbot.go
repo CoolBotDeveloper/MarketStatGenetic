@@ -1,19 +1,22 @@
 package main
 
 type CoinBot struct {
-	symbol                     string
-	config                     BotConfig
-	dataSource                 *DataSource
-	buyIndicators              []BuyTechnicalIndicator
-	sellIndicators             []string
-	bitcoinSuperTrendIndicator BitcoinSuperTrendIndicator
+	symbol                            string
+	config                            BotConfig
+	dataSource                        *DataSource
+	buyIndicators                     []BuyTechnicalIndicator
+	sellIndicators                    []string
+	bitcoinSuperTrendIndicator        BitcoinSuperTrendIndicator
+	btcPriceGrowthPercentageIndicator PriceGrowthIndicator
+	hasReachedBtcPercentage           bool
 }
 
 func NewCoinBot(symbol string, config BotConfig, dataSource *DataSource) CoinBot {
 	bot := CoinBot{
-		symbol:     symbol,
-		config:     config,
-		dataSource: dataSource,
+		symbol:                  symbol,
+		config:                  config,
+		dataSource:              dataSource,
+		hasReachedBtcPercentage: false,
 	}
 	bot.initIndicators()
 
@@ -23,10 +26,15 @@ func NewCoinBot(symbol string, config BotConfig, dataSource *DataSource) CoinBot
 func (bot *CoinBot) HasBuySignal() bool {
 	// Так можно отключить супертренд по биткойну, смотри ниже
 	btcCandles := bot.dataSource.GetCandlesFor(BITCOIN_SYMBOL)
-	if !bot.bitcoinSuperTrendIndicator.HasBuySignal(btcCandles) {
+	//if !bot.bitcoinSuperTrendIndicator.HasBuySignal(btcCandles) {
+	//	return false
+	//}
+
+	if !bot.hasReachedBtcPercentage && !bot.btcPriceGrowthPercentageIndicator.HasBuySignal(btcCandles) {
 		return false
 	}
 
+	bot.SetHasReached()
 	for _, indicator := range bot.buyIndicators {
 		candles := bot.dataSource.GetCandlesFor(bot.symbol)
 		if !indicator.HasBuySignal(candles) {
@@ -35,6 +43,14 @@ func (bot *CoinBot) HasBuySignal() bool {
 	}
 
 	return true
+}
+
+func (bot *CoinBot) SetHasReached() {
+	bot.hasReachedBtcPercentage = true
+}
+
+func (bot *CoinBot) ResetHasReached() {
+	bot.hasReachedBtcPercentage = false
 }
 
 func (bot *CoinBot) initIndicators() {
@@ -56,6 +72,9 @@ func (bot *CoinBot) initIndicators() {
 	bot.buyIndicators = append(bot.buyIndicators, &adxIndicator)
 
 	bot.bitcoinSuperTrendIndicator = NewBitcoinSuperTrendIndicator(bot.config)
+
+	// Bitcoin price growth indicator
+	bot.btcPriceGrowthPercentageIndicator = NewPriceGrowthIndicator(bot.config)
 }
 
 // Coin bot factory

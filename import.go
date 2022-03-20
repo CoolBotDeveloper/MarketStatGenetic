@@ -60,7 +60,11 @@ func ImportFromCsv(fileName string) []BotConfig {
 			CandleBodyHeightMinPrice: convertStringToFloat64(row[27]),
 			CandleBodyHeightMaxPrice: convertStringToFloat64(row[28]),
 
-			TotalRevenue: convertStringToFloat64(row[29]),
+			BtcPriceGrowthCandles:       convertStringToInt(row[29]),
+			BtcPriceGrowthMinPercentage: convertStringToFloat64(row[30]),
+			BtcPriceGrowthMaxPercentage: convertStringToFloat64(row[31]),
+
+			TotalRevenue: convertStringToFloat64(row[32]),
 		}
 
 		bots = append(bots, bot)

@@ -91,8 +91,12 @@ func (indicator *AverageVolumeIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
+	//inTimePeriod := 4
 	volumes := GetVolumes(candles, indicator.config.AverageVolumeCandles)
-	volumes = talib.Sma(volumes, 4)
+	//if len(volumes) >= (inTimePeriod * 4) {
+	//	volumes = talib.Sma(volumes, inTimePeriod)
+	//}
+
 	avgVolume := GetAvg(volumes)
 
 	return avgVolume >= indicator.config.AverageVolumeMinimal
@@ -191,4 +195,25 @@ func (indicator *AdxIndicator) calcGrowthPercentage(adx []float64) float64 {
 
 	// growth percentage
 	return (angle * 100) / 90
+}
+
+// Price growth indicator
+type PriceGrowthIndicator struct {
+	config BotConfig
+}
+
+func NewPriceGrowthIndicator(config BotConfig) PriceGrowthIndicator {
+	return PriceGrowthIndicator{config: config}
+}
+
+func (indicator *PriceGrowthIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	if count < indicator.config.BtcPriceGrowthCandles {
+		return false
+	}
+
+	closeCandles := GetClosePrice(candles, indicator.config.BtcPriceGrowthCandles)
+	growth := CalcGrowth(closeCandles[0], closeCandles[len(closeCandles)-1])
+
+	return indicator.config.BtcPriceGrowthMinPercentage <= growth
 }

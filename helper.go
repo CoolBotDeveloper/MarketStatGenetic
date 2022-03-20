@@ -143,6 +143,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		CandleBodyCandles:        convertToInt(dataFrame["CandleBodyCandles"]),
 		CandleBodyHeightMinPrice: convertToFloat64(dataFrame["CandleBodyHeightMinPrice"]),
 		CandleBodyHeightMaxPrice: convertToFloat64(dataFrame["CandleBodyHeightMaxPrice"]),
+
+		BtcPriceGrowthCandles:       convertToInt(dataFrame["BtcPriceGrowthCandles"]),
+		BtcPriceGrowthMinPercentage: convertToFloat64(dataFrame["BtcPriceGrowthMinPercentage"]),
+		BtcPriceGrowthMaxPercentage: convertToFloat64(dataFrame["BtcPriceGrowthMaxPercentage"]),
 	}
 }
 

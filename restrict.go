@@ -44,6 +44,10 @@ type BotConfigRestriction struct {
 	CandleBodyCandles        MinMaxInt
 	CandleBodyHeightMinPrice MinMaxFloat64
 	CandleBodyHeightMaxPrice MinMaxFloat64
+
+	BtcPriceGrowthCandles       MinMaxInt
+	BtcPriceGrowthMinPercentage MinMaxFloat64
+	BtcPriceGrowthMaxPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -63,17 +67,17 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 5.5,
 		},
 		LowSellPercentage: MinMaxFloat64{
-			min: 0.5,
+			min: 0.3,
 			max: 5.0,
 		},
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 60,
+			min: 21,
 			max: 60 * 12,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
-			min: 0.15,
+			min: 0,
 			max: 10,
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
@@ -81,25 +85,25 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 20,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
-			min: 0.15,
+			min: 0,
 			max: 10,
 		},
 
 		// -----------------------------------------------------
 		BtcMinBuyPeriodMinutes: MinMaxInt{
-			min: 60,
+			min: 30,
 			max: 60 * 12,
 		},
 		BtcMinBuyPercentage: MinMaxFloat64{
-			min: -0.5,
+			min: -1,
 			max: 5,
 		},
 		BtcSellPeriodMinutes: MinMaxInt{
-			min: 60,
+			min: 30,
 			max: 60 * 15,
 		},
 		BtcSellPercentage: MinMaxFloat64{
-			min: -0.6,
+			min: -1,
 			max: 1.5,
 		},
 
@@ -114,7 +118,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		UnsoldFinalSellDurationMinutes: MinMaxInt{
 			min: 11,
-			max: 45,
+			max: 30,
 		},
 
 		// -----------------------------------------------------
@@ -130,11 +134,11 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		BtcSuperTrendCandles: MinMaxInt{
 			min: 5,
-			max: 15,
+			max: 25,
 		},
 		BtcSuperTrendMultiplier: MinMaxFloat64{
 			min: 10,
-			max: 35,
+			max: 45,
 		},
 
 		// -----------------------------------------------------
@@ -153,7 +157,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 25,
 		},
 		AdxBottomThreshold: MinMaxFloat64{
-			min: 20,
+			min: 16,
 			max: 40,
 		},
 		AdxTopThreshold: MinMaxFloat64{
@@ -161,8 +165,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 90,
 		},
 		AdxMinGrowthPercentage: MinMaxFloat64{
-			min: 0.0,
-			max: 90,
+			min: 1,
+			max: 50,
 		},
 
 		// -----------------------------------------------------
@@ -189,6 +193,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 50,
 		},
 		CandleBodyHeightMaxPrice: MinMaxFloat64{ // В процентах
+			min: 50,
+			max: 200,
+		},
+
+		// -----------------------------------------------------
+		BtcPriceGrowthCandles: MinMaxInt{
+			min: 3,
+			max: 60,
+		},
+		BtcPriceGrowthMinPercentage: MinMaxFloat64{ // В процентах
+			min: 0.1,
+			max: 5,
+		},
+		BtcPriceGrowthMaxPercentage: MinMaxFloat64{ // В процентах
 			min: 50,
 			max: 200,
 		},

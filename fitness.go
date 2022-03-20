@@ -83,20 +83,21 @@ func candleHandler(
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
 	updateBuys(candle, exchangeManager, candleMarketStat)
-	positiveApproach.UpdateBuys(candle)
+	//positiveApproach.UpdateBuys(candle)
 
 	if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		candleMarketStat.HasBtcBuyPercentage() &&
 		bot.HasBuySignal() {
 
-		if positiveApproach.HasSignal(candle) {
-			if 1 > exchangeManager.CountUnsoldBuys(candle.Symbol) {
-				// Do buy
+		//if positiveApproach.HasSignal(candle) {
+		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) {
+			// Do buy
 
-				fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.ClosePrice, candle.Volume))
-				exchangeManager.Buy(candle.Symbol, candle.ClosePrice, candle.CloseTime)
-			}
+			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.ClosePrice, candle.Volume))
+			exchangeManager.Buy(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+			bot.ResetHasReached()
 		}
+		//}
 	}
 }
 

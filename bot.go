@@ -3,6 +3,7 @@ package main
 const BITCOIN_SYMBOL = "BTCUSDT"
 const TOTAL_MONEY_AMOUNT = 100.0
 const COMMISSION = 0.15
+const SIMULTANEOUS_BUYS_COUNT = 1
 
 type BotConfig struct {
 	HighSellPercentage float64
@@ -43,6 +44,10 @@ type BotConfig struct {
 	CandleBodyCandles        int
 	CandleBodyHeightMinPrice float64
 	CandleBodyHeightMaxPrice float64
+
+	BtcPriceGrowthCandles       int
+	BtcPriceGrowthMinPercentage float64
+	BtcPriceGrowthMaxPercentage float64
 
 	TotalRevenue float64
 

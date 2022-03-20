@@ -179,7 +179,7 @@ func (pa *PositiveApproach) FakeBuy(symbol string, exchangeRate float64, created
 	pa.blockRealBuy()
 
 	unsoldBuysCount := pa.getStorage().CountFakeUnsoldBuys(symbol)
-	if 1 > unsoldBuysCount {
+	if SIMULTANEOUS_BUYS_COUNT > unsoldBuysCount {
 		coinsCount := TOTAL_MONEY_AMOUNT / exchangeRate
 		pa.getStorage().AddFakeBuy(symbol, coinsCount, exchangeRate, createdAt)
 	}

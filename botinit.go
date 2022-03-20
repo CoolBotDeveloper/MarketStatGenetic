@@ -42,5 +42,9 @@ func InitBotConfig() BotConfig {
 		CandleBodyCandles:        GetRandIntConfig(restrict.CandleBodyCandles),
 		CandleBodyHeightMinPrice: GetRandFloat64Config(restrict.CandleBodyHeightMinPrice),
 		CandleBodyHeightMaxPrice: GetRandFloat64Config(restrict.CandleBodyHeightMaxPrice),
+
+		BtcPriceGrowthCandles:       GetRandIntConfig(restrict.BtcPriceGrowthCandles),
+		BtcPriceGrowthMinPercentage: GetRandFloat64Config(restrict.BtcPriceGrowthMinPercentage),
+		BtcPriceGrowthMaxPercentage: GetRandFloat64Config(restrict.BtcPriceGrowthMaxPercentage),
 	}
 }

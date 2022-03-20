@@ -8,7 +8,7 @@ import (
 
 const BEST_BOTS_COUNT = 5
 const BEST_BOTS_FROM_PREV_GEN = 2
-const BOTS_COUNT = 15
+const BOTS_COUNT = 10
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -52,6 +52,10 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("CandleBodyCandles", nil),
 		dataframe.NewSeriesFloat64("CandleBodyHeightMinPrice", nil),
 		dataframe.NewSeriesFloat64("CandleBodyHeightMaxPrice", nil),
+
+		dataframe.NewSeriesInt64("BtcPriceGrowthCandles", nil),
+		dataframe.NewSeriesFloat64("BtcPriceGrowthMinPercentage", nil),
+		dataframe.NewSeriesFloat64("BtcPriceGrowthMaxPercentage", nil),
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 	)
@@ -184,6 +188,10 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"CandleBodyHeightMinPrice": bot["CandleBodyHeightMinPrice"],
 		"CandleBodyHeightMaxPrice": bot["CandleBodyHeightMaxPrice"],
 
+		"BtcPriceGrowthCandles":       bot["BtcPriceGrowthCandles"],
+		"BtcPriceGrowthMinPercentage": bot["BtcPriceGrowthMinPercentage"],
+		"BtcPriceGrowthMaxPercentage": bot["BtcPriceGrowthMaxPercentage"],
+
 		"TotalRevenue": bot["TotalRevenue"],
 	}
 }
@@ -263,10 +271,14 @@ func makeChild(
 		CandleBodyCandles:        GetIntFatherOrMomGen(maleBotConfig.CandleBodyCandles, femaleBotConfig.CandleBodyCandles),
 		CandleBodyHeightMinPrice: GetFloatFatherOrMomGen(maleBotConfig.CandleBodyHeightMinPrice, femaleBotConfig.CandleBodyHeightMinPrice),
 		CandleBodyHeightMaxPrice: GetFloatFatherOrMomGen(maleBotConfig.CandleBodyHeightMaxPrice, femaleBotConfig.CandleBodyHeightMaxPrice),
+
+		BtcPriceGrowthCandles:       GetIntFatherOrMomGen(maleBotConfig.BtcPriceGrowthCandles, femaleBotConfig.BtcPriceGrowthCandles),
+		BtcPriceGrowthMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.BtcPriceGrowthMinPercentage, femaleBotConfig.BtcPriceGrowthMinPercentage),
+		BtcPriceGrowthMaxPercentage: GetFloatFatherOrMomGen(maleBotConfig.BtcPriceGrowthMaxPercentage, femaleBotConfig.BtcPriceGrowthMaxPercentage),
 	}
 
-	for i := 0; i < 9; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 27))
+	for i := 0; i < 12; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 31))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -313,6 +325,10 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"CandleBodyHeightMinPrice": botConfig.CandleBodyHeightMinPrice,
 		"CandleBodyHeightMaxPrice": botConfig.CandleBodyHeightMaxPrice,
 
+		"BtcPriceGrowthCandles":       botConfig.BtcPriceGrowthCandles,
+		"BtcPriceGrowthMinPercentage": botConfig.BtcPriceGrowthMinPercentage,
+		"BtcPriceGrowthMaxPercentage": botConfig.BtcPriceGrowthMaxPercentage,
+
 		"TotalRevenue": botConfig.TotalRevenue,
 	}
 }
@@ -358,6 +374,10 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenInt(randGenNumber, 26, &(botConfig.CandleBodyCandles), restrict.CandleBodyCandles)
 	mutateGenFloat64(randGenNumber, 27, &(botConfig.CandleBodyHeightMinPrice), restrict.CandleBodyHeightMinPrice)
 	mutateGenFloat64(randGenNumber, 28, &(botConfig.CandleBodyHeightMaxPrice), restrict.CandleBodyHeightMaxPrice)
+
+	mutateGenInt(randGenNumber, 29, &(botConfig.BtcPriceGrowthCandles), restrict.BtcPriceGrowthCandles)
+	mutateGenFloat64(randGenNumber, 30, &(botConfig.BtcPriceGrowthMinPercentage), restrict.BtcPriceGrowthMinPercentage)
+	mutateGenFloat64(randGenNumber, 31, &(botConfig.CandleBodyHeightMaxPrice), restrict.BtcPriceGrowthMaxPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
