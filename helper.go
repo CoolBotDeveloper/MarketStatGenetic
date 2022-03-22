@@ -176,6 +176,10 @@ func Median(values []float64) float64 {
 	return median
 }
 
+func CalcSuccessBuysPercentage(botRevenue BotRevenue) float64 {
+	return float64(botRevenue.SuccessBuysCount*100) / float64(botRevenue.TotalBuysCount)
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }

@@ -118,7 +118,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		UnsoldFinalSellDurationMinutes: MinMaxInt{
 			min: 11,
-			max: 30,
+			max: 90,
 		},
 
 		// -----------------------------------------------------
@@ -200,7 +200,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		BtcPriceGrowthCandles: MinMaxInt{
 			min: 3,
-			max: 60,
+			max: 10,
 		},
 		BtcPriceGrowthMinPercentage: MinMaxFloat64{ // В процентах
 			min: 0.1,
