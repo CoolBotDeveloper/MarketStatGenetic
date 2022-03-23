@@ -49,7 +49,8 @@ type BotConfig struct {
 	BtcPriceGrowthMinPercentage float64
 	BtcPriceGrowthMaxPercentage float64
 
-	TotalRevenue float64
+	TotalRevenue      float64
+	SuccessPercentage float64
 
 	Restrictions BotConfigRestriction
 }

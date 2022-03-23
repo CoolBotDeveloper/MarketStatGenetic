@@ -177,6 +177,10 @@ func Median(values []float64) float64 {
 }
 
 func CalcSuccessBuysPercentage(botRevenue BotRevenue) float64 {
+	if botRevenue.TotalBuysCount == 0 {
+		return 0.0
+	}
+
 	return float64(botRevenue.SuccessBuysCount*100) / float64(botRevenue.TotalBuysCount)
 }
 

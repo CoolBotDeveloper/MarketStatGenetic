@@ -64,7 +64,8 @@ func ImportFromCsv(fileName string) []BotConfig {
 			BtcPriceGrowthMinPercentage: convertStringToFloat64(row[30]),
 			BtcPriceGrowthMaxPercentage: convertStringToFloat64(row[31]),
 
-			TotalRevenue: convertStringToFloat64(row[32]),
+			TotalRevenue:      convertStringToFloat64(row[32]),
+			SuccessPercentage: convertStringToFloat64(row[33]),
 		}
 
 		bots = append(bots, bot)

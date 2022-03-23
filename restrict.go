@@ -63,7 +63,7 @@ type MinMaxFloat64 struct {
 func GetBotConfigRestrictions() BotConfigRestriction {
 	return BotConfigRestriction{
 		HighSellPercentage: MinMaxFloat64{
-			min: 0.2,
+			min: 0.3,
 			max: 5.5,
 		},
 		LowSellPercentage: MinMaxFloat64{
@@ -118,7 +118,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		UnsoldFinalSellDurationMinutes: MinMaxInt{
 			min: 11,
-			max: 90,
+			max: 80,
 		},
 
 		// -----------------------------------------------------
@@ -148,7 +148,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
 			min: 2000,
-			max: 1000000,
+			max: 100000,
 		},
 
 		// -----------------------------------------------------
@@ -200,7 +200,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		BtcPriceGrowthCandles: MinMaxInt{
 			min: 3,
-			max: 10,
+			max: 60,
 		},
 		BtcPriceGrowthMinPercentage: MinMaxFloat64{ // В процентах
 			min: 0.1,

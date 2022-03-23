@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	bots := GetInitialBotsFromFile("generation_19.csv")
-	//bots := GetInitialBots()
+	//bots := GetInitialBotsFromFile("initial.csv")
+	bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 
 	for generation := 0; generation < GENERATION_COUNT; generation++ {
@@ -25,9 +25,11 @@ func main() {
 
 			if *botNumber < BEST_BOTS_FROM_PREV_GEN && generation > 0 {
 				rev := convertToFloat64(bot["TotalRevenue"])
+				successPercentage := convertToFloat64(bot["SuccessPercentage"])
+
 				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
-				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f\n", generation, *botNumber, rev))
-				SetBotTotalRevenue(bots, *botNumber, rev)
+				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f, SuccessPercentage: %f\n", generation, *botNumber, rev, successPercentage))
+				SetBotTotalRevenue(bots, *botNumber, rev, successPercentage)
 				continue
 			}
 
@@ -44,8 +46,9 @@ func main() {
 		for i := 0; i < channelsCount; i++ {
 			botRevenue := <-botRevenueChan
 			rev := fixRevenue(botRevenue.Revenue)
-			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev)
-			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev))
+			successPercentage := CalcSuccessBuysPercentage(botRevenue)
+			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev, successPercentage)
+			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f, SuccessPercentage: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev, successPercentage))
 		}
 		close(botRevenueChan)
 

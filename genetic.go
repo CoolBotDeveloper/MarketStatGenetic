@@ -7,7 +7,7 @@ import (
 )
 
 const BEST_BOTS_COUNT = 7
-const BEST_BOTS_FROM_PREV_GEN = 4
+const BEST_BOTS_FROM_PREV_GEN = 3
 const BOTS_COUNT = 25
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
@@ -58,6 +58,7 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("BtcPriceGrowthMaxPercentage", nil),
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
+		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 	)
 }
 
@@ -79,9 +80,10 @@ func GetInitialBotsFromFile(fileName string) *dataframe.DataFrame {
 	return initialBotsDataFrame
 }
 
-func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue float64) {
+func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue, successPercentage float64) {
 	bots.UpdateRow(botNumber, nil, map[string]interface{}{
-		"TotalRevenue": revenue,
+		"TotalRevenue":      revenue,
+		"SuccessPercentage": successPercentage,
 	})
 }
 
@@ -89,6 +91,10 @@ func SortBestBots(bots *dataframe.DataFrame) *dataframe.DataFrame {
 	sks := []dataframe.SortKey{
 		{
 			Key:  "TotalRevenue",
+			Desc: true,
+		},
+		{
+			Key:  "SuccessPercentage",
 			Desc: true,
 		},
 	}
@@ -192,7 +198,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"BtcPriceGrowthMinPercentage": bot["BtcPriceGrowthMinPercentage"],
 		"BtcPriceGrowthMaxPercentage": bot["BtcPriceGrowthMaxPercentage"],
 
-		"TotalRevenue": bot["TotalRevenue"],
+		"TotalRevenue":      bot["TotalRevenue"],
+		"SuccessPercentage": bot["SuccessPercentage"],
 	}
 }
 
@@ -329,7 +336,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"BtcPriceGrowthMinPercentage": botConfig.BtcPriceGrowthMinPercentage,
 		"BtcPriceGrowthMaxPercentage": botConfig.BtcPriceGrowthMaxPercentage,
 
-		"TotalRevenue": botConfig.TotalRevenue,
+		"TotalRevenue":      botConfig.TotalRevenue,
+		"SuccessPercentage": botConfig.SuccessPercentage,
 	}
 }
 
