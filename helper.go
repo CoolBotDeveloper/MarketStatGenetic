@@ -185,6 +185,14 @@ func CalcSuccessBuysPercentage(botRevenue BotRevenue) float64 {
 }
 
 func CalcSelection(revenue, successPercentage float64) float64 {
+	if successPercentage == 100.0 {
+		successPercentage = 110.0
+	}
+
+	if revenue == DEFAULT_REVENUE {
+		return DEFAULT_REVENUE
+	}
+
 	return revenue * successPercentage
 }
 
