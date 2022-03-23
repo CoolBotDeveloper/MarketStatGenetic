@@ -59,6 +59,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
+
+		dataframe.NewSeriesFloat64("Selection", nil),
 	)
 }
 
@@ -84,17 +86,22 @@ func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue, succe
 	bots.UpdateRow(botNumber, nil, map[string]interface{}{
 		"TotalRevenue":      revenue,
 		"SuccessPercentage": successPercentage,
+		"Selection":         CalcSelection(revenue, successPercentage),
 	})
 }
 
 func SortBestBots(bots *dataframe.DataFrame) *dataframe.DataFrame {
 	sks := []dataframe.SortKey{
+		//{
+		//	Key:  "TotalRevenue",
+		//	Desc: true,
+		//},
+		//{
+		//	Key:  "SuccessPercentage",
+		//	Desc: true,
+		//},
 		{
-			Key:  "TotalRevenue",
-			Desc: true,
-		},
-		{
-			Key:  "SuccessPercentage",
+			Key:  "Selection",
 			Desc: true,
 		},
 	}
@@ -200,6 +207,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
+
+		"Selection": bot["Selection"],
 	}
 }
 
@@ -338,6 +347,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
+
+		"Selection": botConfig.Selection,
 	}
 }
 

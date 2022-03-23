@@ -184,6 +184,10 @@ func CalcSuccessBuysPercentage(botRevenue BotRevenue) float64 {
 	return float64(botRevenue.SuccessBuysCount*100) / float64(botRevenue.TotalBuysCount)
 }
 
+func CalcSelection(revenue, successPercentage float64) float64 {
+	return revenue * successPercentage
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }

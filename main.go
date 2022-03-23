@@ -48,7 +48,7 @@ func main() {
 			rev := fixRevenue(botRevenue.Revenue)
 			successPercentage := CalcSuccessBuysPercentage(botRevenue)
 			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev, successPercentage)
-			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f, SuccessPercentage: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev, successPercentage))
+			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f, SuccessPercentage: %f, Selection: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev, successPercentage, CalcSelection(rev, successPercentage)))
 		}
 		close(botRevenueChan)
 

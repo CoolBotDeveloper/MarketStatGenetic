@@ -52,5 +52,7 @@ type BotConfig struct {
 	TotalRevenue      float64
 	SuccessPercentage float64
 
+	Selection float64
+
 	Restrictions BotConfigRestriction
 }

@@ -66,6 +66,7 @@ func ImportFromCsv(fileName string) []BotConfig {
 
 			TotalRevenue:      convertStringToFloat64(row[32]),
 			SuccessPercentage: convertStringToFloat64(row[33]),
+			Selection:         convertStringToFloat64(row[34]),
 		}
 
 		bots = append(bots, bot)
