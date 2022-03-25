@@ -196,6 +196,24 @@ func CalcSelection(revenue, successPercentage float64) float64 {
 	return revenue * successPercentage
 }
 
+func GetSignedVolumes(candles []Candle, count int) []float64 {
+	var volumes []float64
+
+	firstIdx := getKlineCandleListFirstIdx(&candles, count)
+	lastIdx := getKlineCandleListLastIdx(&candles)
+
+	for _, candle := range candles[firstIdx:lastIdx] {
+		sign := 1.0
+		if (candle.ClosePrice - candle.OpenPrice) < 0 {
+			sign = -1.0
+		}
+
+		volumes = append(volumes, sign*candle.Volume)
+	}
+
+	return volumes
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }

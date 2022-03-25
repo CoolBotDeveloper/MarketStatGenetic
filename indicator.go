@@ -92,7 +92,8 @@ func (indicator *AverageVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	}
 
 	//inTimePeriod := 4
-	volumes := GetVolumes(candles, indicator.config.AverageVolumeCandles)
+	//volumes := GetVolumes(candles, indicator.config.AverageVolumeCandles)
+	volumes := GetSignedVolumes(candles, indicator.config.AverageVolumeCandles)
 	//if len(volumes) >= (inTimePeriod * 4) {
 	//	volumes = talib.Sma(volumes, inTimePeriod)
 	//}
