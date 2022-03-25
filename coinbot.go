@@ -26,9 +26,9 @@ func NewCoinBot(symbol string, config BotConfig, dataSource *DataSource) CoinBot
 func (bot *CoinBot) HasBuySignal() bool {
 	// Так можно отключить супертренд по биткойну, смотри ниже
 	btcCandles := bot.dataSource.GetCandlesFor(BITCOIN_SYMBOL)
-	//if !bot.bitcoinSuperTrendIndicator.HasBuySignal(btcCandles) {
-	//	return false
-	//}
+	if !bot.bitcoinSuperTrendIndicator.HasBuySignal(btcCandles) {
+		return false
+	}
 
 	if !bot.hasReachedBtcPercentage && !bot.btcPriceGrowthPercentageIndicator.HasBuySignal(btcCandles) {
 		return false
@@ -59,8 +59,8 @@ func (bot *CoinBot) initIndicators() {
 	superTrendIndicator := NewSuperTrendIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
 
-	//averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
+	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 
 	//medianVolumeIndicator := NewMedianVolumeIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &medianVolumeIndicator)
@@ -68,10 +68,10 @@ func (bot *CoinBot) initIndicators() {
 	//candleBodyHeightIndicator := NewCandleBodyHeightIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &candleBodyHeightIndicator)
 
-	//adxIndicator := NewAdxIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &adxIndicator)
+	adxIndicator := NewAdxIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &adxIndicator)
 
-	//bot.bitcoinSuperTrendIndicator = NewBitcoinSuperTrendIndicator(bot.config)
+	bot.bitcoinSuperTrendIndicator = NewBitcoinSuperTrendIndicator(bot.config)
 
 	// Bitcoin price growth indicator
 	bot.btcPriceGrowthPercentageIndicator = NewPriceGrowthIndicator(bot.config)

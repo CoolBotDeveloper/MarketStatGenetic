@@ -172,9 +172,9 @@ func (indicator *AdxIndicator) HasBuySignal(candles []Candle) bool {
 	adxValue := adx[len(adx)-1]
 
 	return bottomThreshold < adxValue &&
-		adxValue < topThreshold &&
+		adxValue < topThreshold /*&&
 		indicator.hasGrowth(adx) &&
-		indicator.config.AdxMinGrowthPercentage <= indicator.calcGrowthPercentage(adx)
+		indicator.config.AdxMinGrowthPercentage <= indicator.calcGrowthPercentage(adx)*/
 }
 
 func (indicator *AdxIndicator) hasGrowth(adx []float64) bool {

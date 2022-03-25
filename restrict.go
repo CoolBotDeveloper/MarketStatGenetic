@@ -134,20 +134,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		BtcSuperTrendCandles: MinMaxInt{
 			min: 5,
-			max: 25,
+			max: 50,
 		},
 		BtcSuperTrendMultiplier: MinMaxFloat64{
-			min: 10,
+			min: 3,
 			max: 45,
 		},
 
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
-			min: 1,
-			max: 50,
+			min: 8,
+			max: 70,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 2000,
+			min: 20000,
 			max: 100000,
 		},
 
