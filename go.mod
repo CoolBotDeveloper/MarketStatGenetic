@@ -7,6 +7,7 @@ require (
 	github.com/markcheno/go-talib v0.0.0-20190307022042-cd53a9264d70
 	github.com/mattn/go-sqlite3 v1.14.11
 	github.com/montanaflynn/stats v0.6.6
+	github.com/patrikeh/go-deep v0.0.0-20220129152125-82b8db494fe5
 	github.com/rocketlaunchr/dataframe-go v0.0.0-20211025052708-a1030444159b
 	github.com/xyths/go-indicators v0.6.0
 )

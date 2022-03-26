@@ -147,7 +147,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 70,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 20000,
+			min: -20000,
 			max: 100000,
 		},
 
