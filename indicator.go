@@ -98,7 +98,7 @@ func (indicator *AverageVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	//	volumes = talib.Sma(volumes, inTimePeriod)
 	//}
 
-	avgVolume := GetAvg(volumes)
+	avgVolume := GetTotal(volumes)
 
 	return avgVolume >= indicator.config.AverageVolumeMinimal
 }

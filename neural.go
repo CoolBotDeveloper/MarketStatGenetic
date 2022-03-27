@@ -35,19 +35,19 @@ func testMain() {
 
 	neural := deep.NewNeural(&deep.Config{
 		Inputs:     len(data[0].Input),
-		Layout:     []int{10, 5, 1},
+		Layout:     []int{25, 5, 1},
 		Activation: deep.ActivationSigmoid,
 		Mode:       deep.ModeBinary,
 		Weight:     deep.NewNormal(1, 0),
 		Bias:       true,
 	})
 
-	trainer := training.NewTrainer(training.NewSGD(0.005, 0.5, 1e-6, true), 50)
-	//trainer := training.NewBatchTrainer(training.NewSGD(0.005, 0.1, 0, true), 50, 300, 16)
+	//trainer := training.NewTrainer(training.NewSGD(0.005, 0.5, 1e-6, true), 50)
+	trainer := training.NewBatchTrainer(training.NewSGD(0.005, 0.1, 0, true), 50, 300, 16)
 	//trainer := training.NewTrainer(training.NewAdam(0.1, 0, 0, 0), 50)
 	//trainer := training.NewBatchTrainer(training.NewAdam(0.1, 0, 0, 0), 50, len(data)/2, 0)
 	////data, heldout := data.Split(0.5)
-	trainer.Train(neural, data, data, 2000)
+	trainer.Train(neural, data, data, 3000)
 
 	okCount := 0
 	fmt.Println(len(predict))
@@ -56,16 +56,18 @@ func testMain() {
 		r := neural.Predict(predict[idx].Input)
 		fmt.Println(r, predict[idx].Response)
 
-		if r[0] > 0.75 && predict[idx].Response[0] == 1 {
+		moreThanPercentage := 0.6
+		if r[0] >= moreThanPercentage && predict[idx].Response[0] == 1 {
 			okCount++
 		}
 
-		if r[0] < 0.40 && predict[idx].Response[0] == 0 {
+		if r[0] < moreThanPercentage && predict[idx].Response[0] == 0 {
 			okCount++
 		}
 	}
 
-	fmt.Println(fmt.Sprintf("Total: %d, Success: %d", len(predict), okCount))
+	percentage := float64((okCount * 100.0) / len(predict))
+	fmt.Println(fmt.Sprintf("Total: %d, Success: %d, Percentage: %f", len(predict), okCount, percentage))
 }
 
 func load(path string) (training.Examples, error) {
@@ -94,7 +96,8 @@ func load(path string) (training.Examples, error) {
 }
 
 func toExample(in []string) training.Example {
-	res, err := strconv.ParseFloat(in[20], 64)
+	isGoodCol := len(in) - 1
+	res, err := strconv.ParseFloat(in[isGoodCol], 64)
 	if err != nil {
 		panic(err)
 	}

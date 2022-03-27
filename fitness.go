@@ -41,6 +41,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int) {
 
 	for candleNum, candle := range dataset.AltCoinCandles {
 		btcDataset := *dataset.BtcCandles
+		hasSecondPercentageBuySignal := false
 
 		candleHandler(
 			candle,
@@ -51,6 +52,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int) {
 			exchangeManager,
 			candleMarketStat,
 			positiveApproach,
+			&hasSecondPercentageBuySignal,
 		)
 	}
 
@@ -77,17 +79,16 @@ func candleHandler(
 	exchangeManager ExchangeManager,
 	candleMarketStat CandleMarketStat,
 	positiveApproach PositiveApproach,
+	hasSecondPercentageBuySignal *bool,
 ) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
-	updateBuys(candle, exchangeManager, candleMarketStat)
+	updateBuys(candle, exchangeManager, candleMarketStat, hasSecondPercentageBuySignal)
 	//positiveApproach.UpdateBuys(candle)
 
-	if /*candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
-	candleMarketStat.HasBtcBuyPercentage() &&*/
-	bot.HasBuySignal() {
+	if !*hasSecondPercentageBuySignal && candleMarketStat.HasCoinGoodDoubleTrend(candle) /*&& candleMarketStat.HasBtcBuyPercentage() */ && bot.HasBuySignal() {
 
 		//if positiveApproach.HasSignal(candle) {
 		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) {
@@ -95,16 +96,28 @@ func candleHandler(
 
 			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.ClosePrice, candle.Volume))
 			exchangeManager.Buy(candle.Symbol, candle.ClosePrice, candle.CloseTime)
-			bot.ResetHasReached()
+			*hasSecondPercentageBuySignal = true
+			//bot.ResetHasReached()
 		}
 		//}
 	}
 }
 
-func updateBuys(candle Candle, exchangeManager ExchangeManager, candleMarketStat CandleMarketStat) {
-	exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+func updateBuys(
+	candle Candle,
+	exchangeManager ExchangeManager,
+	candleMarketStat CandleMarketStat,
+	hasSecondPercentageBuySignal *bool,
+) {
+	unsoldBuys := exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+	if len(unsoldBuys) > 0 {
+		*hasSecondPercentageBuySignal = false
+	}
 
 	if candleMarketStat.HasBtcSellPercentage() {
-		exchangeManager.UpdateAllExitSymbols(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+		btcUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+		if len(btcUnsoldBuys) > 0 {
+			*hasSecondPercentageBuySignal = false
+		}
 	}
 }

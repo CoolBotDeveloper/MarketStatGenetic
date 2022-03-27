@@ -61,12 +61,16 @@ func GetVolumes(candles []Candle, count int) []float64 {
 }
 
 func GetAvg(values []float64) float64 {
+	return GetTotal(values) / float64(len(values))
+}
+
+func GetTotal(values []float64) float64 {
 	total := 0.0
 	for _, value := range values {
 		total += value
 	}
 
-	return total / float64(len(values))
+	return total
 }
 
 func GetOpenClosePriceDiffs(candles []Candle, count int) []float64 {
