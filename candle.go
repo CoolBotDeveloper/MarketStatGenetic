@@ -22,6 +22,8 @@ type Candle struct {
 	TakerBuyBaseAssetVolume  float64
 	TakerBuyQuoteAssetVolume float64
 	Ignore                   int
+
+	currentPrice float64
 }
 
 const OPEN_TIME = 0
@@ -36,6 +38,22 @@ const NUMBER_OF_TRADES = 8
 const TAKER_BUY_BASE_ASSET_VOLUME = 9
 const TAKER_BUY_QUOTE_ASSET_VOLUME = 10
 const IGNORE = 11
+
+func (candle *Candle) GetCurrentPrice() float64 {
+	return candle.ClosePrice
+	if candle.currentPrice == 0.0 {
+		randInt := GetRandInt(0, 2)
+		if randInt == 0 {
+			candle.currentPrice = candle.HighPrice
+		} else if randInt == 1 {
+			candle.currentPrice = candle.LowPrice
+		} else {
+			candle.currentPrice = candle.ClosePrice
+		}
+	}
+
+	return candle.currentPrice
+}
 
 func CsvFileToCandles(fileName string, symbol string) []Candle {
 	var candles []Candle

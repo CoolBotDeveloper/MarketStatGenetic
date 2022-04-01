@@ -94,8 +94,8 @@ func candleHandler(
 		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) {
 			// Do buy
 
-			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.ClosePrice, candle.Volume))
-			exchangeManager.Buy(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
+			exchangeManager.Buy(candle.Symbol, candle.GetCurrentPrice(), candle.CloseTime)
 			*hasSecondPercentageBuySignal = true
 			//bot.ResetHasReached()
 		}

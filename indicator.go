@@ -224,7 +224,7 @@ type PriceFallIndicator struct {
 	config BotConfig
 }
 
-func (indicator *PriceFallIndicator) NewPriceFallIndicator(config BotConfig) PriceFallIndicator {
+func NewPriceFallIndicator(config BotConfig) PriceFallIndicator {
 	return PriceFallIndicator{config: config}
 }
 
@@ -234,8 +234,8 @@ func (indicator *PriceFallIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	closeCandles := GetClosePrice(candles, indicator.config.BtcPriceGrowthCandles)
+	closeCandles := GetClosePrice(candles, indicator.config.PriceFallCandles)
 	fall := CalcGrowth(closeCandles[0], closeCandles[len(closeCandles)-1])
 
-	return indicator.config.PriceFallMinPercentage <= fall
+	return indicator.config.PriceFallMinPercentage <= fall // -5 > -4 ~~~> true
 }

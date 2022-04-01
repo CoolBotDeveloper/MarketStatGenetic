@@ -40,7 +40,7 @@ func (marketStat *CandleMarketStat) GetSymbolPercentageForPeriod(candle Candle, 
 	}
 
 	closePriceCandles := GetClosePrice(candles, periodMinutes)
-	growth := marketStat.calcGrowth(closePriceCandles[0], candle.ClosePrice)
+	growth := marketStat.calcGrowth(closePriceCandles[0], candle.GetCurrentPrice())
 
 	return growth, true
 }
