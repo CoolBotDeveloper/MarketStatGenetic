@@ -218,3 +218,24 @@ func (indicator *PriceGrowthIndicator) HasBuySignal(candles []Candle) bool {
 
 	return indicator.config.BtcPriceGrowthMinPercentage <= growth
 }
+
+// Price fall indicator
+type PriceFallIndicator struct {
+	config BotConfig
+}
+
+func (indicator *PriceFallIndicator) NewPriceFallIndicator(config BotConfig) PriceFallIndicator {
+	return PriceFallIndicator{config: config}
+}
+
+func (indicator *PriceFallIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	if count < indicator.config.PriceFallCandles {
+		return false
+	}
+
+	closeCandles := GetClosePrice(candles, indicator.config.BtcPriceGrowthCandles)
+	fall := CalcGrowth(closeCandles[0], closeCandles[len(closeCandles)-1])
+
+	return indicator.config.PriceFallMinPercentage <= fall
+}

@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	//fmt.Println(CalcGrowth(10, 0.1))
+	//return
 	//testMain()
 	//return
 	//bots := GetInitialBotsFromFile("initial.csv")

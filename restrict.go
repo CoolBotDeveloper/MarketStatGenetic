@@ -48,6 +48,9 @@ type BotConfigRestriction struct {
 	BtcPriceGrowthCandles       MinMaxInt
 	BtcPriceGrowthMinPercentage MinMaxFloat64
 	BtcPriceGrowthMaxPercentage MinMaxFloat64
+
+	PriceFallCandles       MinMaxInt
+	PriceFallMinPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -209,6 +212,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		BtcPriceGrowthMaxPercentage: MinMaxFloat64{ // В процентах
 			min: 50,
 			max: 200,
+		},
+
+		// -----------------------------------------------------
+		PriceFallCandles: MinMaxInt{
+			min: 3,
+			max: 60,
+		},
+		PriceFallMinPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
+			min: 0.1,
+			max: 5,
 		},
 	}
 }

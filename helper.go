@@ -152,6 +152,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		BtcPriceGrowthCandles:       convertToInt(dataFrame["BtcPriceGrowthCandles"]),
 		BtcPriceGrowthMinPercentage: convertToFloat64(dataFrame["BtcPriceGrowthMinPercentage"]),
 		BtcPriceGrowthMaxPercentage: convertToFloat64(dataFrame["BtcPriceGrowthMaxPercentage"]),
+
+		PriceFallCandles:       convertToInt(dataFrame["PriceFallCandles"]),
+		PriceFallMinPercentage: convertToFloat64(dataFrame["PriceFallMinPercentage"]),
 	}
 }
 

@@ -57,6 +57,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("BtcPriceGrowthMinPercentage", nil),
 		dataframe.NewSeriesFloat64("BtcPriceGrowthMaxPercentage", nil),
 
+		dataframe.NewSeriesInt64("PriceFallCandles", nil),
+		dataframe.NewSeriesFloat64("PriceFallMinPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -205,6 +208,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"BtcPriceGrowthMinPercentage": bot["BtcPriceGrowthMinPercentage"],
 		"BtcPriceGrowthMaxPercentage": bot["BtcPriceGrowthMaxPercentage"],
 
+		"PriceFallCandles":       bot["PriceFallCandles"],
+		"PriceFallMinPercentage": bot["PriceFallMinPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -291,6 +297,9 @@ func makeChild(
 		BtcPriceGrowthCandles:       GetIntFatherOrMomGen(maleBotConfig.BtcPriceGrowthCandles, femaleBotConfig.BtcPriceGrowthCandles),
 		BtcPriceGrowthMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.BtcPriceGrowthMinPercentage, femaleBotConfig.BtcPriceGrowthMinPercentage),
 		BtcPriceGrowthMaxPercentage: GetFloatFatherOrMomGen(maleBotConfig.BtcPriceGrowthMaxPercentage, femaleBotConfig.BtcPriceGrowthMaxPercentage),
+
+		PriceFallCandles:       GetIntFatherOrMomGen(maleBotConfig.PriceFallCandles, femaleBotConfig.PriceFallCandles),
+		PriceFallMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.PriceFallMinPercentage, femaleBotConfig.PriceFallMinPercentage),
 	}
 
 	for i := 0; i < 12; i++ {
@@ -345,6 +354,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"BtcPriceGrowthMinPercentage": botConfig.BtcPriceGrowthMinPercentage,
 		"BtcPriceGrowthMaxPercentage": botConfig.BtcPriceGrowthMaxPercentage,
 
+		"PriceFallCandles":       botConfig.PriceFallCandles,
+		"PriceFallMinPercentage": botConfig.PriceFallMinPercentage,
+
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
 
@@ -397,6 +409,9 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenInt(randGenNumber, 29, &(botConfig.BtcPriceGrowthCandles), restrict.BtcPriceGrowthCandles)
 	mutateGenFloat64(randGenNumber, 30, &(botConfig.BtcPriceGrowthMinPercentage), restrict.BtcPriceGrowthMinPercentage)
 	mutateGenFloat64(randGenNumber, 31, &(botConfig.CandleBodyHeightMaxPrice), restrict.BtcPriceGrowthMaxPercentage)
+
+	mutateGenInt(randGenNumber, 32, &(botConfig.PriceFallCandles), restrict.PriceFallCandles)
+	mutateGenFloat64(randGenNumber, 33, &(botConfig.PriceFallMinPercentage), restrict.PriceFallMinPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
