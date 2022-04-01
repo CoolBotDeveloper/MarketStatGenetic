@@ -63,17 +63,17 @@ type MinMaxFloat64 struct {
 func GetBotConfigRestrictions() BotConfigRestriction {
 	return BotConfigRestriction{
 		HighSellPercentage: MinMaxFloat64{
-			min: 0.3,
-			max: 5.5,
+			min: 0.25,
+			max: 0.6,
 		},
 		LowSellPercentage: MinMaxFloat64{
-			min: 0.3,
-			max: 5.0,
+			min: 0.5,
+			max: 5,
 		},
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 21,
+			min: 15,
 			max: 60 * 12,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
@@ -110,15 +110,15 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		UnsoldFirstSellDurationMinutes: MinMaxInt{
 			min: 1,
-			max: 10,
+			max: 3,
 		},
 		UnsoldFirstSellPercentage: MinMaxFloat64{
-			min: 0.2,
+			min: 0.25,
 			max: 3,
 		},
 		UnsoldFinalSellDurationMinutes: MinMaxInt{
-			min: 11,
-			max: 80,
+			min: 4,
+			max: 7,
 		},
 
 		// -----------------------------------------------------
