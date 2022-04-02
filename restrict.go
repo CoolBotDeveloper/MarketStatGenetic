@@ -229,7 +229,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		TrailingLowPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
 			min: 0.1,
-			max: 35,
+			max: 5,
 		},
 	}
 }

@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Trailing struct {
 	LowPercentage float64
 	Items         map[string]*TrailingSymbol
@@ -45,7 +43,8 @@ func (trailing *Trailing) Update(candle Candle) bool {
 		return false
 	}
 
-	panic(fmt.Sprintf("There is no Trailing data for Symbol <%s>", candle.Symbol))
+	return false
+	//panic(fmt.Sprintf("There is no Trailing data for Symbol <%s>", candle.Symbol))
 }
 
 func (trailing *Trailing) Finish(candle Candle) {
