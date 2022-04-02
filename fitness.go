@@ -125,6 +125,7 @@ func updateBuys(
 		if len(trailingUnsoldBuys) > 0 {
 			*hasSecondPercentageBuySignal = false
 		}
+		trailing.Finish(candle)
 	}
 
 	//unsoldBuys := exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)

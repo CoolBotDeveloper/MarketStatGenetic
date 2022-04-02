@@ -219,11 +219,11 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		PriceFallCandles: MinMaxInt{
 			min: 1,
-			max: 5,
+			max: 1,
 		},
 		PriceFallMinPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
-			min: 0.1,
-			max: 35,
+			min: -0.15,
+			max: 0.5,
 		},
 
 		// -----------------------------------------------------

@@ -230,11 +230,11 @@ func NewPriceFallIndicator(config BotConfig) PriceFallIndicator {
 
 func (indicator *PriceFallIndicator) HasBuySignal(candles []Candle) bool {
 	count := len(candles)
-	if count < indicator.config.PriceFallCandles {
+	if count < indicator.config.PriceFallCandles+1 {
 		return false
 	}
 
-	closeCandles := GetClosePrice(candles, indicator.config.PriceFallCandles)
+	closeCandles := GetClosePrice(candles, indicator.config.PriceFallCandles+1)
 	fall := CalcGrowth(closeCandles[0], closeCandles[len(closeCandles)-1])
 
 	return indicator.config.PriceFallMinPercentage <= fall // -5 > -4 ~~~> true
