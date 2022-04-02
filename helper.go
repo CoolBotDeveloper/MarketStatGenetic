@@ -155,6 +155,8 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		PriceFallCandles:       convertToInt(dataFrame["PriceFallCandles"]),
 		PriceFallMinPercentage: convertToFloat64(dataFrame["PriceFallMinPercentage"]),
+
+		TrailingLowPercentage: convertToFloat64(dataFrame["TrailingLowPercentage"]),
 	}
 }
 

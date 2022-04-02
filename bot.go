@@ -52,6 +52,8 @@ type BotConfig struct {
 	PriceFallCandles       int
 	PriceFallMinPercentage float64
 
+	TrailingLowPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

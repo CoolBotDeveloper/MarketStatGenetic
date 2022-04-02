@@ -60,6 +60,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("PriceFallCandles", nil),
 		dataframe.NewSeriesFloat64("PriceFallMinPercentage", nil),
 
+		dataframe.NewSeriesFloat64("TrailingLowPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -211,6 +213,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"PriceFallCandles":       bot["PriceFallCandles"],
 		"PriceFallMinPercentage": bot["PriceFallMinPercentage"],
 
+		"TrailingLowPercentage": bot["TrailingLowPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -300,6 +304,8 @@ func makeChild(
 
 		PriceFallCandles:       GetIntFatherOrMomGen(maleBotConfig.PriceFallCandles, femaleBotConfig.PriceFallCandles),
 		PriceFallMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.PriceFallMinPercentage, femaleBotConfig.PriceFallMinPercentage),
+
+		TrailingLowPercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingLowPercentage, femaleBotConfig.TrailingLowPercentage),
 	}
 
 	for i := 0; i < 12; i++ {
@@ -357,6 +363,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"PriceFallCandles":       botConfig.PriceFallCandles,
 		"PriceFallMinPercentage": botConfig.PriceFallMinPercentage,
 
+		"TrailingLowPercentage": botConfig.TrailingLowPercentage,
+
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
 
@@ -412,6 +420,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 32, &(botConfig.PriceFallCandles), restrict.PriceFallCandles)
 	mutateGenFloat64(randGenNumber, 33, &(botConfig.PriceFallMinPercentage), restrict.PriceFallMinPercentage)
+
+	mutateGenFloat64(randGenNumber, 34, &(botConfig.TrailingLowPercentage), restrict.TrailingLowPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

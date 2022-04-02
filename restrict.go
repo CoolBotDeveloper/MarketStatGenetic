@@ -51,6 +51,8 @@ type BotConfigRestriction struct {
 
 	PriceFallCandles       MinMaxInt
 	PriceFallMinPercentage MinMaxFloat64
+
+	TrailingLowPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -220,6 +222,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 5,
 		},
 		PriceFallMinPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
+			min: 0.1,
+			max: 35,
+		},
+
+		// -----------------------------------------------------
+		TrailingLowPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
 			min: 0.1,
 			max: 35,
 		},
