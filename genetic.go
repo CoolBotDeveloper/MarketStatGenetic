@@ -309,7 +309,7 @@ func makeChild(
 	}
 
 	for i := 0; i < 12; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 31))
+		mutateGens(&childBotConfig, GetRandInt(0, 34))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
