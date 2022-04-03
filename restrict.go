@@ -239,20 +239,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		FlatLineCandles: MinMaxInt{
-			min: 1,
-			max: 1,
+			min: 5,
+			max: 20,
 		},
 		FlatLineSkipCandles: MinMaxInt{
+			min: 0,
+			max: 15,
+		},
+		FlatLineDispersionPercentage: MinMaxFloat64{
 			min: 1,
-			max: 1,
+			max: 50,
 		},
-		FlatLineDispersionPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
-			min: -0.15,
-			max: 0.5,
-		},
-		FlatLineOnLinePricesPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
-			min: -0.15,
-			max: 0.5,
+		FlatLineOnLinePricesPercentage: MinMaxFloat64{
+			min: 50,
+			max: 100,
 		},
 	}
 }
