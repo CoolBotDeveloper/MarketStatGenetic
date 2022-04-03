@@ -54,6 +54,11 @@ type BotConfig struct {
 
 	TrailingLowPercentage float64
 
+	FlatLineCandles                int
+	FlatLineSkipCandles            int
+	FlatLineDispersionPercentage   float64
+	FlatLineOnLinePricesPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

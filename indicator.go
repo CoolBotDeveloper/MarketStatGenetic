@@ -239,3 +239,93 @@ func (indicator *PriceFallIndicator) HasBuySignal(candles []Candle) bool {
 
 	return indicator.config.PriceFallMinPercentage <= fall // -5 > -4 ~~~> true
 }
+
+// Flat line indicator
+type FlatLineIndicator struct {
+	config BotConfig
+}
+
+func NewFlatLineIndicator(config BotConfig) FlatLineIndicator {
+	return FlatLineIndicator{config: config}
+}
+
+func (indicator *FlatLineIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.FlatLineCandles + indicator.config.FlatLineSkipCandles + 1
+	if count < needCount {
+		return false
+	}
+
+	skipEnd := len(candles) - indicator.config.FlatLineSkipCandles - 1
+	candles = candles[:skipEnd]
+
+	closeCandles := GetClosePrice(candles, indicator.config.FlatLineCandles+1)
+	closeCandles = talib.Sma(closeCandles, indicator.getSmaPeriod(candles))
+
+	onLineCount := indicator.countOnLinePrices(closeCandles, indicator.config.FlatLineDispersionPercentage, indicator.config.FlatLineCandles)
+	onLinePercentage := float64(onLineCount*100) / float64(indicator.config.FlatLineCandles)
+
+	return onLinePercentage >= indicator.config.FlatLineOnLinePricesPercentage
+}
+
+func (indicator *FlatLineIndicator) getSmaPeriod(candles []Candle) int {
+	count := len(candles)
+	if count < 4 {
+		return count
+	}
+
+	return 4
+}
+
+func (indicator *FlatLineIndicator) countOnLinePrices(closeCandles []float64, heightPercentage float64, period int) int {
+	onLineCount := 2
+
+	lastIdx := len(closeCandles) - 1
+	firstPrice := closeCandles[0]
+	lastPrice := closeCandles[lastIdx]
+
+	for index, currentPrice := range closeCandles {
+		// if first or last candle, just skip, because they are already on line
+		if index == 0 || index == lastIdx {
+			continue
+		}
+
+		isPriceOnLine := indicator.isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage, period)
+		if isPriceOnLine {
+			onLineCount++
+		}
+	}
+
+	return onLineCount
+}
+
+func (indicator *FlatLineIndicator) isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage float64, period int) bool {
+	height := indicator.calcHeight(firstPrice, heightPercentage)
+	onLinePrice := indicator.calcOnLinePrice(firstPrice, lastPrice, period)
+
+	return (onLinePrice-height) <= currentPrice && currentPrice <= (onLinePrice+height)
+}
+
+func (indicator *FlatLineIndicator) calcHeight(firstPrice, heightPercentage float64) float64 {
+	return (firstPrice * heightPercentage) / 100
+}
+
+func (indicator *FlatLineIndicator) calcOnLinePrice(firstPrice, lastPrice float64, period int) float64 {
+	// y = kx + b
+	k := indicator.calcK(firstPrice, lastPrice, period)
+	b := indicator.calcB(firstPrice)
+	x := 0.0
+
+	return k*x + b
+}
+
+func (indicator *FlatLineIndicator) calcK(firstPrice, lastPrice float64, period int) float64 {
+	x1 := 0.0
+	x2 := float64(period)
+
+	return (firstPrice - lastPrice) / (x1 - x2)
+}
+
+func (indicator *FlatLineIndicator) calcB(firstPrice float64) float64 {
+	return -1 * firstPrice
+}
