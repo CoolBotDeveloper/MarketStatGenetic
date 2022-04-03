@@ -62,6 +62,11 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("TrailingLowPercentage", nil),
 
+		dataframe.NewSeriesInt64("FlatLineCandles", nil),
+		dataframe.NewSeriesInt64("FlatLineSkipCandles", nil),
+		dataframe.NewSeriesFloat64("FlatLineDispersionPercentage", nil),
+		dataframe.NewSeriesFloat64("FlatLineOnLinePricesPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -215,6 +220,11 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"TrailingLowPercentage": bot["TrailingLowPercentage"],
 
+		"FlatLineCandles":                bot["FlatLineCandles"],
+		"FlatLineSkipCandles":            bot["FlatLineSkipCandles"],
+		"FlatLineDispersionPercentage":   bot["FlatLineDispersionPercentage"],
+		"FlatLineOnLinePricesPercentage": bot["FlatLineOnLinePricesPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -306,10 +316,15 @@ func makeChild(
 		PriceFallMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.PriceFallMinPercentage, femaleBotConfig.PriceFallMinPercentage),
 
 		TrailingLowPercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingLowPercentage, femaleBotConfig.TrailingLowPercentage),
+
+		FlatLineCandles:                GetIntFatherOrMomGen(maleBotConfig.FlatLineCandles, femaleBotConfig.FlatLineCandles),
+		FlatLineSkipCandles:            GetIntFatherOrMomGen(maleBotConfig.FlatLineSkipCandles, femaleBotConfig.FlatLineSkipCandles),
+		FlatLineDispersionPercentage:   GetFloatFatherOrMomGen(maleBotConfig.FlatLineDispersionPercentage, femaleBotConfig.FlatLineDispersionPercentage),
+		FlatLineOnLinePricesPercentage: GetFloatFatherOrMomGen(maleBotConfig.FlatLineOnLinePricesPercentage, femaleBotConfig.FlatLineOnLinePricesPercentage),
 	}
 
-	for i := 0; i < 12; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 34))
+	for i := 0; i < 18; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 38))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -364,6 +379,11 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"PriceFallMinPercentage": botConfig.PriceFallMinPercentage,
 
 		"TrailingLowPercentage": botConfig.TrailingLowPercentage,
+
+		"FlatLineCandles":                botConfig.FlatLineCandles,
+		"FlatLineSkipCandles":            botConfig.FlatLineSkipCandles,
+		"FlatLineDispersionPercentage":   botConfig.FlatLineDispersionPercentage,
+		"FlatLineOnLinePricesPercentage": botConfig.FlatLineOnLinePricesPercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -422,6 +442,11 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 33, &(botConfig.PriceFallMinPercentage), restrict.PriceFallMinPercentage)
 
 	mutateGenFloat64(randGenNumber, 34, &(botConfig.TrailingLowPercentage), restrict.TrailingLowPercentage)
+
+	mutateGenInt(randGenNumber, 35, &(botConfig.FlatLineCandles), restrict.FlatLineCandles)
+	mutateGenInt(randGenNumber, 36, &(botConfig.FlatLineSkipCandles), restrict.FlatLineSkipCandles)
+	mutateGenFloat64(randGenNumber, 37, &(botConfig.FlatLineDispersionPercentage), restrict.FlatLineDispersionPercentage)
+	mutateGenFloat64(randGenNumber, 38, &(botConfig.FlatLineOnLinePricesPercentage), restrict.FlatLineOnLinePricesPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

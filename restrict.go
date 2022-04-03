@@ -53,6 +53,11 @@ type BotConfigRestriction struct {
 	PriceFallMinPercentage MinMaxFloat64
 
 	TrailingLowPercentage MinMaxFloat64
+
+	FlatLineCandles                MinMaxInt
+	FlatLineSkipCandles            MinMaxInt
+	FlatLineDispersionPercentage   MinMaxFloat64
+	FlatLineOnLinePricesPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -78,12 +83,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 15,
+			min: 5,
 			max: 60 * 12,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
 			min: 0,
-			max: 10,
+			max: 15,
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
 			min: 1,
@@ -91,7 +96,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
 			min: 0,
-			max: 10,
+			max: 15,
 		},
 
 		// -----------------------------------------------------
@@ -230,6 +235,24 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TrailingLowPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
 			min: 0.1,
 			max: 5,
+		},
+
+		// -----------------------------------------------------
+		FlatLineCandles: MinMaxInt{
+			min: 1,
+			max: 1,
+		},
+		FlatLineSkipCandles: MinMaxInt{
+			min: 1,
+			max: 1,
+		},
+		FlatLineDispersionPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
+			min: -0.15,
+			max: 0.5,
+		},
+		FlatLineOnLinePricesPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
+			min: -0.15,
+			max: 0.5,
 		},
 	}
 }

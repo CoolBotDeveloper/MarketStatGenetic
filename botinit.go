@@ -51,5 +51,10 @@ func InitBotConfig() BotConfig {
 		PriceFallMinPercentage: GetRandFloat64Config(restrict.PriceFallMinPercentage),
 
 		TrailingLowPercentage: GetRandFloat64Config(restrict.TrailingLowPercentage),
+
+		FlatLineCandles:                GetRandIntConfig(restrict.FlatLineCandles),
+		FlatLineSkipCandles:            GetRandIntConfig(restrict.FlatLineSkipCandles),
+		FlatLineDispersionPercentage:   GetRandFloat64Config(restrict.FlatLineDispersionPercentage),
+		FlatLineOnLinePricesPercentage: GetRandFloat64Config(restrict.FlatLineOnLinePricesPercentage),
 	}
 }

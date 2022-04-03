@@ -157,6 +157,11 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		PriceFallMinPercentage: convertToFloat64(dataFrame["PriceFallMinPercentage"]),
 
 		TrailingLowPercentage: convertToFloat64(dataFrame["TrailingLowPercentage"]),
+
+		FlatLineCandles:                convertToInt(dataFrame["FlatLineCandles"]),
+		FlatLineSkipCandles:            convertToInt(dataFrame["FlatLineSkipCandles"]),
+		FlatLineDispersionPercentage:   convertToFloat64(dataFrame["FlatLineDispersionPercentage"]),
+		FlatLineOnLinePricesPercentage: convertToFloat64(dataFrame["FlatLineOnLinePricesPercentage"]),
 	}
 }
 
