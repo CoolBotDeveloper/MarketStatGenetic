@@ -102,18 +102,18 @@ func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue, succe
 
 func SortBestBots(bots *dataframe.DataFrame) *dataframe.DataFrame {
 	sks := []dataframe.SortKey{
-		//{
-		//	Key:  "TotalRevenue",
-		//	Desc: true,
-		//},
+		{
+			Key:  "TotalRevenue",
+			Desc: true,
+		},
 		//{
 		//	Key:  "SuccessPercentage",
 		//	Desc: true,
 		//},
-		{
-			Key:  "Selection",
-			Desc: true,
-		},
+		//{
+		//	Key:  "Selection",
+		//	Desc: true,
+		//},
 	}
 	ctx := context.Background()
 	bots.Sort(ctx, sks)
