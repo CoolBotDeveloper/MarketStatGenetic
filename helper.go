@@ -162,6 +162,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		FlatLineSkipCandles:            convertToInt(dataFrame["FlatLineSkipCandles"]),
 		FlatLineDispersionPercentage:   convertToFloat64(dataFrame["FlatLineDispersionPercentage"]),
 		FlatLineOnLinePricesPercentage: convertToFloat64(dataFrame["FlatLineOnLinePricesPercentage"]),
+
+		TwoLineCandles:           convertToInt(dataFrame["TwoLineCandles"]),
+		TwoLineMaxDiffPercentage: convertToFloat64(dataFrame["TwoLineMaxDiffPercentage"]),
 	}
 }
 

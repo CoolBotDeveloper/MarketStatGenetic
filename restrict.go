@@ -58,6 +58,9 @@ type BotConfigRestriction struct {
 	FlatLineSkipCandles            MinMaxInt
 	FlatLineDispersionPercentage   MinMaxFloat64
 	FlatLineOnLinePricesPercentage MinMaxFloat64
+
+	TwoLineCandles           MinMaxInt
+	TwoLineMaxDiffPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -253,6 +256,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		FlatLineOnLinePricesPercentage: MinMaxFloat64{
 			min: 40,
 			max: 100,
+		},
+
+		// -----------------------------------------------------
+		TwoLineCandles: MinMaxInt{
+			min: 10,
+			max: 50,
+		},
+		TwoLineMaxDiffPercentage: MinMaxFloat64{
+			min: 25,
+			max: 80,
 		},
 	}
 }

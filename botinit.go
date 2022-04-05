@@ -56,5 +56,8 @@ func InitBotConfig() BotConfig {
 		FlatLineSkipCandles:            GetRandIntConfig(restrict.FlatLineSkipCandles),
 		FlatLineDispersionPercentage:   GetRandFloat64Config(restrict.FlatLineDispersionPercentage),
 		FlatLineOnLinePricesPercentage: GetRandFloat64Config(restrict.FlatLineOnLinePricesPercentage),
+
+		TwoLineCandles:           GetRandIntConfig(restrict.TwoLineCandles),
+		TwoLineMaxDiffPercentage: GetRandFloat64Config(restrict.TwoLineMaxDiffPercentage),
 	}
 }
