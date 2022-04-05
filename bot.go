@@ -59,6 +59,9 @@ type BotConfig struct {
 	FlatLineDispersionPercentage   float64
 	FlatLineOnLinePricesPercentage float64
 
+	TwoLineCandles           int
+	TwoLineMaxDiffPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

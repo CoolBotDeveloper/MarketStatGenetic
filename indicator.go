@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/markcheno/go-talib"
 	taindic "github.com/xyths/go-indicators"
+	"math"
 )
 
 type BuyTechnicalIndicator interface {
@@ -259,11 +260,13 @@ func (indicator *FlatLineIndicator) HasBuySignal(candles []Candle) bool {
 	skipEnd := len(candles) - indicator.config.FlatLineSkipCandles - 1
 	candles = candles[:skipEnd]
 
+	smaPeriod := indicator.getSmaPeriod(candles)
 	closeCandles := GetClosePrice(candles, indicator.config.FlatLineCandles+1)
-	closeCandles = talib.Sma(closeCandles, indicator.getSmaPeriod(candles))
+	closeCandles = talib.Sma(talib.Sma(closeCandles, smaPeriod), 4)
+	closeCandles = closeCandles[smaPeriod-1:]
 
 	onLineCount := indicator.countOnLinePrices(closeCandles, indicator.config.FlatLineDispersionPercentage, indicator.config.FlatLineCandles)
-	onLinePercentage := float64(onLineCount*100) / float64(indicator.config.FlatLineCandles)
+	onLinePercentage := float64(onLineCount*100) / float64(len(closeCandles))
 
 	return onLinePercentage >= indicator.config.FlatLineOnLinePricesPercentage
 }
@@ -328,4 +331,30 @@ func (indicator *FlatLineIndicator) calcK(firstPrice, lastPrice float64, period 
 
 func (indicator *FlatLineIndicator) calcB(firstPrice float64) float64 {
 	return -1 * firstPrice
+}
+
+// Two line indicator
+type TwoLineIndicator struct {
+	config BotConfig
+}
+
+func NewTwoLineIndicator(config BotConfig) TwoLineIndicator {
+	return TwoLineIndicator{config: config}
+}
+
+func (indicator TwoLineIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.TwoLineCandles + 1
+	if count < needCount {
+		return false
+	}
+
+	closePrices := GetClosePrice(candles, indicator.config.TwoLineCandles)
+	halfCandlesCount := int(math.Round(float64(indicator.config.TwoLineCandles) / 2.0))
+
+	avgHalfFirst := GetAvg(closePrices[:halfCandlesCount])
+	avgHalfSecond := GetAvg(closePrices[halfCandlesCount:])
+	diffPercentage := CalcGrowth(avgHalfFirst, avgHalfSecond)
+
+	return diffPercentage <= indicator.config.TwoLineMaxDiffPercentage
 }
