@@ -356,5 +356,5 @@ func (indicator TwoLineIndicator) HasBuySignal(candles []Candle) bool {
 	avgHalfSecond := GetAvg(closePrices[halfCandlesCount:])
 	diffPercentage := CalcGrowth(avgHalfFirst, avgHalfSecond)
 
-	return diffPercentage <= indicator.config.TwoLineMaxDiffPercentage
+	return 0.0 < diffPercentage && diffPercentage <= indicator.config.TwoLineMaxDiffPercentage
 }

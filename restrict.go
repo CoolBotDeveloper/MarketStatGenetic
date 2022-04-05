@@ -264,8 +264,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 50,
 		},
 		TwoLineMaxDiffPercentage: MinMaxFloat64{
-			min: 25,
-			max: 80,
+			min: 0.1,
+			max: 1,
 		},
 	}
 }
