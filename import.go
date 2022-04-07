@@ -76,10 +76,11 @@ func ImportFromCsv(fileName string) []BotConfig {
 
 			TwoLineCandles:           convertStringToInt(row[39]),
 			TwoLineMaxDiffPercentage: convertStringToFloat64(row[40]),
+			TwoLineSkipCandles:       convertStringToInt(row[41]),
 
-			TotalRevenue:      convertStringToFloat64(row[41]),
-			SuccessPercentage: convertStringToFloat64(row[42]),
-			Selection:         convertStringToFloat64(row[43]),
+			TotalRevenue:      convertStringToFloat64(row[42]),
+			SuccessPercentage: convertStringToFloat64(row[43]),
+			Selection:         convertStringToFloat64(row[44]),
 		}
 
 		bots = append(bots, bot)

@@ -59,5 +59,6 @@ func InitBotConfig() BotConfig {
 
 		TwoLineCandles:           GetRandIntConfig(restrict.TwoLineCandles),
 		TwoLineMaxDiffPercentage: GetRandFloat64Config(restrict.TwoLineMaxDiffPercentage),
+		TwoLineSkipCandles:       GetRandIntConfig(restrict.TwoLineSkipCandles),
 	}
 }

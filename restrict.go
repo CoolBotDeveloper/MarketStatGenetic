@@ -61,6 +61,7 @@ type BotConfigRestriction struct {
 
 	TwoLineCandles           MinMaxInt
 	TwoLineMaxDiffPercentage MinMaxFloat64
+	TwoLineSkipCandles       MinMaxInt
 }
 
 type MinMaxInt struct {
@@ -266,6 +267,10 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TwoLineMaxDiffPercentage: MinMaxFloat64{
 			min: 0.01,
 			max: 0.027,
+		},
+		TwoLineSkipCandles: MinMaxInt{
+			min: 1,
+			max: 15,
 		},
 	}
 }

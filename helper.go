@@ -165,6 +165,7 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		TwoLineCandles:           convertToInt(dataFrame["TwoLineCandles"]),
 		TwoLineMaxDiffPercentage: convertToFloat64(dataFrame["TwoLineMaxDiffPercentage"]),
+		TwoLineSkipCandles:       convertToInt(dataFrame["TwoLineSkipCandles"]),
 	}
 }
 

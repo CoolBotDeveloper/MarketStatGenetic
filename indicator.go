@@ -344,12 +344,15 @@ func NewTwoLineIndicator(config BotConfig) TwoLineIndicator {
 
 func (indicator TwoLineIndicator) HasBuySignal(candles []Candle) bool {
 	count := len(candles)
-	needCount := indicator.config.TwoLineCandles + 1
+	needCount := indicator.config.TwoLineCandles + indicator.config.TwoLineSkipCandles + 1
 	if count < needCount {
 		return false
 	}
 
-	closePrices := GetClosePrice(candles, indicator.config.TwoLineCandles)
+	closePrices := GetClosePrice(candles, needCount)
+	end := len(closePrices) - indicator.config.TwoLineSkipCandles
+
+	closePrices = closePrices[:end]
 	halfCandlesCount := int(math.Round(float64(indicator.config.TwoLineCandles) / 2.0))
 
 	avgHalfFirst := GetAvg(closePrices[:halfCandlesCount])

@@ -61,6 +61,7 @@ type BotConfig struct {
 
 	TwoLineCandles           int
 	TwoLineMaxDiffPercentage float64
+	TwoLineSkipCandles       int
 
 	TotalRevenue      float64
 	SuccessPercentage float64

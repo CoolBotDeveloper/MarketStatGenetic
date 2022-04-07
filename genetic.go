@@ -69,6 +69,7 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesInt64("TwoLineCandles", nil),
 		dataframe.NewSeriesFloat64("TwoLineMaxDiffPercentage", nil),
+		dataframe.NewSeriesInt64("TwoLineSkipCandles", nil),
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
@@ -230,6 +231,7 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"TwoLineCandles":           bot["TwoLineCandles"],
 		"TwoLineMaxDiffPercentage": bot["TwoLineMaxDiffPercentage"],
+		"TwoLineSkipCandles":       bot["TwoLineSkipCandles"],
 
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
@@ -330,10 +332,11 @@ func makeChild(
 
 		TwoLineCandles:           GetIntFatherOrMomGen(maleBotConfig.TwoLineCandles, femaleBotConfig.TwoLineCandles),
 		TwoLineMaxDiffPercentage: GetFloatFatherOrMomGen(maleBotConfig.TwoLineMaxDiffPercentage, femaleBotConfig.TwoLineMaxDiffPercentage),
+		TwoLineSkipCandles:       GetIntFatherOrMomGen(maleBotConfig.TwoLineSkipCandles, femaleBotConfig.TwoLineSkipCandles),
 	}
 
-	for i := 0; i < 25; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 40))
+	for i := 0; i < 30; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 41))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -396,6 +399,7 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"TwoLineCandles":           botConfig.TwoLineCandles,
 		"TwoLineMaxDiffPercentage": botConfig.TwoLineMaxDiffPercentage,
+		"TwoLineSkipCandles":       botConfig.TwoLineSkipCandles,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -462,6 +466,7 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 39, &(botConfig.TwoLineCandles), restrict.TwoLineCandles)
 	mutateGenFloat64(randGenNumber, 40, &(botConfig.TwoLineMaxDiffPercentage), restrict.TwoLineMaxDiffPercentage)
+	mutateGenInt(randGenNumber, 41, &(botConfig.TwoLineSkipCandles), restrict.TwoLineSkipCandles)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
