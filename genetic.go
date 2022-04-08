@@ -8,7 +8,7 @@ import (
 
 const BEST_BOTS_COUNT = 7
 const BEST_BOTS_FROM_PREV_GEN = 3
-const BOTS_COUNT = 25
+const BOTS_COUNT = 20
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -106,18 +106,18 @@ func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue, succe
 
 func SortBestBots(bots *dataframe.DataFrame) *dataframe.DataFrame {
 	sks := []dataframe.SortKey{
-		{
-			Key:  "TotalRevenue",
-			Desc: true,
-		},
+		//{
+		//	Key:  "TotalRevenue",
+		//	Desc: true,
+		//},
 		//{
 		//	Key:  "SuccessPercentage",
 		//	Desc: true,
 		//},
-		//{
-		//	Key:  "Selection",
-		//	Desc: true,
-		//},
+		{
+			Key:  "Selection",
+			Desc: true,
+		},
 	}
 	ctx := context.Background()
 	bots.Sort(ctx, sks)

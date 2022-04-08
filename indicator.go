@@ -260,10 +260,10 @@ func (indicator *FlatLineIndicator) HasBuySignal(candles []Candle) bool {
 	skipEnd := len(candles) - indicator.config.FlatLineSkipCandles - 1
 	candles = candles[:skipEnd]
 
-	smaPeriod := indicator.getSmaPeriod(candles)
+	//smaPeriod := indicator.getSmaPeriod(candles)
 	closeCandles := GetClosePrice(candles, indicator.config.FlatLineCandles+1)
-	closeCandles = talib.Sma(talib.Sma(closeCandles, smaPeriod), 4)
-	closeCandles = closeCandles[smaPeriod-1:]
+	//closeCandles = talib.Sma(talib.Sma(closeCandles, smaPeriod), 4)
+	//closeCandles = closeCandles[smaPeriod:]
 
 	onLineCount := indicator.countOnLinePrices(closeCandles, indicator.config.FlatLineDispersionPercentage, indicator.config.FlatLineCandles)
 	onLinePercentage := float64(onLineCount*100) / float64(len(closeCandles))
@@ -293,7 +293,7 @@ func (indicator *FlatLineIndicator) countOnLinePrices(closeCandles []float64, he
 			continue
 		}
 
-		isPriceOnLine := indicator.isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage, period)
+		isPriceOnLine := indicator.isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage, period, index)
 		if isPriceOnLine {
 			onLineCount++
 		}
@@ -302,9 +302,9 @@ func (indicator *FlatLineIndicator) countOnLinePrices(closeCandles []float64, he
 	return onLineCount
 }
 
-func (indicator *FlatLineIndicator) isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage float64, period int) bool {
+func (indicator *FlatLineIndicator) isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage float64, period, currentPriceIndex int) bool {
 	height := indicator.calcHeight(firstPrice, heightPercentage)
-	onLinePrice := indicator.calcOnLinePrice(firstPrice, lastPrice, period)
+	onLinePrice := indicator.calcOnLinePrice(firstPrice, lastPrice, period, currentPriceIndex)
 
 	return (onLinePrice-height) <= currentPrice && currentPrice <= (onLinePrice+height)
 }
@@ -313,24 +313,24 @@ func (indicator *FlatLineIndicator) calcHeight(firstPrice, heightPercentage floa
 	return (firstPrice * heightPercentage) / 100
 }
 
-func (indicator *FlatLineIndicator) calcOnLinePrice(firstPrice, lastPrice float64, period int) float64 {
+func (indicator *FlatLineIndicator) calcOnLinePrice(firstPrice, lastPrice float64, period, currentPriceIndex int) float64 {
 	// y = kx + b
 	k := indicator.calcK(firstPrice, lastPrice, period)
-	b := indicator.calcB(firstPrice)
-	x := 0.0
+	b := indicator.calcB(firstPrice, k, 0)
+	x := float64(currentPriceIndex)
 
-	return k*x + b
+	return math.Abs(k*x + b)
 }
 
 func (indicator *FlatLineIndicator) calcK(firstPrice, lastPrice float64, period int) float64 {
 	x1 := 0.0
-	x2 := float64(period)
+	x2 := float64(period - 1)
 
-	return (firstPrice - lastPrice) / (x1 - x2)
+	return math.Abs((firstPrice - lastPrice) / (x1 - x2))
 }
 
-func (indicator *FlatLineIndicator) calcB(firstPrice float64) float64 {
-	return -1 * firstPrice
+func (indicator *FlatLineIndicator) calcB(firstPrice, k float64, x int) float64 {
+	return firstPrice - (k * float64(x))
 }
 
 // Two line indicator
