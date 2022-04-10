@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Trailing struct {
 	Items map[string]*TrailingSymbol
 
@@ -43,10 +45,13 @@ func (trailing *Trailing) Update(candle Candle) bool {
 		if trailing.isGrowing(candle) {
 			if trailingSymbol.CurrentPercentage != trailing.BottomPercentage {
 				trailing.increasePercentage(trailingSymbol)
+				//fmt.Println(fmt.Sprintf("Trailing INCREASED to %f", trailingSymbol.CurrentPercentage))
+				fmt.Println(fmt.Sprintf("Trailing INCREASED %f, StopPrice: %f:, COIN: %s, EXCHANGE_RATE: %f, TIME: %s", trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			}
 		} else {
 			// if not growing, step by step reduce low percentage
 			trailing.reducePercentage(trailingSymbol)
+			fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s", trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 		}
 
 		newStopPrice := trailing.calculateStopPrice(candle.ClosePrice, trailingSymbol.CurrentPercentage)

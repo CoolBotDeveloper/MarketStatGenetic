@@ -89,10 +89,10 @@ func candleHandler(
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
 	/* !Important to update trailing each candle update */
-	isUpdated := trailing.Update(candle)
-	if isUpdated {
-		fmt.Println(fmt.Sprintf("TrailingUpdate: COIN: %s, EXCHANGE_RATE: %f, TIME: %s", candle.Symbol, candle.ClosePrice, candle.CloseTime))
-	}
+	trailing.Update(candle)
+	//if isUpdated {
+	//	fmt.Println(fmt.Sprintf("TrailingUpdate: COIN: %s, EXCHANGE_RATE: %f, TIME: %s", candle.Symbol, candle.ClosePrice, candle.CloseTime))
+	//}
 
 	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
 	//positiveApproach.UpdateBuys(candle)
