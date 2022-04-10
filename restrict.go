@@ -91,11 +91,11 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 20,
+			min: 60,
 			max: 500,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
-			min: 0.5,
+			min: 0.2,
 			max: 15,
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
@@ -103,8 +103,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 20,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
-			min: 2,
-			max: 15,
+			min: 0.5,
+			max: 5,
 		},
 
 		// -----------------------------------------------------
@@ -250,7 +250,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		TrailingReducePercentage: MinMaxFloat64{
 			min: 0.2,
-			max: 1,
+			max: 2.5,
 		},
 		TrailingIncreasePercentage: MinMaxFloat64{
 			min: 0.2,
