@@ -63,6 +63,10 @@ type BotConfig struct {
 	TwoLineMaxDiffPercentage float64
 	TwoLineSkipCandles       int
 
+	TrailingTopPercentage      float64
+	TrailingReducePercentage   float64
+	TrailingIncreasePercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

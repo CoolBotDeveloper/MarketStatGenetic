@@ -166,6 +166,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		TwoLineCandles:           convertToInt(dataFrame["TwoLineCandles"]),
 		TwoLineMaxDiffPercentage: convertToFloat64(dataFrame["TwoLineMaxDiffPercentage"]),
 		TwoLineSkipCandles:       convertToInt(dataFrame["TwoLineSkipCandles"]),
+
+		TrailingTopPercentage:      convertToFloat64(dataFrame["TrailingTopPercentage"]),
+		TrailingReducePercentage:   convertToFloat64(dataFrame["TrailingReducePercentage"]),
+		TrailingIncreasePercentage: convertToFloat64(dataFrame["TrailingIncreasePercentage"]),
 	}
 }
 

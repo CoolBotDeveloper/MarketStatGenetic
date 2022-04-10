@@ -62,6 +62,10 @@ type BotConfigRestriction struct {
 	TwoLineCandles           MinMaxInt
 	TwoLineMaxDiffPercentage MinMaxFloat64
 	TwoLineSkipCandles       MinMaxInt
+
+	TrailingTopPercentage      MinMaxFloat64
+	TrailingReducePercentage   MinMaxFloat64
+	TrailingIncreasePercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -236,9 +240,21 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 
 		// -----------------------------------------------------
-		TrailingLowPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
+		TrailingLowPercentage: MinMaxFloat64{
 			min: 2,
 			max: 7,
+		},
+		TrailingTopPercentage: MinMaxFloat64{
+			min: 0.7,
+			max: 1,
+		},
+		TrailingReducePercentage: MinMaxFloat64{
+			min: 0.2,
+			max: 1,
+		},
+		TrailingIncreasePercentage: MinMaxFloat64{
+			min: 0.2,
+			max: 1,
 		},
 
 		// -----------------------------------------------------

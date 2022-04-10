@@ -71,6 +71,10 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("TwoLineMaxDiffPercentage", nil),
 		dataframe.NewSeriesInt64("TwoLineSkipCandles", nil),
 
+		dataframe.NewSeriesFloat64("TrailingTopPercentage", nil),
+		dataframe.NewSeriesFloat64("TrailingReducePercentage", nil),
+		dataframe.NewSeriesFloat64("TrailingIncreasePercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -233,6 +237,10 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"TwoLineMaxDiffPercentage": bot["TwoLineMaxDiffPercentage"],
 		"TwoLineSkipCandles":       bot["TwoLineSkipCandles"],
 
+		"TrailingTopPercentage":      bot["TrailingTopPercentage"],
+		"TrailingReducePercentage":   bot["TrailingReducePercentage"],
+		"TrailingIncreasePercentage": bot["TrailingIncreasePercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -333,10 +341,14 @@ func makeChild(
 		TwoLineCandles:           GetIntFatherOrMomGen(maleBotConfig.TwoLineCandles, femaleBotConfig.TwoLineCandles),
 		TwoLineMaxDiffPercentage: GetFloatFatherOrMomGen(maleBotConfig.TwoLineMaxDiffPercentage, femaleBotConfig.TwoLineMaxDiffPercentage),
 		TwoLineSkipCandles:       GetIntFatherOrMomGen(maleBotConfig.TwoLineSkipCandles, femaleBotConfig.TwoLineSkipCandles),
+
+		TrailingTopPercentage:      GetFloatFatherOrMomGen(maleBotConfig.TrailingTopPercentage, femaleBotConfig.TrailingTopPercentage),
+		TrailingReducePercentage:   GetFloatFatherOrMomGen(maleBotConfig.TrailingReducePercentage, femaleBotConfig.TrailingReducePercentage),
+		TrailingIncreasePercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingIncreasePercentage, femaleBotConfig.TrailingIncreasePercentage),
 	}
 
-	for i := 0; i < 30; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 41))
+	for i := 0; i < 36; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 44))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -400,6 +412,10 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"TwoLineCandles":           botConfig.TwoLineCandles,
 		"TwoLineMaxDiffPercentage": botConfig.TwoLineMaxDiffPercentage,
 		"TwoLineSkipCandles":       botConfig.TwoLineSkipCandles,
+
+		"TrailingTopPercentage":      botConfig.TrailingTopPercentage,
+		"TrailingReducePercentage":   botConfig.TrailingReducePercentage,
+		"TrailingIncreasePercentage": botConfig.TrailingIncreasePercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -467,6 +483,10 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenInt(randGenNumber, 39, &(botConfig.TwoLineCandles), restrict.TwoLineCandles)
 	mutateGenFloat64(randGenNumber, 40, &(botConfig.TwoLineMaxDiffPercentage), restrict.TwoLineMaxDiffPercentage)
 	mutateGenInt(randGenNumber, 41, &(botConfig.TwoLineSkipCandles), restrict.TwoLineSkipCandles)
+
+	mutateGenFloat64(randGenNumber, 42, &(botConfig.TrailingTopPercentage), restrict.TrailingTopPercentage)
+	mutateGenFloat64(randGenNumber, 43, &(botConfig.TrailingReducePercentage), restrict.TrailingReducePercentage)
+	mutateGenFloat64(randGenNumber, 44, &(botConfig.TrailingIncreasePercentage), restrict.TrailingIncreasePercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

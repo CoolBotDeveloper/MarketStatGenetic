@@ -1,20 +1,30 @@
 package main
 
 type Trailing struct {
-	LowPercentage float64
-	Items         map[string]*TrailingSymbol
+	Items map[string]*TrailingSymbol
+
+	TopPercentage      float64
+	BottomPercentage   float64
+	ReducePercentage   float64
+	IncreasePercentage float64
 }
 
 type TrailingSymbol struct {
 	Symbol         string
 	StopPrice      float64
 	PreviousPrices []float64
+
+	CurrentPercentage float64
 }
 
-func NewTrailingSymbol(lowPercentage float64) Trailing {
+func NewTrailingSymbol(config BotConfig) Trailing {
 	return Trailing{
-		Items:         map[string]*TrailingSymbol{},
-		LowPercentage: lowPercentage,
+		Items: map[string]*TrailingSymbol{},
+
+		TopPercentage:      config.TrailingTopPercentage,
+		BottomPercentage:   config.TrailingLowPercentage,
+		ReducePercentage:   config.TrailingReducePercentage,
+		IncreasePercentage: config.TrailingIncreasePercentage,
 	}
 }
 
@@ -31,16 +41,21 @@ func (trailing *Trailing) Update(candle Candle) bool {
 
 		trailing.appendPrice(candle)
 		if trailing.isGrowing(candle) {
-			newStopPrice := trailing.calculateStopPrice(candle.ClosePrice)
-
-			// just update if the new calculated stop price higher than old one
-			if newStopPrice > trailingSymbol.StopPrice {
-				trailingSymbol.StopPrice = trailing.calculateStopPrice(candle.ClosePrice)
-
-				return true
+			if trailingSymbol.CurrentPercentage != trailing.BottomPercentage {
+				trailing.increasePercentage(trailingSymbol)
 			}
+		} else {
+			// if not growing, step by step reduce low percentage
+			trailing.reducePercentage(trailingSymbol)
 		}
-		return false
+
+		newStopPrice := trailing.calculateStopPrice(candle.ClosePrice, trailingSymbol.CurrentPercentage)
+		// just update if the new calculated stop price higher than old one
+		if newStopPrice > trailingSymbol.StopPrice {
+			trailingSymbol.StopPrice = newStopPrice
+
+			return true
+		}
 	}
 
 	return false
@@ -61,16 +76,43 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 	return false
 }
 
+func (trailing *Trailing) reducePercentage(trailingSymbol *TrailingSymbol) {
+	if trailing.TopPercentage == trailingSymbol.CurrentPercentage {
+		return
+	}
+
+	reducedPercentage := trailingSymbol.CurrentPercentage - trailing.ReducePercentage
+	if trailing.TopPercentage > reducedPercentage {
+		reducedPercentage = trailing.TopPercentage
+	}
+
+	trailingSymbol.CurrentPercentage = reducedPercentage
+}
+
+func (trailing *Trailing) increasePercentage(trailingSymbol *TrailingSymbol) {
+	if trailing.BottomPercentage == trailingSymbol.CurrentPercentage {
+		return
+	}
+
+	increasedPercentage := trailingSymbol.CurrentPercentage + trailing.IncreasePercentage
+	if trailing.BottomPercentage < increasedPercentage {
+		increasedPercentage = trailing.BottomPercentage
+	}
+
+	trailingSymbol.CurrentPercentage = increasedPercentage
+}
+
 func (trailing *Trailing) initiateSymbolTrailing(candle Candle) {
 	trailing.Items[candle.Symbol] = &TrailingSymbol{
-		Symbol:         candle.Symbol,
-		StopPrice:      trailing.calculateStopPrice(candle.ClosePrice),
-		PreviousPrices: []float64{candle.ClosePrice},
+		Symbol:            candle.Symbol,
+		PreviousPrices:    []float64{candle.ClosePrice},
+		StopPrice:         trailing.calculateStopPrice(candle.ClosePrice, trailing.BottomPercentage),
+		CurrentPercentage: trailing.BottomPercentage,
 	}
 }
 
-func (trailing *Trailing) calculateStopPrice(closePrice float64) float64 {
-	return closePrice - ((closePrice * trailing.LowPercentage) / 100)
+func (trailing *Trailing) calculateStopPrice(closePrice, percentage float64) float64 {
+	return closePrice - ((closePrice * percentage) / 100)
 }
 
 func (trailing *Trailing) appendPrice(candle Candle) {
