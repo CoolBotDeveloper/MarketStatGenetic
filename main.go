@@ -9,12 +9,8 @@ import (
 )
 
 func main() {
-	//fmt.Println(CalcGrowth(10, 0.1))
-	//return
-	//testMain()
-	//return
-	bots := GetInitialBotsFromFile("initial.csv")
-	//bots := GetInitialBots()
+	//bots := GetInitialBotsFromFile("initial.csv")
+	bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 
 	for generation := 0; generation < GENERATION_COUNT; generation++ {

@@ -87,15 +87,15 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 10,
-			max: 40,
+			min: 20,
+			max: 500,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
 			min: 0.5,
 			max: 15,
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
-			min: 1,
+			min: 5,
 			max: 20,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
@@ -243,19 +243,19 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		FlatLineCandles: MinMaxInt{
-			min: 50, // не надо ставить меньше 7
-			max: 150,
+			min: 100,
+			max: 400,
 		},
 		FlatLineSkipCandles: MinMaxInt{
 			min: 0,
 			max: 25,
 		},
 		FlatLineDispersionPercentage: MinMaxFloat64{
-			min: 5,
-			max: 15,
+			min: 0.5,
+			max: 2,
 		},
 		FlatLineOnLinePricesPercentage: MinMaxFloat64{
-			min: 65,
+			min: 90,
 			max: 100,
 		},
 

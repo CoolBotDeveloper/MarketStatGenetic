@@ -8,7 +8,7 @@ import (
 
 const BEST_BOTS_COUNT = 7
 const BEST_BOTS_FROM_PREV_GEN = 3
-const BOTS_COUNT = 20
+const BOTS_COUNT = 25
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
