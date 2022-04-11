@@ -12,11 +12,11 @@ type Trailing struct {
 }
 
 type TrailingSymbol struct {
-	Symbol         string
-	StopPrice      float64
-	PreviousPrices []float64
-
+	Symbol            string
+	StopPrice         float64
+	PreviousPrices    []float64
 	CurrentPercentage float64
+	LastMaxPrice      float64
 }
 
 func NewTrailingSymbol(config BotConfig) Trailing {
@@ -43,15 +43,29 @@ func (trailing *Trailing) Update(candle Candle) bool {
 
 		trailing.appendPrice(candle)
 		if trailing.isGrowing(candle) {
-			if trailingSymbol.CurrentPercentage != trailing.BottomPercentage {
+			isHigherThanLastMaxPrice := candle.ClosePrice > trailingSymbol.LastMaxPrice
+			if isHigherThanLastMaxPrice {
+				trailingSymbol.LastMaxPrice = candle.ClosePrice
+			}
+
+			if isHigherThanLastMaxPrice {
 				trailing.increasePercentage(trailingSymbol)
-				//fmt.Println(fmt.Sprintf("Trailing INCREASED to %f", trailingSymbol.CurrentPercentage))
-				fmt.Println(fmt.Sprintf("Trailing INCREASED %f, StopPrice: %f:, COIN: %s, EXCHANGE_RATE: %f, TIME: %s", trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+
+				fmt.Println(fmt.Sprintf("Trailing INCREASED %f, StopPrice: %f:, COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+			} else {
+				// if not growing, step by step reduce low percentage
+				trailing.reducePercentage(trailingSymbol)
+
+				fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			}
 		} else {
 			// if not growing, step by step reduce low percentage
 			trailing.reducePercentage(trailingSymbol)
-			fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s", trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+
+			fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+				trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 		}
 
 		newStopPrice := trailing.calculateStopPrice(candle.ClosePrice, trailingSymbol.CurrentPercentage)
@@ -113,6 +127,7 @@ func (trailing *Trailing) initiateSymbolTrailing(candle Candle) {
 		PreviousPrices:    []float64{candle.ClosePrice},
 		StopPrice:         trailing.calculateStopPrice(candle.ClosePrice, trailing.BottomPercentage),
 		CurrentPercentage: trailing.BottomPercentage,
+		LastMaxPrice:      candle.ClosePrice,
 	}
 }
 
