@@ -95,6 +95,14 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 	return false
 }
 
+func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
+	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		return trailingSymbol.StopPrice, true
+	}
+
+	return 0.0, false
+}
+
 func (trailing *Trailing) reducePercentage(trailingSymbol *TrailingSymbol) {
 	if trailing.TopPercentage == trailingSymbol.CurrentPercentage {
 		return
