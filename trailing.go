@@ -68,7 +68,7 @@ func (trailing *Trailing) Update(candle Candle) bool {
 				trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 		}
 
-		newStopPrice := trailing.calculateStopPrice(candle.ClosePrice, trailingSymbol.CurrentPercentage)
+		newStopPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailingSymbol.CurrentPercentage)
 		// just update if the new calculated stop price higher than old one
 		if newStopPrice > trailingSymbol.StopPrice {
 			trailingSymbol.StopPrice = newStopPrice
