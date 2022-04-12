@@ -75,6 +75,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("TrailingReducePercentage", nil),
 		dataframe.NewSeriesFloat64("TrailingIncreasePercentage", nil),
 
+		dataframe.NewSeriesInt64("StopBuyAfterSellPeriodMinutes", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -241,6 +243,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"TrailingReducePercentage":   bot["TrailingReducePercentage"],
 		"TrailingIncreasePercentage": bot["TrailingIncreasePercentage"],
 
+		"StopBuyAfterSellPeriodMinutes": bot["StopBuyAfterSellPeriodMinutes"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -345,10 +349,12 @@ func makeChild(
 		TrailingTopPercentage:      GetFloatFatherOrMomGen(maleBotConfig.TrailingTopPercentage, femaleBotConfig.TrailingTopPercentage),
 		TrailingReducePercentage:   GetFloatFatherOrMomGen(maleBotConfig.TrailingReducePercentage, femaleBotConfig.TrailingReducePercentage),
 		TrailingIncreasePercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingIncreasePercentage, femaleBotConfig.TrailingIncreasePercentage),
+
+		StopBuyAfterSellPeriodMinutes: GetIntFatherOrMomGen(maleBotConfig.StopBuyAfterSellPeriodMinutes, femaleBotConfig.StopBuyAfterSellPeriodMinutes),
 	}
 
-	for i := 0; i < 36; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 44))
+	for i := 0; i < 37; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 45))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -416,6 +422,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"TrailingTopPercentage":      botConfig.TrailingTopPercentage,
 		"TrailingReducePercentage":   botConfig.TrailingReducePercentage,
 		"TrailingIncreasePercentage": botConfig.TrailingIncreasePercentage,
+
+		"StopBuyAfterSellPeriodMinutes": botConfig.StopBuyAfterSellPeriodMinutes,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -487,6 +495,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 42, &(botConfig.TrailingTopPercentage), restrict.TrailingTopPercentage)
 	mutateGenFloat64(randGenNumber, 43, &(botConfig.TrailingReducePercentage), restrict.TrailingReducePercentage)
 	mutateGenFloat64(randGenNumber, 44, &(botConfig.TrailingIncreasePercentage), restrict.TrailingIncreasePercentage)
+
+	mutateGenInt(randGenNumber, 45, &(botConfig.StopBuyAfterSellPeriodMinutes), restrict.StopBuyAfterSellPeriodMinutes)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

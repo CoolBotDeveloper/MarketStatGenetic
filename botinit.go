@@ -64,5 +64,7 @@ func InitBotConfig() BotConfig {
 		TrailingTopPercentage:      GetRandFloat64Config(restrict.TrailingTopPercentage),
 		TrailingReducePercentage:   GetRandFloat64Config(restrict.TrailingReducePercentage),
 		TrailingIncreasePercentage: GetRandFloat64Config(restrict.TrailingIncreasePercentage),
+
+		StopBuyAfterSellPeriodMinutes: GetRandIntConfig(restrict.StopBuyAfterSellPeriodMinutes),
 	}
 }

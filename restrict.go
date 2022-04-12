@@ -66,6 +66,8 @@ type BotConfigRestriction struct {
 	TrailingTopPercentage      MinMaxFloat64
 	TrailingReducePercentage   MinMaxFloat64
 	TrailingIncreasePercentage MinMaxFloat64
+
+	StopBuyAfterSellPeriodMinutes MinMaxInt
 }
 
 type MinMaxInt struct {
@@ -91,11 +93,11 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 60,
+			min: 50,
 			max: 500,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
-			min: 0.2,
+			min: 0.5,
 			max: 15,
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
@@ -103,7 +105,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 20,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
-			min: 0.5,
+			min: 1,
 			max: 5,
 		},
 
@@ -287,6 +289,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TwoLineSkipCandles: MinMaxInt{
 			min: 0,
 			max: 50,
+		},
+
+		// -----------------------------------------------------
+		StopBuyAfterSellPeriodMinutes: MinMaxInt{
+			min: 0,
+			max: 60,
 		},
 	}
 }

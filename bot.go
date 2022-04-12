@@ -67,6 +67,8 @@ type BotConfig struct {
 	TrailingReducePercentage   float64
 	TrailingIncreasePercentage float64
 
+	StopBuyAfterSellPeriodMinutes int
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 
