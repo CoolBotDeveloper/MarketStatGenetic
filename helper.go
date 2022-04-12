@@ -209,6 +209,18 @@ func CalcSuccessBuysPercentage(botRevenue BotRevenue) float64 {
 	return float64(botRevenue.SuccessBuysCount*100) / float64(botRevenue.TotalBuysCount)
 }
 
+func CalcSuccessPercentageByRevenue(botRevenue BotRevenue) float64 {
+	plusRevenue := botRevenue.PlusRevenue
+	minusRevenue := botRevenue.MinusRevenue
+
+	totalRevenue := plusRevenue + minusRevenue
+	if totalRevenue == 0.0 {
+		return 0.0
+	}
+
+	return (plusRevenue * 100) / totalRevenue
+}
+
 func CalcSelection(revenue, successPercentage float64) float64 {
 	if successPercentage == 100.0 {
 		successPercentage = 110.0

@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type BotRevenue struct {
 	BotNumber        int
@@ -8,18 +11,25 @@ type BotRevenue struct {
 	TotalBuysCount   int
 	SuccessBuysCount int
 	FailedBuysCount  int
+
+	PlusRevenue  float64
+	MinusRevenue float64
 }
 
 func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue, fitnessDatasets *[]Dataset) {
 	totalRevenue := 0.0
 	totalBuysCount := 0
 	totalSuccessBuysCount := 0
+	totalPlusRevenue := 0.0
+	totalMinusRevenue := 0.0
 
 	for _, dataset := range *fitnessDatasets {
-		datasetRevenue, buyCount, successBuysCount := doBuysAndSells(dataset, botConfig)
+		datasetRevenue, buyCount, successBuysCount, plusRevenue, minusRevenue := doBuysAndSells(dataset, botConfig)
 		totalRevenue += datasetRevenue
 		totalBuysCount += buyCount
 		totalSuccessBuysCount += successBuysCount
+		totalPlusRevenue += plusRevenue
+		totalMinusRevenue += minusRevenue
 	}
 
 	botRevenue <- BotRevenue{
@@ -28,11 +38,13 @@ func Fitness(botConfig BotConfig, botNumber int, botRevenue chan BotRevenue, fit
 		TotalBuysCount:   totalBuysCount,
 		SuccessBuysCount: totalSuccessBuysCount,
 		FailedBuysCount:  totalBuysCount - totalSuccessBuysCount,
+		PlusRevenue:      totalPlusRevenue,
+		MinusRevenue:     totalMinusRevenue,
 	}
 	//return totalRevenue
 }
 
-func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int) {
+func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, float64, float64) {
 	dataSource := NewDataSource()
 	coinBotFactory := NewCoinBotFactory(&dataSource)
 	exchangeManager := NewExchangeManager(botConfig)
@@ -62,14 +74,31 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int) {
 	buyCount := exchangeManager.GetBuysCount()
 	success := exchangeManager.GetSuccessBuysCount()
 	commission := float64(buyCount) * COMMISSION
+
+	failed := buyCount - success
+
+	plusRevenue := 0.0
+	minusRevenue := 0.0
+
+	if buyCount > 0 {
+		prevPlusRevenue := exchangeManager.GetPlusRevenue() - float64(success)*COMMISSION
+		if prevPlusRevenue > 0.0 {
+			plusRevenue = prevPlusRevenue
+		} else {
+			minusRevenue = prevPlusRevenue
+		}
+
+		minusRevenue = math.Abs(exchangeManager.GetMinusRevenue() - float64(failed)*COMMISSION - minusRevenue)
+	}
+
 	exchangeManager.Close()
 
 	datasetRevenue := rev - commission
-	failed := buyCount - success
+	//failed := buyCount - success
 
 	fmt.Println(fmt.Sprintf("%s: DatasetRevenue: %f, TotalBuys: %d, Success: %d, Failed: %d", dataset.AltCoinName, datasetRevenue, buyCount, success, failed))
 
-	return datasetRevenue, buyCount, success
+	return datasetRevenue, buyCount, success, plusRevenue, minusRevenue
 }
 
 func candleHandler(

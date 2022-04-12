@@ -409,6 +409,34 @@ func (storage *Storage) GetTotalRevenue() float64 {
 	return rev.value
 }
 
+func (storage *Storage) GetMinusRevenue() float64 {
+	rev := revenue{}
+	query := `
+		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
+		FROM sells 
+		WHERE rev <= 0.0
+		GROUP BY symbol
+	`
+	row := (*storage).connect.QueryRow(query)
+	row.Scan(&rev.value)
+
+	return rev.value
+}
+
+func (storage *Storage) GetPlusRevenue() float64 {
+	rev := revenue{}
+	query := `
+		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
+		FROM sells 
+		WHERE rev > 0.0
+		GROUP BY symbol
+	`
+	row := (*storage).connect.QueryRow(query)
+	row.Scan(&rev.value)
+
+	return rev.value
+}
+
 func (storage *Storage) GetFakeTotalRevenue(symbol string) float64 {
 	rev := revenue{}
 	query := `
@@ -689,6 +717,14 @@ func (em *ExchangeManager) CountUnsoldBuys(symbol string) int {
 
 func (manager *ExchangeManager) GetTotalRevenue() float64 {
 	return (*manager).storage.GetTotalRevenue()
+}
+
+func (manager *ExchangeManager) GetMinusRevenue() float64 {
+	return (*manager).storage.GetMinusRevenue()
+}
+
+func (manager *ExchangeManager) GetPlusRevenue() float64 {
+	return (*manager).storage.GetPlusRevenue()
 }
 
 func (manager *ExchangeManager) GetBuysCount() int {
