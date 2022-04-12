@@ -237,7 +237,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 1,
 		},
 		PriceFallMinPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
-			min: -0.15,
+			min: 0.0,
 			max: 0.5,
 		},
 

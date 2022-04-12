@@ -62,8 +62,8 @@ func (bot *CoinBot) initIndicators() {
 	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 
-	//priceFallIndicator := NewPriceFallIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
+	priceFallIndicator := NewPriceFallIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
 
 	flatLineIndicator := NewFlatLineIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &flatLineIndicator)
