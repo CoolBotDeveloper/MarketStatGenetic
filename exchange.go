@@ -335,6 +335,21 @@ func (storage *Storage) FindFakeExitZombies(symbol string, createdAt string, min
 	return unsoldBuys
 }
 
+func (storage *Storage) CanBuyInGivenPeriod(symbol string, createdAt string, period int) bool {
+	var count int
+	query := `
+		SELECT COUNT(s.id)
+		FROM sells AS s 
+        WHERE s.symbol = $1 AND s.created_at > $2
+	`
+
+	candleTime := ConvertDateStringToTime(createdAt)
+	canNotBuyDuration := GetCurrentMinusTime(candleTime, period)
+	(*storage).connect.QueryRow(query, symbol, canNotBuyDuration).Scan(&count)
+
+	return count == 0
+}
+
 func (storage *Storage) CountUnsoldBuys(symbol string) int {
 	var count int
 	query := `
@@ -661,6 +676,11 @@ func (em *ExchangeManager) GetUnsoldBuys(symbol string, exchangeRate float64, cr
 		em.config.LowSellPercentage,
 		createdAt,
 	)
+}
+
+func (em *ExchangeManager) CanBuyInGivenPeriod(symbol string) bool {
+	createdAt := time.Now().Format("2006-01-02 15:04:05")
+	return em.storage.CanBuyInGivenPeriod(symbol, createdAt, em.config.StopBuyAfterSellPeriodMinutes)
 }
 
 func (em *ExchangeManager) CountUnsoldBuys(symbol string) int {
