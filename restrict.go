@@ -97,7 +97,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 500,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
-			min: 0.5,
+			min: 1,
 			max: 15,
 		},
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
@@ -105,7 +105,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 20,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
-			min: 1,
+			min: 2,
 			max: 5,
 		},
 
