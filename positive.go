@@ -19,7 +19,7 @@ func NewPositiveApproach(botConfig BotConfig, exchangeManager *ExchangeManager, 
 
 func (pa *PositiveApproach) HasSignal(candle Candle) bool {
 	symbol := candle.Symbol
-	exchangeRate := candle.ClosePrice
+	exchangeRate := candle.LowPrice
 
 	if pa.isRealBuyBlocked {
 		if pa.isFakeBuyReached(candle) {
@@ -59,7 +59,7 @@ func (pa *PositiveApproach) UpdateBuys(candle Candle) {
 }
 
 func (pa *PositiveApproach) updateNormalBuys(candle Candle) {
-	exchangeRate := candle.ClosePrice
+	exchangeRate := candle.LowPrice
 	fakeUnsoldBuys := pa.getStorage().FindFakeUnsoldBuys(
 		candle.Symbol,
 		exchangeRate,
@@ -82,7 +82,7 @@ func (pa *PositiveApproach) updateNormalBuys(candle Candle) {
 }
 
 func (pa *PositiveApproach) updateFirstSellZombies(candle Candle) {
-	exchangeRate := candle.ClosePrice
+	exchangeRate := candle.LowPrice
 	fakeFirstSellZombies := pa.getStorage().FindFakeFirstSellZombies(
 		candle.Symbol,
 		exchangeRate,
@@ -105,7 +105,7 @@ func (pa *PositiveApproach) updateFirstSellZombies(candle Candle) {
 }
 
 func (pa *PositiveApproach) updateExitZombies(candle Candle) {
-	exchangeRate := candle.ClosePrice
+	exchangeRate := candle.LowPrice
 	fakeExitZombies := pa.getStorage().FindFakeExitZombies(
 		candle.Symbol,
 		candle.CloseTime,
@@ -126,7 +126,7 @@ func (pa *PositiveApproach) updateExitZombies(candle Candle) {
 }
 
 func (pa *PositiveApproach) updateAllExitSymbols(candle Candle) {
-	exchangeRate := candle.ClosePrice
+	exchangeRate := candle.LowPrice
 	fakeExitZombies := pa.getStorage().FindFakeExitZombies(candle.Symbol, candle.CloseTime, 0)
 
 	for _, expiredBuy := range fakeExitZombies {

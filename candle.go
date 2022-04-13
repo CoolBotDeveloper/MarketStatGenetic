@@ -40,7 +40,7 @@ const TAKER_BUY_QUOTE_ASSET_VOLUME = 10
 const IGNORE = 11
 
 func (candle *Candle) GetCurrentPrice() float64 {
-	return candle.ClosePrice
+	return candle.LowPrice
 	if candle.currentPrice == 0.0 {
 		randInt := GetRandInt(0, 2)
 		if randInt == 0 {

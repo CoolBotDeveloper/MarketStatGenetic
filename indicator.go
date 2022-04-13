@@ -32,7 +32,8 @@ func (indicator *SuperTrendIndicator) HasBuySignal(candles []Candle) bool {
 		(*indicator).config.AltCoinSuperTrendCandles,
 		GetHighPrice(candles, trendCandles),
 		GetLowPrice(candles, trendCandles),
-		GetClosePrice(candles, trendCandles),
+		//GetClosePrice(candles, trendCandles),
+		GetLowPrice(candles, trendCandles),
 	)
 	lastTrendIdx := len(trend) - 1
 
@@ -70,7 +71,8 @@ func (indicator *BitcoinSuperTrendIndicator) HasBuySignal(candles []Candle) bool
 		(*indicator).config.BtcSuperTrendCandles,
 		GetHighPrice(candles, trendCandles),
 		GetLowPrice(candles, trendCandles),
-		GetClosePrice(candles, trendCandles),
+		//GetClosePrice(candles, trendCandles),
+		GetLowPrice(candles, trendCandles),
 	)
 	lastTrendIdx := len(trend) - 1
 
@@ -165,7 +167,8 @@ func (indicator *AdxIndicator) HasBuySignal(candles []Candle) bool {
 	adx := talib.Adx(
 		GetHighPrice(candles, maxCandlesCount),
 		GetLowPrice(candles, maxCandlesCount),
-		GetClosePrice(candles, maxCandlesCount),
+		//GetClosePrice(candles, maxCandlesCount),
+		GetLowPrice(candles, maxCandlesCount),
 		indicator.config.AdxDiLen,
 	)
 
@@ -214,7 +217,8 @@ func (indicator *PriceGrowthIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	closeCandles := GetClosePrice(candles, indicator.config.BtcPriceGrowthCandles)
+	//closeCandles := GetClosePrice(candles, indicator.config.BtcPriceGrowthCandles)
+	closeCandles := GetLowPrice(candles, indicator.config.BtcPriceGrowthCandles)
 	growth := CalcGrowth(closeCandles[0], closeCandles[len(closeCandles)-1])
 
 	return indicator.config.BtcPriceGrowthMinPercentage <= growth
@@ -235,7 +239,8 @@ func (indicator *PriceFallIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	closeCandles := GetClosePrice(candles, indicator.config.PriceFallCandles+1)
+	//closeCandles := GetClosePrice(candles, indicator.config.PriceFallCandles+1)
+	closeCandles := GetLowPrice(candles, indicator.config.PriceFallCandles+1)
 	fall := CalcGrowth(closeCandles[0], closeCandles[len(closeCandles)-1])
 
 	return indicator.config.PriceFallMinPercentage <= fall // -5 > -4 ~~~> true
@@ -261,7 +266,8 @@ func (indicator *FlatLineIndicator) HasBuySignal(candles []Candle) bool {
 	candles = candles[:skipEnd]
 
 	//smaPeriod := indicator.getSmaPeriod(candles)
-	closeCandles := GetClosePrice(candles, indicator.config.FlatLineCandles+1)
+	//closeCandles := GetClosePrice(candles, indicator.config.FlatLineCandles+1)
+	closeCandles := GetLowPrice(candles, indicator.config.FlatLineCandles+1)
 	//closeCandles = talib.Sma(talib.Sma(closeCandles, smaPeriod), 4)
 	//closeCandles = closeCandles[smaPeriod:]
 
@@ -349,7 +355,8 @@ func (indicator TwoLineIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	closePrices := GetClosePrice(candles, needCount)
+	//closePrices := GetClosePrice(candles, needCount)
+	closePrices := GetLowPrice(candles, needCount)
 	end := len(closePrices) - indicator.config.TwoLineSkipCandles
 
 	closePrices = closePrices[:end]
