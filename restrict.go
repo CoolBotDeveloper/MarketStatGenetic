@@ -126,7 +126,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 60 * 12,
 		},
 		BtcMinBuyPercentage: MinMaxFloat64{
-			min: -1,
+			min: 0.1,
 			max: 5,
 		},
 		BtcSellPeriodMinutes: MinMaxInt{
@@ -304,7 +304,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		StopBuyAfterSellPeriodMinutes: MinMaxInt{
-			min: 0,
+			min: 30,
 			max: 60,
 		},
 
@@ -314,7 +314,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 60 * 13,
 		},
 		AltCoinMarketMinPercentage: MinMaxFloat64{
-			min: 0.5,
+			min: 8,
 			max: 50,
 		},
 
@@ -325,7 +325,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		WholeDayTotalVolumeMinVolume: MinMaxFloat64{
 			min: 3_000_000,
-			max: 9_000_000,
+			max: 50_000_000,
 		},
 	}
 }

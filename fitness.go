@@ -128,8 +128,8 @@ func candleHandler(
 
 	if !*hasSecondPercentageBuySignal &&
 		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
-		candleMarketStat.HasAltCoinMarketPercentage(candle) &&
-		//candleMarketStat.HasBtcBuyPercentage() &&
+		//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
+		candleMarketStat.HasBtcBuyPercentage() &&
 		bot.HasBuySignal() {
 
 		//if positiveApproach.HasSignal(candle) {

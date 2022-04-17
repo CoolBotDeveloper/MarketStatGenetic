@@ -84,6 +84,9 @@ func (bot *CoinBot) initIndicators() {
 
 	//Bitcoin price growth indicator
 	//bot.btcPriceGrowthPercentageIndicator = NewPriceGrowthIndicator(bot.config)
+
+	//wholeDayTotalVolumeIndicator := NewWholeDayTotalVolumeIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &wholeDayTotalVolumeIndicator)
 }
 
 // Coin bot factory

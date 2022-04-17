@@ -120,7 +120,7 @@ func (indicator *WholeDayTotalVolumeIndicator) HasBuySignal(candles []Candle) bo
 		return false
 	}
 
-	volumes := GetVolumes(candles, indicator.config.WholeDayTotalVolumeCandles)
+	volumes := GetSignedVolumes(candles, indicator.config.WholeDayTotalVolumeCandles)
 
 	return GetTotal(volumes) >= indicator.config.WholeDayTotalVolumeMinVolume
 }
