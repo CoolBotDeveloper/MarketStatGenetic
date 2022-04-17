@@ -71,6 +71,20 @@ func (marketStat *CandleMarketStat) HasCoinGoodDoubleTrend(candle Candle) bool {
 	return false
 }
 
+func (marketStat *CandleMarketStat) HasAltCoinMarketPercentage(candle Candle) bool {
+	percentage, hasMarketPercentage := marketStat.GetSymbolPercentageForPeriod(
+		candle,
+		candle.Symbol,
+		marketStat.config.AltCoinMarketCandles,
+	)
+
+	if hasMarketPercentage {
+		return percentage >= marketStat.config.AltCoinMarketMinPercentage
+	}
+
+	return false
+}
+
 func (marketStat *CandleMarketStat) calcGrowth(startPrice, endPrice float64) float64 {
 	if startPrice == 0 || endPrice == 0 {
 		return 0.0

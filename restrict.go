@@ -68,6 +68,9 @@ type BotConfigRestriction struct {
 	TrailingIncreasePercentage MinMaxFloat64
 
 	StopBuyAfterSellPeriodMinutes MinMaxInt
+
+	AltCoinMarketCandles       MinMaxInt
+	AltCoinMarketMinPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -295,6 +298,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		StopBuyAfterSellPeriodMinutes: MinMaxInt{
 			min: 0,
 			max: 60,
+		},
+
+		// -----------------------------------------------------
+		AltCoinMarketCandles: MinMaxInt{
+			min: 1,
+			max: 20,
+		},
+		AltCoinMarketMinPercentage: MinMaxFloat64{
+			min: 0.5,
+			max: 50,
 		},
 	}
 }

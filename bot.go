@@ -69,6 +69,9 @@ type BotConfig struct {
 
 	StopBuyAfterSellPeriodMinutes int
 
+	AltCoinMarketCandles       int
+	AltCoinMarketMinPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

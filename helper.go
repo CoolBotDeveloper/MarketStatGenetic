@@ -172,6 +172,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		TrailingIncreasePercentage: convertToFloat64(dataFrame["TrailingIncreasePercentage"]),
 
 		StopBuyAfterSellPeriodMinutes: convertToInt(dataFrame["StopBuyAfterSellPeriodMinutes"]),
+
+		AltCoinMarketCandles:       convertToInt(dataFrame["AltCoinMarketCandles"]),
+		AltCoinMarketMinPercentage: convertToFloat64(dataFrame["AltCoinMarketMinPercentage"]),
 	}
 }
 
