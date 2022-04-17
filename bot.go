@@ -74,6 +74,9 @@ type BotConfig struct {
 	AltCoinMarketCandles       int
 	AltCoinMarketMinPercentage float64
 
+	WholeDayTotalVolumeCandles   int
+	WholeDayTotalVolumeMinVolume float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

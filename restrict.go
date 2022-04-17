@@ -72,6 +72,9 @@ type BotConfigRestriction struct {
 
 	AltCoinMarketCandles       MinMaxInt
 	AltCoinMarketMinPercentage MinMaxFloat64
+
+	WholeDayTotalVolumeCandles   MinMaxInt
+	WholeDayTotalVolumeMinVolume MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -313,6 +316,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		AltCoinMarketMinPercentage: MinMaxFloat64{
 			min: 0.5,
 			max: 50,
+		},
+
+		// -----------------------------------------------------
+		WholeDayTotalVolumeCandles: MinMaxInt{
+			min: 60 * 10,
+			max: 60 * 13,
+		},
+		WholeDayTotalVolumeMinVolume: MinMaxFloat64{
+			min: 3_000_000,
+			max: 9_000_000,
 		},
 	}
 }

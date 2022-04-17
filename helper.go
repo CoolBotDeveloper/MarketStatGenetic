@@ -177,6 +177,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		AltCoinMarketMinPercentage: convertToFloat64(dataFrame["AltCoinMarketMinPercentage"]),
 
 		AltCoinMinBuyMaxSecondPercentage: convertToFloat64(dataFrame["AltCoinMinBuyMaxSecondPercentage"]),
+
+		WholeDayTotalVolumeCandles:   convertToInt(dataFrame["WholeDayTotalVolumeCandles"]),
+		WholeDayTotalVolumeMinVolume: convertToFloat64(dataFrame["WholeDayTotalVolumeMinVolume"]),
 	}
 }
 

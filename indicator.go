@@ -100,8 +100,29 @@ func (indicator *AverageVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	//}
 
 	avgVolume := GetTotal(volumes)
+	//avgVolume := GetAvg(volumes)
 
 	return avgVolume >= indicator.config.AverageVolumeMinimal
+}
+
+// Whole day total volume indicator
+type WholeDayTotalVolumeIndicator struct {
+	config BotConfig
+}
+
+func NewWholeDayTotalVolumeIndicator(config BotConfig) WholeDayTotalVolumeIndicator {
+	return WholeDayTotalVolumeIndicator{config: config}
+}
+
+func (indicator *WholeDayTotalVolumeIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	if count < indicator.config.WholeDayTotalVolumeCandles {
+		return false
+	}
+
+	volumes := GetVolumes(candles, indicator.config.WholeDayTotalVolumeCandles)
+
+	return GetTotal(volumes) >= indicator.config.WholeDayTotalVolumeMinVolume
 }
 
 // Median volume indicator

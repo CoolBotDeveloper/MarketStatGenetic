@@ -82,6 +82,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("AltCoinMinBuyMaxSecondPercentage", nil),
 
+		dataframe.NewSeriesInt64("WholeDayTotalVolumeCandles", nil),
+		dataframe.NewSeriesFloat64("WholeDayTotalVolumeMinVolume", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -255,6 +258,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"AltCoinMinBuyMaxSecondPercentage": bot["AltCoinMinBuyMaxSecondPercentage"],
 
+		"WholeDayTotalVolumeCandles":   bot["WholeDayTotalVolumeCandles"],
+		"WholeDayTotalVolumeMinVolume": bot["WholeDayTotalVolumeMinVolume"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -366,10 +372,13 @@ func makeChild(
 		AltCoinMarketMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.AltCoinMarketMinPercentage, femaleBotConfig.AltCoinMarketMinPercentage),
 
 		AltCoinMinBuyMaxSecondPercentage: GetFloatFatherOrMomGen(maleBotConfig.AltCoinMinBuyMaxSecondPercentage, femaleBotConfig.AltCoinMinBuyMaxSecondPercentage),
+
+		WholeDayTotalVolumeCandles:   GetIntFatherOrMomGen(maleBotConfig.WholeDayTotalVolumeCandles, femaleBotConfig.WholeDayTotalVolumeCandles),
+		WholeDayTotalVolumeMinVolume: GetFloatFatherOrMomGen(maleBotConfig.WholeDayTotalVolumeMinVolume, femaleBotConfig.WholeDayTotalVolumeMinVolume),
 	}
 
-	for i := 0; i < 40; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 48))
+	for i := 0; i < 42; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 50))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -444,6 +453,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"AltCoinMarketMinPercentage": botConfig.AltCoinMarketMinPercentage,
 
 		"AltCoinMinBuyMaxSecondPercentage": botConfig.AltCoinMinBuyMaxSecondPercentage,
+
+		"WholeDayTotalVolumeCandles":   botConfig.WholeDayTotalVolumeCandles,
+		"WholeDayTotalVolumeMinVolume": botConfig.WholeDayTotalVolumeMinVolume,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -522,6 +534,9 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 47, &(botConfig.AltCoinMarketMinPercentage), restrict.AltCoinMarketMinPercentage)
 
 	mutateGenFloat64(randGenNumber, 48, &(botConfig.AltCoinMinBuyMaxSecondPercentage), restrict.AltCoinMinBuyMaxSecondPercentage)
+
+	mutateGenInt(randGenNumber, 49, &(botConfig.WholeDayTotalVolumeCandles), restrict.WholeDayTotalVolumeCandles)
+	mutateGenFloat64(randGenNumber, 50, &(botConfig.WholeDayTotalVolumeMinVolume), restrict.WholeDayTotalVolumeMinVolume)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

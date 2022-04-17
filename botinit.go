@@ -71,5 +71,8 @@ func InitBotConfig() BotConfig {
 		AltCoinMarketMinPercentage: GetRandFloat64Config(restrict.AltCoinMarketMinPercentage),
 
 		AltCoinMinBuyMaxSecondPercentage: GetRandFloat64Config(restrict.AltCoinMinBuyMaxSecondPercentage),
+
+		WholeDayTotalVolumeCandles:   GetRandIntConfig(restrict.WholeDayTotalVolumeCandles),
+		WholeDayTotalVolumeMinVolume: GetRandFloat64Config(restrict.WholeDayTotalVolumeMinVolume),
 	}
 }
