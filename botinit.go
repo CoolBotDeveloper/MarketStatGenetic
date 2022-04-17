@@ -69,5 +69,7 @@ func InitBotConfig() BotConfig {
 
 		AltCoinMarketCandles:       GetRandIntConfig(restrict.AltCoinMarketCandles),
 		AltCoinMarketMinPercentage: GetRandFloat64Config(restrict.AltCoinMarketMinPercentage),
+
+		AltCoinMinBuyMaxSecondPercentage: GetRandFloat64Config(restrict.AltCoinMinBuyMaxSecondPercentage),
 	}
 }

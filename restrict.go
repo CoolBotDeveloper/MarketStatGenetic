@@ -13,6 +13,7 @@ type BotConfigRestriction struct {
 	AltCoinMinBuyFirstPercentage     MinMaxFloat64
 	AltCoinMinBuySecondPeriodMinutes MinMaxInt
 	AltCoinMinBuySecondPercentage    MinMaxFloat64
+	AltCoinMinBuyMaxSecondPercentage MinMaxFloat64
 
 	BtcMinBuyPeriodMinutes MinMaxInt
 	BtcMinBuyPercentage    MinMaxFloat64
@@ -109,12 +110,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
 			min: 2,
-			max: 5,
+			max: 3,
+		},
+		AltCoinMinBuyMaxSecondPercentage: MinMaxFloat64{
+			min: 3,
+			max: 8,
 		},
 
 		// -----------------------------------------------------
 		BtcMinBuyPeriodMinutes: MinMaxInt{
-			min: 30,
+			min: 60 * 5,
 			max: 60 * 12,
 		},
 		BtcMinBuyPercentage: MinMaxFloat64{
@@ -302,8 +307,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMarketCandles: MinMaxInt{
-			min: 1,
-			max: 20,
+			min: 60 * 10,
+			max: 60 * 13,
 		},
 		AltCoinMarketMinPercentage: MinMaxFloat64{
 			min: 0.5,

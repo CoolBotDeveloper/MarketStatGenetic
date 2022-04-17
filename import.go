@@ -87,9 +87,11 @@ func ImportFromCsv(fileName string) []BotConfig {
 			AltCoinMarketCandles:       convertStringToInt(row[46]),
 			AltCoinMarketMinPercentage: convertStringToFloat64(row[47]),
 
-			TotalRevenue:      convertStringToFloat64(row[48]),
-			SuccessPercentage: convertStringToFloat64(row[49]),
-			Selection:         convertStringToFloat64(row[50]),
+			AltCoinMinBuyMaxSecondPercentage: convertStringToFloat64(row[48]),
+
+			TotalRevenue:      convertStringToFloat64(row[49]),
+			SuccessPercentage: convertStringToFloat64(row[50]),
+			Selection:         convertStringToFloat64(row[51]),
 		}
 
 		bots = append(bots, bot)

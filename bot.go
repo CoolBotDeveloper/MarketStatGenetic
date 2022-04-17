@@ -4,6 +4,7 @@ const BITCOIN_SYMBOL = "BTCUSDT"
 const TOTAL_MONEY_AMOUNT = 100.0
 const COMMISSION = 0.15
 const SIMULTANEOUS_BUYS_COUNT = 1
+const MIN_SUCCESS_PERCENTAGE = 52
 
 type BotConfig struct {
 	HighSellPercentage float64
@@ -13,6 +14,7 @@ type BotConfig struct {
 	AltCoinMinBuyFirstPercentage     float64
 	AltCoinMinBuySecondPeriodMinutes int
 	AltCoinMinBuySecondPercentage    float64
+	AltCoinMinBuyMaxSecondPercentage float64
 
 	BtcMinBuyPeriodMinutes int
 	BtcMinBuyPercentage    float64

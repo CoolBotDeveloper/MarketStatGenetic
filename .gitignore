@@ -1,5 +1,6 @@
 .idea
 datasets
+temp
 go_build_MarketStatGeneticOnNewLib
 *.db
 generation_*.csv

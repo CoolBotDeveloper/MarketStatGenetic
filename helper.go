@@ -175,6 +175,8 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		AltCoinMarketCandles:       convertToInt(dataFrame["AltCoinMarketCandles"]),
 		AltCoinMarketMinPercentage: convertToFloat64(dataFrame["AltCoinMarketMinPercentage"]),
+
+		AltCoinMinBuyMaxSecondPercentage: convertToFloat64(dataFrame["AltCoinMinBuyMaxSecondPercentage"]),
 	}
 }
 

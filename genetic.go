@@ -80,6 +80,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("AltCoinMarketCandles", nil),
 		dataframe.NewSeriesFloat64("AltCoinMarketMinPercentage", nil),
 
+		dataframe.NewSeriesFloat64("AltCoinMinBuyMaxSecondPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -251,6 +253,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"AltCoinMarketCandles":       bot["AltCoinMarketCandles"],
 		"AltCoinMarketMinPercentage": bot["AltCoinMarketMinPercentage"],
 
+		"AltCoinMinBuyMaxSecondPercentage": bot["AltCoinMinBuyMaxSecondPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -360,10 +364,12 @@ func makeChild(
 
 		AltCoinMarketCandles:       GetIntFatherOrMomGen(maleBotConfig.AltCoinMarketCandles, femaleBotConfig.AltCoinMarketCandles),
 		AltCoinMarketMinPercentage: GetFloatFatherOrMomGen(maleBotConfig.AltCoinMarketMinPercentage, femaleBotConfig.AltCoinMarketMinPercentage),
+
+		AltCoinMinBuyMaxSecondPercentage: GetFloatFatherOrMomGen(maleBotConfig.AltCoinMinBuyMaxSecondPercentage, femaleBotConfig.AltCoinMinBuyMaxSecondPercentage),
 	}
 
-	for i := 0; i < 39; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 47))
+	for i := 0; i < 40; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 48))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -436,6 +442,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"AltCoinMarketCandles":       botConfig.AltCoinMarketCandles,
 		"AltCoinMarketMinPercentage": botConfig.AltCoinMarketMinPercentage,
+
+		"AltCoinMinBuyMaxSecondPercentage": botConfig.AltCoinMinBuyMaxSecondPercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -512,6 +520,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 46, &(botConfig.AltCoinMarketCandles), restrict.AltCoinMarketCandles)
 	mutateGenFloat64(randGenNumber, 47, &(botConfig.AltCoinMarketMinPercentage), restrict.AltCoinMarketMinPercentage)
+
+	mutateGenFloat64(randGenNumber, 48, &(botConfig.AltCoinMinBuyMaxSecondPercentage), restrict.AltCoinMinBuyMaxSecondPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
