@@ -74,5 +74,9 @@ func InitBotConfig() BotConfig {
 
 		WholeDayTotalVolumeCandles:   GetRandIntConfig(restrict.WholeDayTotalVolumeCandles),
 		WholeDayTotalVolumeMinVolume: GetRandFloat64Config(restrict.WholeDayTotalVolumeMinVolume),
+
+		HalfVolumeFirstCandles:     GetRandIntConfig(restrict.HalfVolumeFirstCandles),
+		HalfVolumeSecondCandles:    GetRandIntConfig(restrict.HalfVolumeSecondCandles),
+		HalfVolumeGrowthPercentage: GetRandFloat64Config(restrict.HalfVolumeGrowthPercentage),
 	}
 }

@@ -125,6 +125,32 @@ func (indicator *WholeDayTotalVolumeIndicator) HasBuySignal(candles []Candle) bo
 	return GetTotal(volumes) >= indicator.config.WholeDayTotalVolumeMinVolume
 }
 
+// Half volume indicator
+type HalfVolumeIndicator struct {
+	config BotConfig
+}
+
+func NewHalfVolumeIndicator(config BotConfig) HalfVolumeIndicator {
+	return HalfVolumeIndicator{config: config}
+}
+
+func (indicator *HalfVolumeIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeSecondCandles
+	if count < needCount {
+		return false
+	}
+
+	secondStart := needCount - indicator.config.HalfVolumeSecondCandles
+
+	volumes := GetVolumes(candles, needCount)
+	halfVolumeFirst := GetTotal(volumes[:indicator.config.HalfVolumeFirstCandles])
+	halfVolumeSecond := GetTotal(volumes[secondStart:])
+	growth := CalcGrowth(halfVolumeFirst, halfVolumeSecond)
+
+	return growth >= indicator.config.HalfVolumeGrowthPercentage
+}
+
 // Median volume indicator
 type MedianVolumeIndicator struct {
 	config BotConfig

@@ -77,6 +77,10 @@ type BotConfig struct {
 	WholeDayTotalVolumeCandles   int
 	WholeDayTotalVolumeMinVolume float64
 
+	HalfVolumeFirstCandles     int
+	HalfVolumeSecondCandles    int
+	HalfVolumeGrowthPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

@@ -85,6 +85,10 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("WholeDayTotalVolumeCandles", nil),
 		dataframe.NewSeriesFloat64("WholeDayTotalVolumeMinVolume", nil),
 
+		dataframe.NewSeriesInt64("HalfVolumeFirstCandles", nil),
+		dataframe.NewSeriesInt64("HalfVolumeSecondCandles", nil),
+		dataframe.NewSeriesFloat64("HalfVolumeGrowthPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -261,6 +265,10 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"WholeDayTotalVolumeCandles":   bot["WholeDayTotalVolumeCandles"],
 		"WholeDayTotalVolumeMinVolume": bot["WholeDayTotalVolumeMinVolume"],
 
+		"HalfVolumeFirstCandles":     bot["HalfVolumeFirstCandles"],
+		"HalfVolumeSecondCandles":    bot["HalfVolumeSecondCandles"],
+		"HalfVolumeGrowthPercentage": bot["HalfVolumeGrowthPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -375,10 +383,14 @@ func makeChild(
 
 		WholeDayTotalVolumeCandles:   GetIntFatherOrMomGen(maleBotConfig.WholeDayTotalVolumeCandles, femaleBotConfig.WholeDayTotalVolumeCandles),
 		WholeDayTotalVolumeMinVolume: GetFloatFatherOrMomGen(maleBotConfig.WholeDayTotalVolumeMinVolume, femaleBotConfig.WholeDayTotalVolumeMinVolume),
+
+		HalfVolumeFirstCandles:     GetIntFatherOrMomGen(maleBotConfig.HalfVolumeFirstCandles, femaleBotConfig.HalfVolumeFirstCandles),
+		HalfVolumeSecondCandles:    GetIntFatherOrMomGen(maleBotConfig.HalfVolumeSecondCandles, femaleBotConfig.HalfVolumeSecondCandles),
+		HalfVolumeGrowthPercentage: GetFloatFatherOrMomGen(maleBotConfig.HalfVolumeGrowthPercentage, femaleBotConfig.HalfVolumeGrowthPercentage),
 	}
 
-	for i := 0; i < 42; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 50))
+	for i := 0; i < 45; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 53))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -456,6 +468,10 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"WholeDayTotalVolumeCandles":   botConfig.WholeDayTotalVolumeCandles,
 		"WholeDayTotalVolumeMinVolume": botConfig.WholeDayTotalVolumeMinVolume,
+
+		"HalfVolumeFirstCandles":     botConfig.HalfVolumeFirstCandles,
+		"HalfVolumeSecondCandles":    botConfig.HalfVolumeSecondCandles,
+		"HalfVolumeGrowthPercentage": botConfig.HalfVolumeGrowthPercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -537,6 +553,10 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 49, &(botConfig.WholeDayTotalVolumeCandles), restrict.WholeDayTotalVolumeCandles)
 	mutateGenFloat64(randGenNumber, 50, &(botConfig.WholeDayTotalVolumeMinVolume), restrict.WholeDayTotalVolumeMinVolume)
+
+	mutateGenInt(randGenNumber, 51, &(botConfig.HalfVolumeFirstCandles), restrict.HalfVolumeFirstCandles)
+	mutateGenInt(randGenNumber, 52, &(botConfig.HalfVolumeSecondCandles), restrict.HalfVolumeSecondCandles)
+	mutateGenFloat64(randGenNumber, 53, &(botConfig.HalfVolumeGrowthPercentage), restrict.HalfVolumeGrowthPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

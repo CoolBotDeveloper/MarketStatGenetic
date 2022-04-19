@@ -180,6 +180,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		WholeDayTotalVolumeCandles:   convertToInt(dataFrame["WholeDayTotalVolumeCandles"]),
 		WholeDayTotalVolumeMinVolume: convertToFloat64(dataFrame["WholeDayTotalVolumeMinVolume"]),
+
+		HalfVolumeFirstCandles:     convertToInt(dataFrame["HalfVolumeFirstCandles"]),
+		HalfVolumeSecondCandles:    convertToInt(dataFrame["HalfVolumeSecondCandles"]),
+		HalfVolumeGrowthPercentage: convertToFloat64(dataFrame["HalfVolumeGrowthPercentage"]),
 	}
 }
 
