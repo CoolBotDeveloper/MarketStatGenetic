@@ -141,11 +141,25 @@ func (indicator *HalfVolumeIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	secondStart := needCount - indicator.config.HalfVolumeSecondCandles
+	onlyGreen := true // true - только для зеленых, false - все
 
 	volumes := GetVolumes(candles, needCount)
-	halfVolumeFirst := GetTotal(volumes[:indicator.config.HalfVolumeFirstCandles])
-	halfVolumeSecond := GetTotal(volumes[secondStart:])
+	if onlyGreen {
+		volumes = GetSignedVolumes(candles, needCount)
+	}
+
+	volumesFirst := volumes[:indicator.config.HalfVolumeFirstCandles]
+	volumesSecond := volumes[indicator.config.HalfVolumeFirstCandles:]
+
+	// -->
+	if onlyGreen {
+		volumesFirst = GetOnlyPositiveValues(volumesFirst)
+		volumesSecond = GetOnlyPositiveValues(volumesSecond)
+	}
+	// <--
+
+	halfVolumeFirst := GetTotal(volumesFirst)
+	halfVolumeSecond := GetTotal(volumesSecond)
 	growth := CalcGrowth(halfVolumeFirst, halfVolumeSecond)
 
 	return growth >= indicator.config.HalfVolumeGrowthPercentage

@@ -60,6 +60,18 @@ func GetVolumes(candles []Candle, count int) []float64 {
 	return volumes
 }
 
+func GetOnlyPositiveValues(values []float64) []float64 {
+	var newValues []float64
+
+	for _, value := range values {
+		if value > 0.0 {
+			newValues = append(newValues, value)
+		}
+	}
+
+	return newValues
+}
+
 func GetAvg(values []float64) float64 {
 	return GetTotal(values) / float64(len(values))
 }

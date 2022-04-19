@@ -308,8 +308,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		StopBuyAfterSellPeriodMinutes: MinMaxInt{
-			min: 1,
-			max: 30,
+			min: 0,
+			max: 0,
 		},
 
 		// -----------------------------------------------------
@@ -334,16 +334,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		HalfVolumeFirstCandles: MinMaxInt{
-			min: 100,
-			max: 400,
+			min: 5,
+			max: 30,
 		},
 		HalfVolumeSecondCandles: MinMaxInt{
-			min: 0,
-			max: 5,
+			min: 5,
+			max: 30,
 		},
 		HalfVolumeGrowthPercentage: MinMaxFloat64{
-			min: 0.5,
-			max: 2,
+			min: 400,
+			max: 800,
 		},
 	}
 }
