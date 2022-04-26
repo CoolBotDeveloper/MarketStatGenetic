@@ -62,8 +62,8 @@ func (bot *CoinBot) initIndicators() {
 	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 
-	//priceFallIndicator := NewPriceFallIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
+	priceFallIndicator := NewPriceFallIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
 
 	//flatLineIndicator := NewFlatLineIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &flatLineIndicator)
@@ -85,11 +85,11 @@ func (bot *CoinBot) initIndicators() {
 	//Bitcoin price growth indicator
 	//bot.btcPriceGrowthPercentageIndicator = NewPriceGrowthIndicator(bot.config)
 
-	wholeDayTotalVolumeIndicator := NewWholeDayTotalVolumeIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &wholeDayTotalVolumeIndicator)
+	//wholeDayTotalVolumeIndicator := NewWholeDayTotalVolumeIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &wholeDayTotalVolumeIndicator)
 
-	halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
+	//halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
 }
 
 // Coin bot factory

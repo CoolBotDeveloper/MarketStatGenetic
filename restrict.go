@@ -120,18 +120,18 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 5,
 		},
 		AltCoinMinBuyMaxSecondPercentage: MinMaxFloat64{
-			min: 0,
-			max: 20,
+			min: 3,
+			max: 8,
 		},
 
 		// -----------------------------------------------------
 		BtcMinBuyPeriodMinutes: MinMaxInt{
-			min: 60 * 5,
-			max: 60 * 12,
+			min: 60 * 12,
+			max: 60 * 24,
 		},
 		BtcMinBuyPercentage: MinMaxFloat64{
-			min: 0.1,
-			max: 5,
+			min: 0.0,
+			max: 6,
 		},
 		BtcSellPeriodMinutes: MinMaxInt{
 			min: 30,
@@ -178,12 +178,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
-			min: 8,
+			min: 4,
 			max: 20,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 20000,
-			max: 100000,
+			min: 100000,
+			max: 500000,
 		},
 
 		// -----------------------------------------------------
@@ -249,29 +249,29 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		PriceFallCandles: MinMaxInt{
 			min: 1,
-			max: 10,
+			max: 1,
 		},
 		PriceFallMinPercentage: MinMaxFloat64{ // В процентах, минусовые значения, можно и плюс писать
-			min: 0.0,
-			max: 3.0,
+			min: 0.1,
+			max: 0.5,
 		},
 
 		// -----------------------------------------------------
 		TrailingLowPercentage: MinMaxFloat64{
 			min: 4,
-			max: 15,
+			max: 25,
 		},
 		TrailingTopPercentage: MinMaxFloat64{
-			min: 0.5,
+			min: 0.0,
 			max: 2,
 		},
 		TrailingReducePercentage: MinMaxFloat64{
 			min: 0.2,
-			max: 3.0,
+			max: 5.0,
 		},
 		TrailingIncreasePercentage: MinMaxFloat64{
 			min: 0.2,
-			max: 1.2,
+			max: 1.5,
 		},
 
 		// -----------------------------------------------------
@@ -314,7 +314,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMarketCandles: MinMaxInt{
-			min: 60 * 2,
+			min: 60 * 10,
 			max: 60 * 24,
 		},
 		AltCoinMarketMinPercentage: MinMaxFloat64{
@@ -324,26 +324,26 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		WholeDayTotalVolumeCandles: MinMaxInt{
-			min: 60 * 3,
-			max: 60 * 24,
+			min: 60,
+			max: 1000,
 		},
 		WholeDayTotalVolumeMinVolume: MinMaxFloat64{
-			min: 1_000_000,
-			max: 10_000_000,
+			min: 10_000_000,
+			max: 20_000_000,
 		},
 
 		// -----------------------------------------------------
 		HalfVolumeFirstCandles: MinMaxInt{
 			min: 5,
-			max: 30,
+			max: 50,
 		},
 		HalfVolumeSecondCandles: MinMaxInt{
 			min: 5,
-			max: 30,
+			max: 50,
 		},
 		HalfVolumeGrowthPercentage: MinMaxFloat64{
-			min: 400,
-			max: 800,
+			min: 300,
+			max: 10000,
 		},
 	}
 }
