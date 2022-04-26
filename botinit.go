@@ -78,5 +78,7 @@ func InitBotConfig() BotConfig {
 		HalfVolumeFirstCandles:     GetRandIntConfig(restrict.HalfVolumeFirstCandles),
 		HalfVolumeSecondCandles:    GetRandIntConfig(restrict.HalfVolumeSecondCandles),
 		HalfVolumeGrowthPercentage: GetRandFloat64Config(restrict.HalfVolumeGrowthPercentage),
+
+		TrailingActivationPercentage: GetRandFloat64Config(restrict.TrailingActivationPercentage),
 	}
 }

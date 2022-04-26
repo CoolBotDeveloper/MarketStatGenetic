@@ -196,6 +196,8 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		HalfVolumeFirstCandles:     convertToInt(dataFrame["HalfVolumeFirstCandles"]),
 		HalfVolumeSecondCandles:    convertToInt(dataFrame["HalfVolumeSecondCandles"]),
 		HalfVolumeGrowthPercentage: convertToFloat64(dataFrame["HalfVolumeGrowthPercentage"]),
+
+		TrailingActivationPercentage: convertToFloat64(dataFrame["TrailingActivationPercentage"]),
 	}
 }
 

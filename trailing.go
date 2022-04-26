@@ -3,10 +3,11 @@ package main
 type Trailing struct {
 	Items map[string]*TrailingSymbol
 
-	TopPercentage      float64
-	BottomPercentage   float64
-	ReducePercentage   float64
-	IncreasePercentage float64
+	TopPercentage        float64
+	BottomPercentage     float64
+	ReducePercentage     float64
+	IncreasePercentage   float64
+	ActivationPercentage float64
 }
 
 type TrailingSymbol struct {
@@ -21,10 +22,11 @@ func NewTrailingSymbol(config BotConfig) Trailing {
 	return Trailing{
 		Items: map[string]*TrailingSymbol{},
 
-		TopPercentage:      config.TrailingTopPercentage,
-		BottomPercentage:   config.TrailingLowPercentage,
-		ReducePercentage:   config.TrailingReducePercentage,
-		IncreasePercentage: config.TrailingIncreasePercentage,
+		TopPercentage:        config.TrailingTopPercentage,
+		BottomPercentage:     config.TrailingLowPercentage,
+		ReducePercentage:     config.TrailingReducePercentage,
+		IncreasePercentage:   config.TrailingIncreasePercentage,
+		ActivationPercentage: config.TrailingActivationPercentage,
 	}
 }
 
@@ -83,6 +85,16 @@ func (trailing *Trailing) Finish(candle Candle) {
 	if _, ok := trailing.Items[candle.Symbol]; ok {
 		delete(trailing.Items, candle.Symbol)
 	}
+}
+
+func (trailing *Trailing) IsActivationReached(candle Candle) bool {
+	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		activationPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailing.ActivationPercentage)
+
+		return candle.ClosePrice <= activationPrice
+	}
+
+	return false
 }
 
 func (trailing *Trailing) CanSellByStop(candle Candle) bool {

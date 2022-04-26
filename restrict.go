@@ -79,6 +79,8 @@ type BotConfigRestriction struct {
 	HalfVolumeFirstCandles     MinMaxInt
 	HalfVolumeSecondCandles    MinMaxInt
 	HalfVolumeGrowthPercentage MinMaxFloat64
+
+	TrailingActivationPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -344,6 +346,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		HalfVolumeGrowthPercentage: MinMaxFloat64{
 			min: 300,
 			max: 10000,
+		},
+
+		// -----------------------------------------------------
+		TrailingActivationPercentage: MinMaxFloat64{
+			min: 0.1,
+			max: 3.0,
 		},
 	}
 }

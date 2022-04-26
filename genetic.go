@@ -89,6 +89,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("HalfVolumeSecondCandles", nil),
 		dataframe.NewSeriesFloat64("HalfVolumeGrowthPercentage", nil),
 
+		dataframe.NewSeriesFloat64("TrailingActivationPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -269,6 +271,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"HalfVolumeSecondCandles":    bot["HalfVolumeSecondCandles"],
 		"HalfVolumeGrowthPercentage": bot["HalfVolumeGrowthPercentage"],
 
+		"TrailingActivationPercentage": bot["TrailingActivationPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -387,10 +391,12 @@ func makeChild(
 		HalfVolumeFirstCandles:     GetIntFatherOrMomGen(maleBotConfig.HalfVolumeFirstCandles, femaleBotConfig.HalfVolumeFirstCandles),
 		HalfVolumeSecondCandles:    GetIntFatherOrMomGen(maleBotConfig.HalfVolumeSecondCandles, femaleBotConfig.HalfVolumeSecondCandles),
 		HalfVolumeGrowthPercentage: GetFloatFatherOrMomGen(maleBotConfig.HalfVolumeGrowthPercentage, femaleBotConfig.HalfVolumeGrowthPercentage),
+
+		TrailingActivationPercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingActivationPercentage, femaleBotConfig.TrailingActivationPercentage),
 	}
 
-	for i := 0; i < 45; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 53))
+	for i := 0; i < 46; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 54))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -472,6 +478,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"HalfVolumeFirstCandles":     botConfig.HalfVolumeFirstCandles,
 		"HalfVolumeSecondCandles":    botConfig.HalfVolumeSecondCandles,
 		"HalfVolumeGrowthPercentage": botConfig.HalfVolumeGrowthPercentage,
+
+		"TrailingActivationPercentage": botConfig.TrailingActivationPercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -557,6 +565,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenInt(randGenNumber, 51, &(botConfig.HalfVolumeFirstCandles), restrict.HalfVolumeFirstCandles)
 	mutateGenInt(randGenNumber, 52, &(botConfig.HalfVolumeSecondCandles), restrict.HalfVolumeSecondCandles)
 	mutateGenFloat64(randGenNumber, 53, &(botConfig.HalfVolumeGrowthPercentage), restrict.HalfVolumeGrowthPercentage)
+
+	mutateGenFloat64(randGenNumber, 54, &(botConfig.TrailingActivationPercentage), restrict.TrailingActivationPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

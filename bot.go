@@ -81,6 +81,8 @@ type BotConfig struct {
 	HalfVolumeSecondCandles    int
 	HalfVolumeGrowthPercentage float64
 
+	TrailingActivationPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 
