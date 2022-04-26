@@ -153,7 +153,7 @@ func updateBuys(
 	trailing *Trailing,
 	hasSecondPercentageBuySignal *bool,
 ) {
-	if trailing.CanSellByStop(candle) {
+	if trailing.IsActivationReached(candle) {
 		if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
 			trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, trailingStopPrice, candle.CloseTime)
 			if len(trailingUnsoldBuys) > 0 {

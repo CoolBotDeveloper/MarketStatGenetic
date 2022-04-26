@@ -89,12 +89,20 @@ func (trailing *Trailing) Finish(candle Candle) {
 
 func (trailing *Trailing) IsActivationReached(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
-		activationPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailing.ActivationPercentage)
+		//activationPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailing.ActivationPercentage)
+		activationPrice := trailing.calculateActivationPrice(trailingSymbol, trailing.ActivationPercentage)
 
-		return candle.ClosePrice <= activationPrice
+		return activationPrice >= candle.ClosePrice
 	}
 
 	return false
+}
+
+func (trailing *Trailing) calculateActivationPrice(trailingSymbol *TrailingSymbol, activationPercentage float64) float64 {
+	diff := trailingSymbol.LastMaxPrice - trailingSymbol.StopPrice
+	plusPrice := (diff * activationPercentage) / 100.0
+
+	return trailingSymbol.StopPrice + plusPrice
 }
 
 func (trailing *Trailing) CanSellByStop(candle Candle) bool {
