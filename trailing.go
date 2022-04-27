@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Trailing struct {
 	Items map[string]*TrailingSymbol
 
@@ -11,11 +13,13 @@ type Trailing struct {
 }
 
 type TrailingSymbol struct {
-	Symbol            string
-	StopPrice         float64
-	PreviousPrices    []float64
-	CurrentPercentage float64
-	LastMaxPrice      float64
+	Symbol               string
+	StopPrice            float64
+	PreviousPrices       []float64
+	CurrentPercentage    float64
+	LastMaxPrice         float64
+	IsPrevLastPercentage bool
+	PrevLastSellPrice    float64
 }
 
 func NewTrailingSymbol(config BotConfig) Trailing {
@@ -51,21 +55,30 @@ func (trailing *Trailing) Update(candle Candle) bool {
 			if isHigherThanLastMaxPrice {
 				trailing.increasePercentage(trailingSymbol)
 
-				//fmt.Println(fmt.Sprintf("Trailing INCREASED %f, StopPrice: %f:, COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
-				//	trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+				fmt.Println(fmt.Sprintf("Trailing INCREASED %f, StopPrice: %f:, COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			} else {
 				// if not growing, step by step reduce low percentage
 				trailing.reducePercentage(trailingSymbol)
 
-				//fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
-				//	trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+				fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			}
 		} else {
 			// if not growing, step by step reduce low percentage
 			trailing.reducePercentage(trailingSymbol)
 
-			//fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
-			//	trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+			fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+				trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+		}
+
+		if trailing.IsPrevLastPercentage(candle) {
+			trailingSymbol.PrevLastSellPrice = trailing.calculateStopPrice(candle.ClosePrice, trailing.ActivationPercentage)
+
+			fmt.Println(fmt.Sprintf("Trailing ACTIVATION %f, PrevLastSellPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+				trailingSymbol.CurrentPercentage, trailingSymbol.PrevLastSellPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
+
+			return true
 		}
 
 		newStopPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailingSymbol.CurrentPercentage)
@@ -87,27 +100,17 @@ func (trailing *Trailing) Finish(candle Candle) {
 	}
 }
 
-func (trailing *Trailing) IsActivationReached(candle Candle) bool {
-	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
-		//activationPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailing.ActivationPercentage)
-		activationPrice := trailing.calculateActivationPrice(trailingSymbol, trailing.ActivationPercentage)
-
-		return activationPrice >= candle.ClosePrice
-	}
-
-	return false
-}
-
-func (trailing *Trailing) calculateActivationPrice(trailingSymbol *TrailingSymbol, activationPercentage float64) float64 {
-	diff := trailingSymbol.LastMaxPrice - trailingSymbol.StopPrice
-	plusPrice := (diff * activationPercentage) / 100.0
-
-	return trailingSymbol.StopPrice + plusPrice
-}
-
 func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
-		return candle.ClosePrice <= trailingSymbol.StopPrice
+		if trailingSymbol.StopPrice >= candle.ClosePrice {
+			return true
+		}
+
+		if 0.0 == trailingSymbol.PrevLastSellPrice {
+			return false
+		}
+
+		return trailingSymbol.PrevLastSellPrice >= candle.ClosePrice
 	}
 
 	return false
@@ -115,10 +118,33 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 
 func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
-		return trailingSymbol.StopPrice, true
+		if trailingSymbol.StopPrice >= candle.ClosePrice {
+			return trailingSymbol.StopPrice, true
+		}
+
+		return trailingSymbol.PrevLastSellPrice, true
 	}
 
 	return 0.0, false
+}
+
+func (trailing *Trailing) IsPrevLastPercentage(candle Candle) bool {
+	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		if trailingSymbol.IsPrevLastPercentage {
+			return true
+		}
+
+		prevLastPercentage := trailing.TopPercentage + trailing.ReducePercentage
+		if trailing.TopPercentage < trailingSymbol.CurrentPercentage &&
+			trailingSymbol.CurrentPercentage <= prevLastPercentage {
+
+			trailingSymbol.IsPrevLastPercentage = true
+		}
+
+		return trailingSymbol.IsPrevLastPercentage
+	}
+
+	return false
 }
 
 func (trailing *Trailing) reducePercentage(trailingSymbol *TrailingSymbol) {
@@ -149,11 +175,13 @@ func (trailing *Trailing) increasePercentage(trailingSymbol *TrailingSymbol) {
 
 func (trailing *Trailing) initiateSymbolTrailing(candle Candle) {
 	trailing.Items[candle.Symbol] = &TrailingSymbol{
-		Symbol:            candle.Symbol,
-		PreviousPrices:    []float64{candle.ClosePrice},
-		StopPrice:         trailing.calculateStopPrice(candle.ClosePrice, trailing.BottomPercentage),
-		CurrentPercentage: trailing.BottomPercentage,
-		LastMaxPrice:      candle.ClosePrice,
+		Symbol:               candle.Symbol,
+		PreviousPrices:       []float64{candle.ClosePrice},
+		StopPrice:            trailing.calculateStopPrice(candle.ClosePrice, trailing.BottomPercentage),
+		CurrentPercentage:    trailing.BottomPercentage,
+		LastMaxPrice:         candle.ClosePrice,
+		IsPrevLastPercentage: false,
+		PrevLastSellPrice:    0.0,
 	}
 }
 

@@ -117,14 +117,14 @@ func candleHandler(
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
+	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
+	//positiveApproach.UpdateBuys(candle)
+
 	/* !Important to update trailing each candle update */
 	trailing.Update(candle)
 	//if isUpdated {
 	//	fmt.Println(fmt.Sprintf("TrailingUpdate: COIN: %s, EXCHANGE_RATE: %f, TIME: %s", candle.Symbol, candle.ClosePrice, candle.CloseTime))
 	//}
-
-	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
-	//positiveApproach.UpdateBuys(candle)
 
 	if !*hasSecondPercentageBuySignal &&
 		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
@@ -153,7 +153,7 @@ func updateBuys(
 	trailing *Trailing,
 	hasSecondPercentageBuySignal *bool,
 ) {
-	if trailing.IsActivationReached(candle) {
+	if trailing.CanSellByStop(candle) {
 		if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
 			trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, trailingStopPrice, candle.CloseTime)
 			if len(trailingUnsoldBuys) > 0 {
