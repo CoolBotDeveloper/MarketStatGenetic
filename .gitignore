@@ -1,5 +1,7 @@
 .idea
 datasets
+datasets2
+datasets3
 temp
 go_build_MarketStatGeneticOnNewLib
 *.db

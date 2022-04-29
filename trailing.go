@@ -72,16 +72,14 @@ func (trailing *Trailing) Update(candle Candle) bool {
 				trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 		}
 
-		if trailing.IsPrevLastPercentage(candle) {
-			trailingSymbol.PrevLastSellPrice = trailing.calculateStopPrice(candle.ClosePrice, trailing.ActivationPercentage)
+		newStopPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailingSymbol.CurrentPercentage)
+		if trailing.IsLastPercentage(candle) {
+			newStopPrice = trailing.calculateStopPrice(candle.ClosePrice, trailing.ActivationPercentage)
 
 			fmt.Println(fmt.Sprintf("Trailing ACTIVATION %f, PrevLastSellPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 				trailingSymbol.CurrentPercentage, trailingSymbol.PrevLastSellPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
-
-			return true
 		}
 
-		newStopPrice := trailing.calculateStopPrice(trailingSymbol.LastMaxPrice, trailingSymbol.CurrentPercentage)
 		// just update if the new calculated stop price higher than old one
 		if newStopPrice > trailingSymbol.StopPrice {
 			trailingSymbol.StopPrice = newStopPrice
@@ -102,15 +100,7 @@ func (trailing *Trailing) Finish(candle Candle) {
 
 func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
-		if trailingSymbol.StopPrice >= candle.ClosePrice {
-			return true
-		}
-
-		if 0.0 == trailingSymbol.PrevLastSellPrice {
-			return false
-		}
-
-		return trailingSymbol.PrevLastSellPrice >= candle.ClosePrice
+		return trailingSymbol.StopPrice >= candle.ClosePrice
 	}
 
 	return false
@@ -142,6 +132,14 @@ func (trailing *Trailing) IsPrevLastPercentage(candle Candle) bool {
 		}
 
 		return trailingSymbol.IsPrevLastPercentage
+	}
+
+	return false
+}
+
+func (trailing *Trailing) IsLastPercentage(candle Candle) bool {
+	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		return trailing.TopPercentage == trailingSymbol.CurrentPercentage
 	}
 
 	return false

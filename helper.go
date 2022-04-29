@@ -201,6 +201,35 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 	}
 }
 
+func GetMarketBuyCurrentPrice(price float64) float64 {
+	minPercentage := 0.03
+	maxPercentage := 0.3
+
+	offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
+	offset := (offsetPercentage * price) / 100
+
+	if GetRandInt(0, 2) == 1 {
+		offset = -1.0 * offset
+	}
+
+	return price + offset
+}
+
+func GetMarketSellCurrentPrice(price float64) float64 {
+	minPercentage := 0.03
+	maxPercentage := 0.3
+
+	offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
+	offset := (offsetPercentage * price) / 100
+
+	randInt := GetRandInt(0, 2)
+	if randInt > 0 {
+		offset = -1.0 * offset
+	}
+
+	return price + offset
+}
+
 func InArray(needle float64, array *[]float64) bool {
 	searchArray := *array
 	for _, element := range searchArray {

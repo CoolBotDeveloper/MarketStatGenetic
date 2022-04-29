@@ -137,7 +137,10 @@ func candleHandler(
 			// Do buy
 
 			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
-			exchangeManager.Buy(candle.Symbol, candle.GetCurrentPrice(), candle.CloseTime)
+
+			currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
+			exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
+
 			*hasSecondPercentageBuySignal = true
 			trailing.Start(candle)
 			//bot.ResetHasReached()
@@ -155,7 +158,8 @@ func updateBuys(
 ) {
 	if trailing.CanSellByStop(candle) {
 		if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
-			trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, trailingStopPrice, candle.CloseTime)
+			currentPrice := GetMarketSellCurrentPrice(trailingStopPrice)
+			trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, currentPrice, candle.CloseTime)
 			if len(trailingUnsoldBuys) > 0 {
 				*hasSecondPercentageBuySignal = false
 			}
