@@ -362,8 +362,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			min: 60,
 			max: 120,
 		},
-		FlatLineSearchWindowsCount: MinMaxInt{ // этот не испльзуется
-			min: 1,
+		FlatLineSearchWindowsCount: MinMaxInt{
+			min: 2,
 			max: 5,
 		},
 		FlatLineSearchDispersionPercentage: MinMaxFloat64{
@@ -371,7 +371,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 1.5,
 		},
 		FlatLineSearchOnLinePricesPercentage: MinMaxFloat64{
-			min: 95,
+			min: 98,
 			max: 100,
 		},
 	}
