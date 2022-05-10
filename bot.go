@@ -83,6 +83,11 @@ type BotConfig struct {
 
 	TrailingActivationPercentage float64
 
+	FlatLineSearchWindowCandles          int
+	FlatLineSearchWindowsCount           int
+	FlatLineSearchDispersionPercentage   float64
+	FlatLineSearchOnLinePricesPercentage float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

@@ -395,6 +395,116 @@ func (indicator *FlatLineIndicator) calcB(firstPrice, k float64, x int) float64 
 	return firstPrice - (k * float64(x))
 }
 
+// Flat line search indicator
+type FlatLineSearchIndicator struct {
+	config BotConfig
+}
+
+func NewFlatLineSearchIndicator(config BotConfig) FlatLineSearchIndicator {
+	return FlatLineSearchIndicator{config: config}
+}
+
+func (indicator *FlatLineSearchIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
+	if count < needCount {
+		return true
+	}
+
+	normalizedPrices := indicator.normalizePrices(GetClosePrice(candles, needCount))
+
+	for i := 0; i < indicator.config.FlatLineSearchWindowsCount; i++ {
+		start := i * indicator.config.FlatLineSearchWindowsCount
+		end := start + indicator.config.FlatLineSearchWindowCandles
+
+		// If we have the line, it means that we already had the line before, and we are so late to make some buys
+		windowPrices := normalizedPrices[start:end]
+		if indicator.isLine(windowPrices) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (indicator *FlatLineSearchIndicator) isLine(windowPrices []float64) bool {
+	onLineCount := indicator.countOnLinePrices(
+		windowPrices,
+		indicator.config.FlatLineSearchDispersionPercentage,
+		indicator.config.FlatLineSearchWindowCandles,
+	)
+
+	onLinePercentage := float64(onLineCount*100) / float64(indicator.config.FlatLineSearchWindowCandles)
+
+	return onLinePercentage >= indicator.config.FlatLineSearchOnLinePricesPercentage
+}
+
+func (indicator *FlatLineSearchIndicator) countOnLinePrices(closeCandles []float64, heightPercentage float64, period int) int {
+	onLineCount := 2
+
+	lastIdx := len(closeCandles) - 1
+	firstPrice := closeCandles[0]
+	lastPrice := closeCandles[lastIdx]
+
+	for index, currentPrice := range closeCandles {
+		// if first or last candle, just skip, because they are already on line
+		if index == 0 || index == lastIdx {
+			continue
+		}
+
+		isPriceOnLine := indicator.isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage, period, index)
+		if isPriceOnLine {
+			onLineCount++
+		}
+	}
+
+	return onLineCount
+}
+
+func (indicator *FlatLineSearchIndicator) isPriceOnLine(currentPrice, firstPrice, lastPrice, heightPercentage float64, period, currentPriceIndex int) bool {
+	height := indicator.calcHeight(firstPrice, heightPercentage)
+	onLinePrice := indicator.calcOnLinePrice(firstPrice, lastPrice, period, currentPriceIndex)
+
+	return (onLinePrice-height) <= currentPrice && currentPrice <= (onLinePrice+height)
+}
+
+func (indicator *FlatLineSearchIndicator) calcHeight(firstPrice, heightPercentage float64) float64 {
+	return (firstPrice * heightPercentage) / 100
+}
+
+func (indicator *FlatLineSearchIndicator) calcOnLinePrice(firstPrice, lastPrice float64, period, currentPriceIndex int) float64 {
+	// y = kx + b
+	k := indicator.calcK(firstPrice, lastPrice, period)
+	b := indicator.calcB(firstPrice, k, 0)
+	x := float64(currentPriceIndex)
+
+	return math.Abs(k*x + b)
+}
+
+func (indicator *FlatLineSearchIndicator) calcK(firstPrice, lastPrice float64, period int) float64 {
+	x1 := 0.0
+	x2 := float64(period - 1)
+
+	return math.Abs((firstPrice - lastPrice) / (x1 - x2))
+}
+
+func (indicator *FlatLineSearchIndicator) calcB(firstPrice, k float64, x int) float64 {
+	return firstPrice - (k * float64(x))
+}
+
+func (indicator *FlatLineSearchIndicator) normalizePrices(prices []float64) []float64 {
+	min := 0.0
+	max := 1.0
+	normalized := []float64{}
+
+	for _, price := range prices {
+		norm := (price - min) / (max - min)
+		normalized = append(normalized, math.Round(norm*100))
+	}
+
+	return prices
+}
+
 // Two line indicator
 type TwoLineIndicator struct {
 	config BotConfig
