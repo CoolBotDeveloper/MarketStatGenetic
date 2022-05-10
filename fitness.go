@@ -130,6 +130,7 @@ func candleHandler(
 		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
 		//candleMarketStat.HasBtcBuyPercentage() &&
+		//isGreenCandle(candle) &&
 		bot.HasBuySignal() {
 
 		//if positiveApproach.HasSignal(candle) {
@@ -147,6 +148,10 @@ func candleHandler(
 		}
 		//}
 	}
+}
+
+func isGreenCandle(candle Candle) bool {
+	return candle.OpenPrice < candle.ClosePrice
 }
 
 func updateBuys(

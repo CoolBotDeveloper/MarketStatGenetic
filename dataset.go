@@ -28,6 +28,7 @@ func ImportDatasets() *[]Dataset {
 			"2022-01",
 			"2022-02",
 			"2022-03",
+			"2022-04",
 		}
 		locDatasets := []Dataset{}
 		for _, date := range dates {
@@ -36,10 +37,8 @@ func ImportDatasets() *[]Dataset {
 
 			for _, fileName := range csvFiles {
 				symbol := GetCoinSymbolFromCsvFileName(fileName)
-				if btcDatasetCandles == nil {
-					bd := CsvFileToCandles(btcFileName, "BTCUSDT")
-					btcDatasetCandles = &bd
-				}
+				bd := CsvFileToCandles(btcFileName, "BTCUSDT")
+				btcDatasetCandles = &bd
 
 				altCoinCandles := CsvFileToCandles(fileName, symbol)
 				if len(*btcDatasetCandles) == len(altCoinCandles) {

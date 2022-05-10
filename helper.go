@@ -222,7 +222,7 @@ func GetMarketSellCurrentPrice(price float64) float64 {
 	offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
 	offset := (offsetPercentage * price) / 100
 
-	randInt := GetRandInt(0, 2)
+	randInt := GetRandInt(0, 3)
 	if randInt > 0 {
 		offset = -1.0 * offset
 	}

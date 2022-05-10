@@ -59,14 +59,14 @@ func (bot *CoinBot) initIndicators() {
 	//superTrendIndicator := NewSuperTrendIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
 
-	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
+	//averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 
-	priceFallIndicator := NewPriceFallIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
+	//priceFallIndicator := NewPriceFallIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
 
-	//flatLineIndicator := NewFlatLineIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &flatLineIndicator)
+	flatLineIndicator := NewFlatLineIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &flatLineIndicator)
 
 	//twoLineIndicator := NewTwoLineIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &twoLineIndicator)
@@ -88,8 +88,8 @@ func (bot *CoinBot) initIndicators() {
 	//wholeDayTotalVolumeIndicator := NewWholeDayTotalVolumeIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &wholeDayTotalVolumeIndicator)
 
-	//halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
+	halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
 }
 
 // Coin bot factory

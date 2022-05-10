@@ -20,6 +20,8 @@ type TrailingSymbol struct {
 	LastMaxPrice         float64
 	IsPrevLastPercentage bool
 	PrevLastSellPrice    float64
+	UpdatesCount         int
+	ReduceNumber         int
 }
 
 func NewTrailingSymbol(config BotConfig) Trailing {
@@ -40,6 +42,8 @@ func (trailing *Trailing) Start(candle Candle) {
 
 func (trailing *Trailing) Update(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		trailingSymbol.UpdatesCount++
+
 		// if there is not enough prices just skip it
 		if len(trailingSymbol.PreviousPrices) < 1 {
 			return false
@@ -100,7 +104,11 @@ func (trailing *Trailing) Finish(candle Candle) {
 
 func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
-		return trailingSymbol.StopPrice >= candle.ClosePrice
+		//if trailingSymbol.UpdatesCount == 1 && trailingSymbol.ReduceNumber == 1 {
+		//	return true
+		//}
+
+		return trailingSymbol.StopPrice >= candle.ClosePrice || trailing.IsLastPercentage(candle)
 	}
 
 	return false
@@ -108,11 +116,17 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 
 func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		//if trailingSymbol.UpdatesCount == 1 && trailingSymbol.ReduceNumber == 1 {
+		//	return candle.ClosePrice, true
+		//}
+
 		if trailingSymbol.StopPrice >= candle.ClosePrice {
 			return trailingSymbol.StopPrice, true
 		}
 
-		return trailingSymbol.PrevLastSellPrice, true
+		return candle.ClosePrice, true
+
+		//return trailingSymbol.StopPrice, true
 	}
 
 	return 0.0, false
@@ -146,6 +160,8 @@ func (trailing *Trailing) IsLastPercentage(candle Candle) bool {
 }
 
 func (trailing *Trailing) reducePercentage(trailingSymbol *TrailingSymbol) {
+	trailingSymbol.ReduceNumber++
+
 	if trailing.TopPercentage == trailingSymbol.CurrentPercentage {
 		return
 	}
@@ -180,6 +196,9 @@ func (trailing *Trailing) initiateSymbolTrailing(candle Candle) {
 		LastMaxPrice:         candle.ClosePrice,
 		IsPrevLastPercentage: false,
 		PrevLastSellPrice:    0.0,
+
+		UpdatesCount: 0,
+		ReduceNumber: 0,
 	}
 }
 

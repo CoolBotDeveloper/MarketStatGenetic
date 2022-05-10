@@ -136,26 +136,27 @@ func NewHalfVolumeIndicator(config BotConfig) HalfVolumeIndicator {
 
 func (indicator *HalfVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	count := len(candles)
-	needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeSecondCandles
+	//needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeSecondCandles
+	needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeFirstCandles
 	if count < needCount {
 		return false
 	}
 
-	onlyGreen := true // true - только для зеленых, false - все
+	//onlyGreen := false // true - только для зеленых, false - все
 
 	volumes := GetVolumes(candles, needCount)
-	if onlyGreen {
-		volumes = GetSignedVolumes(candles, needCount)
-	}
+	//if onlyGreen {
+	//	volumes = GetSignedVolumes(candles, needCount)
+	//}
 
 	volumesFirst := volumes[:indicator.config.HalfVolumeFirstCandles]
 	volumesSecond := volumes[indicator.config.HalfVolumeFirstCandles:]
 
 	// -->
-	if onlyGreen {
-		volumesFirst = GetOnlyPositiveValues(volumesFirst)
-		volumesSecond = GetOnlyPositiveValues(volumesSecond)
-	}
+	//if onlyGreen {
+	//	volumesFirst = GetOnlyPositiveValues(volumesFirst)
+	//	volumesSecond = GetOnlyPositiveValues(volumesSecond)
+	//}
 	// <--
 
 	halfVolumeFirst := GetTotal(volumesFirst)
