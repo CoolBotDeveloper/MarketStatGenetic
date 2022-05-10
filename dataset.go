@@ -34,10 +34,10 @@ func ImportDatasets() *[]Dataset {
 		for _, date := range dates {
 			btcFileName := "./datasets/BTCUSDT-1m-" + date + ".csv"
 			csvFiles := GetCsvFileNamesInDir(dir, date)
+			bd := CsvFileToCandles(btcFileName, "BTCUSDT")
 
 			for _, fileName := range csvFiles {
 				symbol := GetCoinSymbolFromCsvFileName(fileName)
-				bd := CsvFileToCandles(btcFileName, "BTCUSDT")
 				btcDatasetCandles = &bd
 
 				altCoinCandles := CsvFileToCandles(fileName, symbol)
