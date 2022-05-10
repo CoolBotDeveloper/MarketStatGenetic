@@ -91,6 +91,11 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("TrailingActivationPercentage", nil),
 
+		dataframe.NewSeriesInt64("FlatLineSearchWindowCandles", nil),
+		dataframe.NewSeriesInt64("FlatLineSearchWindowsCount", nil),
+		dataframe.NewSeriesFloat64("FlatLineSearchDispersionPercentage", nil),
+		dataframe.NewSeriesFloat64("FlatLineSearchOnLinePricesPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -273,6 +278,11 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"TrailingActivationPercentage": bot["TrailingActivationPercentage"],
 
+		"FlatLineSearchWindowCandles":          bot["FlatLineSearchWindowCandles"],
+		"FlatLineSearchWindowsCount":           bot["FlatLineSearchWindowsCount"],
+		"FlatLineSearchDispersionPercentage":   bot["FlatLineSearchDispersionPercentage"],
+		"FlatLineSearchOnLinePricesPercentage": bot["FlatLineSearchOnLinePricesPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -393,10 +403,15 @@ func makeChild(
 		HalfVolumeGrowthPercentage: GetFloatFatherOrMomGen(maleBotConfig.HalfVolumeGrowthPercentage, femaleBotConfig.HalfVolumeGrowthPercentage),
 
 		TrailingActivationPercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingActivationPercentage, femaleBotConfig.TrailingActivationPercentage),
+
+		FlatLineSearchWindowCandles:          GetIntFatherOrMomGen(maleBotConfig.FlatLineSearchWindowCandles, femaleBotConfig.FlatLineSearchWindowCandles),
+		FlatLineSearchWindowsCount:           GetIntFatherOrMomGen(maleBotConfig.FlatLineSearchWindowsCount, femaleBotConfig.FlatLineSearchWindowsCount),
+		FlatLineSearchDispersionPercentage:   GetFloatFatherOrMomGen(maleBotConfig.FlatLineSearchDispersionPercentage, femaleBotConfig.FlatLineSearchDispersionPercentage),
+		FlatLineSearchOnLinePricesPercentage: GetFloatFatherOrMomGen(maleBotConfig.FlatLineSearchOnLinePricesPercentage, femaleBotConfig.FlatLineSearchOnLinePricesPercentage),
 	}
 
-	for i := 0; i < 46; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 54))
+	for i := 0; i < 50; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 58))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -480,6 +495,11 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"HalfVolumeGrowthPercentage": botConfig.HalfVolumeGrowthPercentage,
 
 		"TrailingActivationPercentage": botConfig.TrailingActivationPercentage,
+
+		"FlatLineSearchWindowCandles":          botConfig.FlatLineSearchWindowCandles,
+		"FlatLineSearchWindowsCount":           botConfig.FlatLineSearchWindowsCount,
+		"FlatLineSearchDispersionPercentage":   botConfig.FlatLineSearchDispersionPercentage,
+		"FlatLineSearchOnLinePricesPercentage": botConfig.FlatLineSearchOnLinePricesPercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -567,6 +587,11 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 53, &(botConfig.HalfVolumeGrowthPercentage), restrict.HalfVolumeGrowthPercentage)
 
 	mutateGenFloat64(randGenNumber, 54, &(botConfig.TrailingActivationPercentage), restrict.TrailingActivationPercentage)
+
+	mutateGenInt(randGenNumber, 55, &(botConfig.FlatLineSearchWindowCandles), restrict.FlatLineSearchWindowCandles)
+	mutateGenInt(randGenNumber, 56, &(botConfig.FlatLineSearchWindowsCount), restrict.FlatLineSearchWindowsCount)
+	mutateGenFloat64(randGenNumber, 57, &(botConfig.FlatLineSearchDispersionPercentage), restrict.FlatLineSearchDispersionPercentage)
+	mutateGenFloat64(randGenNumber, 58, &(botConfig.FlatLineSearchOnLinePricesPercentage), restrict.FlatLineSearchOnLinePricesPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

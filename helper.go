@@ -198,6 +198,11 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		HalfVolumeGrowthPercentage: convertToFloat64(dataFrame["HalfVolumeGrowthPercentage"]),
 
 		TrailingActivationPercentage: convertToFloat64(dataFrame["TrailingActivationPercentage"]),
+
+		FlatLineSearchWindowCandles:          convertToInt(dataFrame["FlatLineSearchWindowCandles"]),
+		FlatLineSearchWindowsCount:           convertToInt(dataFrame["FlatLineSearchWindowsCount"]),
+		FlatLineSearchDispersionPercentage:   convertToFloat64(dataFrame["FlatLineSearchDispersionPercentage"]),
+		FlatLineSearchOnLinePricesPercentage: convertToFloat64(dataFrame["FlatLineSearchOnLinePricesPercentage"]),
 	}
 }
 

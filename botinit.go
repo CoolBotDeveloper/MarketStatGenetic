@@ -80,5 +80,10 @@ func InitBotConfig() BotConfig {
 		HalfVolumeGrowthPercentage: GetRandFloat64Config(restrict.HalfVolumeGrowthPercentage),
 
 		TrailingActivationPercentage: GetRandFloat64Config(restrict.TrailingActivationPercentage),
+
+		FlatLineSearchWindowCandles:          GetRandIntConfig(restrict.FlatLineSearchWindowCandles),
+		FlatLineSearchWindowsCount:           GetRandIntConfig(restrict.FlatLineSearchWindowsCount),
+		FlatLineSearchDispersionPercentage:   GetRandFloat64Config(restrict.FlatLineSearchDispersionPercentage),
+		FlatLineSearchOnLinePricesPercentage: GetRandFloat64Config(restrict.FlatLineSearchOnLinePricesPercentage),
 	}
 }
