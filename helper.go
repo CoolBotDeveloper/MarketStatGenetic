@@ -315,6 +315,38 @@ func PrintNeuralData(symbol, boughtAt, soldAt string, revenue float64) {
 	fmt.Println(fmt.Sprintf("NeuralNetwork|%s,%s,%s,%f", symbol, boughtAt, soldAt, revenue))
 }
 
+func Min(values []float64) float64 {
+	if 0 == len(values) {
+		panic("No values for MIN function")
+	}
+
+	min := values[0]
+
+	for _, value := range values {
+		if value < min {
+			min = value
+		}
+	}
+
+	return min
+}
+
+func Max(values []float64) float64 {
+	if 0 == len(values) {
+		panic("No values for MAX function")
+	}
+
+	max := values[0]
+
+	for _, value := range values {
+		if value > max {
+			max = value
+		}
+	}
+
+	return max
+}
+
 func getKlineCandleListLastIdx(candles *[]Candle) int {
 	return len(*candles) - 1
 }

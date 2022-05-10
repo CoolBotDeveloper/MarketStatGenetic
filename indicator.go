@@ -493,8 +493,9 @@ func (indicator *FlatLineSearchIndicator) calcB(firstPrice, k float64, x int) fl
 }
 
 func (indicator *FlatLineSearchIndicator) normalizePrices(prices []float64) []float64 {
-	min := 0.0
-	max := 1.0
+	min := Min(prices)
+	max := Max(prices)
+
 	normalized := []float64{}
 
 	for _, price := range prices {
