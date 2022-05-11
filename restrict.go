@@ -406,12 +406,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		SmoothGrowthCandles: MinMaxInt{
-			min: 4,
-			max: 8,
+			min: 3,
+			max: 6,
 		},
 		SmoothGrowthAngle: MinMaxFloat64{
-			min: 25,
-			max: 50,
+			min: 5,
+			max: 30,
 		},
 	}
 }

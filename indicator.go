@@ -620,6 +620,7 @@ func (indicator *SmoothGrowthIndicator) calcGrowthAngle(prices []float64) float6
 	candlesCount := len(prices)
 	firstPrice := prices[0]
 	lastPrice := prices[candlesCount-1]
+	radians := math.Atan((lastPrice - firstPrice) / float64(candlesCount))
 
-	return (lastPrice - firstPrice) / float64(candlesCount)
+	return radians * (180 / math.Pi)
 }
