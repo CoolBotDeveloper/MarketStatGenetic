@@ -36,7 +36,7 @@ func (indicator *SuperTrendIndicator) HasBuySignal(candles []Candle) bool {
 	)
 	lastTrendIdx := len(trend) - 1
 
-	return trend[lastTrendIdx] && indicator.hadRedTrendBefore(trend)
+	return trend[lastTrendIdx] /*&& indicator.hadRedTrendBefore(trend)*/
 }
 
 func (indicator *SuperTrendIndicator) hadRedTrendBefore(trend []bool) bool {
@@ -406,13 +406,20 @@ func NewFlatLineSearchIndicator(config BotConfig) FlatLineSearchIndicator {
 
 func (indicator *FlatLineSearchIndicator) HasBuySignal(candles []Candle) bool {
 	count := len(candles)
-	needCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
+	needCount := indicator.config.FlatLineSearchRelativePeriodCandles
+	//needCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
 	if count < needCount {
 		return true
 	}
 
-	normalizedPrices := indicator.normalizePrices(GetClosePrice(candles, needCount))
+	relativePrice := GetClosePrice(candles, needCount)[0]
+	windowMoveNeedCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
+	normalizedPrices := indicator.normalizePrices(append(
+		[]float64{relativePrice},
+		GetClosePrice(candles, windowMoveNeedCount)...,
+	))
 
+	normalizedPrices = normalizedPrices[1:]
 	for i := 0; i < indicator.config.FlatLineSearchWindowsCount; i++ {
 		start := i * indicator.config.FlatLineSearchWindowsCount
 		end := start + indicator.config.FlatLineSearchWindowCandles

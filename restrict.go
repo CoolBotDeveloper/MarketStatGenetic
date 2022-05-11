@@ -189,7 +189,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 20,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 30000,
+			min: 50000,
 			max: 1000000,
 		},
 
@@ -287,12 +287,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		FlatLineCandles: MinMaxInt{
-			min: 100,
-			max: 400,
+			min: 60,
+			max: 1000,
 		},
 		FlatLineSkipCandles: MinMaxInt{
 			min: 0,
-			max: 5,
+			max: 20,
 		},
 		FlatLineDispersionPercentage: MinMaxFloat64{
 			min: 0.5,
@@ -320,7 +320,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		StopBuyAfterSellPeriodMinutes: MinMaxInt{
 			min: 0,
-			max: 30,
+			max: 0,
 		},
 
 		// -----------------------------------------------------
@@ -359,19 +359,19 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		FlatLineSearchWindowCandles: MinMaxInt{
-			min: 60,
-			max: 120,
+			min: 30,
+			max: 500,
 		},
 		FlatLineSearchWindowsCount: MinMaxInt{
-			min: 2,
-			max: 5,
+			min: 5,
+			max: 20,
 		},
 		FlatLineSearchDispersionPercentage: MinMaxFloat64{
-			min: 0.1,
-			max: 1.5,
+			min: 1,
+			max: 3,
 		},
 		FlatLineSearchOnLinePricesPercentage: MinMaxFloat64{
-			min: 98,
+			min: 90,
 			max: 100,
 		},
 	}

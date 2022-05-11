@@ -87,6 +87,7 @@ type BotConfig struct {
 	FlatLineSearchWindowsCount           int
 	FlatLineSearchDispersionPercentage   float64
 	FlatLineSearchOnLinePricesPercentage float64
+	FlatLineSearchRelativePeriodCandles  int
 
 	TotalRevenue      float64
 	SuccessPercentage float64
