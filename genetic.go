@@ -97,6 +97,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("FlatLineSearchOnLinePricesPercentage", nil),
 		dataframe.NewSeriesInt64("FlatLineSearchRelativePeriodCandles", nil),
 
+		dataframe.NewSeriesInt64("TripleGrowthCandles", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -285,6 +287,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"FlatLineSearchOnLinePricesPercentage": bot["FlatLineSearchOnLinePricesPercentage"],
 		"FlatLineSearchRelativePeriodCandles":  bot["FlatLineSearchRelativePeriodCandles"],
 
+		"TripleGrowthCandles": bot["TripleGrowthCandles"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -411,10 +415,12 @@ func makeChild(
 		FlatLineSearchDispersionPercentage:   GetFloatFatherOrMomGen(maleBotConfig.FlatLineSearchDispersionPercentage, femaleBotConfig.FlatLineSearchDispersionPercentage),
 		FlatLineSearchOnLinePricesPercentage: GetFloatFatherOrMomGen(maleBotConfig.FlatLineSearchOnLinePricesPercentage, femaleBotConfig.FlatLineSearchOnLinePricesPercentage),
 		FlatLineSearchRelativePeriodCandles:  GetIntFatherOrMomGen(maleBotConfig.FlatLineSearchRelativePeriodCandles, femaleBotConfig.FlatLineSearchRelativePeriodCandles),
+
+		TripleGrowthCandles: GetIntFatherOrMomGen(maleBotConfig.TripleGrowthCandles, femaleBotConfig.TripleGrowthCandles),
 	}
 
-	for i := 0; i < 51; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 59))
+	for i := 0; i < 52; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 60))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -504,6 +510,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"FlatLineSearchDispersionPercentage":   botConfig.FlatLineSearchDispersionPercentage,
 		"FlatLineSearchOnLinePricesPercentage": botConfig.FlatLineSearchOnLinePricesPercentage,
 		"FlatLineSearchRelativePeriodCandles":  botConfig.FlatLineSearchRelativePeriodCandles,
+
+		"TripleGrowthCandles": botConfig.TripleGrowthCandles,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -597,6 +605,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 57, &(botConfig.FlatLineSearchDispersionPercentage), restrict.FlatLineSearchDispersionPercentage)
 	mutateGenFloat64(randGenNumber, 58, &(botConfig.FlatLineSearchOnLinePricesPercentage), restrict.FlatLineSearchOnLinePricesPercentage)
 	mutateGenInt(randGenNumber, 59, &(botConfig.FlatLineSearchRelativePeriodCandles), restrict.FlatLineSearchRelativePeriodCandles)
+
+	mutateGenInt(randGenNumber, 60, &(botConfig.TripleGrowthCandles), restrict.TripleGrowthCandles)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

@@ -86,5 +86,7 @@ func InitBotConfig() BotConfig {
 		FlatLineSearchDispersionPercentage:   GetRandFloat64Config(restrict.FlatLineSearchDispersionPercentage),
 		FlatLineSearchOnLinePricesPercentage: GetRandFloat64Config(restrict.FlatLineSearchOnLinePricesPercentage),
 		FlatLineSearchRelativePeriodCandles:  GetRandIntConfig(restrict.FlatLineSearchRelativePeriodCandles),
+
+		TripleGrowthCandles: GetRandIntConfig(restrict.TripleGrowthCandles),
 	}
 }
