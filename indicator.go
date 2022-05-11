@@ -409,7 +409,7 @@ func (indicator *FlatLineSearchIndicator) HasBuySignal(candles []Candle) bool {
 	needCount := indicator.config.FlatLineSearchRelativePeriodCandles
 	//needCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
 	if count < needCount {
-		return true
+		return false
 	}
 
 	relativePrice := GetClosePrice(candles, needCount)[0]
@@ -427,11 +427,11 @@ func (indicator *FlatLineSearchIndicator) HasBuySignal(candles []Candle) bool {
 		// If we have the line, it means that we already had the line before, and we are so late to make some buys
 		windowPrices := normalizedPrices[start:end]
 		if indicator.isLine(windowPrices) {
-			return false
+			return true
 		}
 	}
 
-	return true
+	return false
 }
 
 func (indicator *FlatLineSearchIndicator) isLine(windowPrices []float64) bool {
@@ -540,4 +540,32 @@ func (indicator TwoLineIndicator) HasBuySignal(candles []Candle) bool {
 	diffPercentage := CalcGrowth(avgHalfFirst, avgHalfSecond)
 
 	return 0.0 < diffPercentage && diffPercentage <= indicator.config.TwoLineMaxDiffPercentage
+}
+
+// Triple growth indicator
+type TripleGrowthIndicator struct {
+	config BotConfig
+}
+
+func NewTripleGrowthIndicator(config BotConfig) TripleGrowthIndicator {
+	return TripleGrowthIndicator{config: config}
+}
+
+func (indicator TripleGrowthIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.TripleGrowthCandles
+	if count < needCount {
+		return false
+	}
+
+	closePrices := GetClosePrice(candles, needCount)
+	half := int(math.Round(float64(needCount) / 2))
+
+	firstHalf := closePrices[:half]
+	secondHalf := closePrices[half:]
+
+	firstGrowth := CalcGrowth(firstHalf[0], firstHalf[len(firstHalf)-1])
+	secondGrowth := CalcGrowth(secondHalf[0], secondHalf[len(secondHalf)-1])
+
+	return 0.0 <= firstGrowth && 0.0 < secondGrowth && firstGrowth < secondGrowth
 }

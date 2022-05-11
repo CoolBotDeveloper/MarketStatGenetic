@@ -89,6 +89,8 @@ type BotConfig struct {
 	FlatLineSearchOnLinePricesPercentage float64
 	FlatLineSearchRelativePeriodCandles  int
 
+	TripleGrowthCandles int
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

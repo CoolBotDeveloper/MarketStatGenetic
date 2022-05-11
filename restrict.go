@@ -360,19 +360,19 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		FlatLineSearchWindowCandles: MinMaxInt{
-			min: 30,
-			max: 500,
+			min: 20,
+			max: 60 * 3,
 		},
 		FlatLineSearchWindowsCount: MinMaxInt{
-			min: 5,
-			max: 20,
+			min: 1,
+			max: 1,
 		},
 		FlatLineSearchDispersionPercentage: MinMaxFloat64{
-			min: 1,
-			max: 3,
+			min: 0.5,
+			max: 0.9,
 		},
 		FlatLineSearchOnLinePricesPercentage: MinMaxFloat64{
-			min: 90,
+			min: 99.5,
 			max: 100,
 		},
 		FlatLineSearchRelativePeriodCandles: MinMaxInt{
