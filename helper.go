@@ -203,6 +203,7 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		FlatLineSearchWindowsCount:           convertToInt(dataFrame["FlatLineSearchWindowsCount"]),
 		FlatLineSearchDispersionPercentage:   convertToFloat64(dataFrame["FlatLineSearchDispersionPercentage"]),
 		FlatLineSearchOnLinePricesPercentage: convertToFloat64(dataFrame["FlatLineSearchOnLinePricesPercentage"]),
+		FlatLineSearchRelativePeriodCandles:  convertToInt(dataFrame["FlatLineSearchRelativePeriodCandles"]),
 	}
 }
 

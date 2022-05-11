@@ -86,6 +86,7 @@ type BotConfigRestriction struct {
 	FlatLineSearchWindowsCount           MinMaxInt
 	FlatLineSearchDispersionPercentage   MinMaxFloat64
 	FlatLineSearchOnLinePricesPercentage MinMaxFloat64
+	FlatLineSearchRelativePeriodCandles  MinMaxInt
 }
 
 type MinMaxInt struct {
@@ -373,6 +374,10 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		FlatLineSearchOnLinePricesPercentage: MinMaxFloat64{
 			min: 90,
 			max: 100,
+		},
+		FlatLineSearchRelativePeriodCandles: MinMaxInt{
+			min: 60 * 18,
+			max: 60 * 24,
 		},
 	}
 }

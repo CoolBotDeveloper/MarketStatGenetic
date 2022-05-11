@@ -102,10 +102,11 @@ func ImportFromCsv(fileName string) []BotConfig {
 			FlatLineSearchWindowsCount:           convertStringToInt(row[56]),
 			FlatLineSearchDispersionPercentage:   convertStringToFloat64(row[57]),
 			FlatLineSearchOnLinePricesPercentage: convertStringToFloat64(row[58]),
+			FlatLineSearchRelativePeriodCandles:  convertStringToInt(row[59]),
 
-			TotalRevenue:      convertStringToFloat64(row[59]),
-			SuccessPercentage: convertStringToFloat64(row[60]),
-			Selection:         convertStringToFloat64(row[61]),
+			TotalRevenue:      convertStringToFloat64(row[60]),
+			SuccessPercentage: convertStringToFloat64(row[61]),
+			Selection:         convertStringToFloat64(row[62]),
 		}
 
 		bots = append(bots, bot)
