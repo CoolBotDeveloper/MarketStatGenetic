@@ -205,7 +205,8 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		FlatLineSearchOnLinePricesPercentage: convertToFloat64(dataFrame["FlatLineSearchOnLinePricesPercentage"]),
 		FlatLineSearchRelativePeriodCandles:  convertToInt(dataFrame["FlatLineSearchRelativePeriodCandles"]),
 
-		TripleGrowthCandles: convertToInt(dataFrame["TripleGrowthCandles"]),
+		TripleGrowthCandles:          convertToInt(dataFrame["TripleGrowthCandles"]),
+		TripleGrowthSecondPercentage: convertToFloat64(dataFrame["TripleGrowthSecondPercentage"]),
 	}
 }
 

@@ -88,7 +88,8 @@ type BotConfigRestriction struct {
 	FlatLineSearchOnLinePricesPercentage MinMaxFloat64
 	FlatLineSearchRelativePeriodCandles  MinMaxInt
 
-	TripleGrowthCandles MinMaxInt
+	TripleGrowthCandles          MinMaxInt
+	TripleGrowthSecondPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -386,6 +387,10 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TripleGrowthCandles: MinMaxInt{
 			min: 6,
 			max: 20,
+		},
+		TripleGrowthSecondPercentage: MinMaxFloat64{
+			min: 0.5,
+			max: 1.5,
 		},
 	}
 }
