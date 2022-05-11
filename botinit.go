@@ -91,5 +91,8 @@ func InitBotConfig() BotConfig {
 		TripleGrowthSecondPercentage: GetRandFloat64Config(restrict.TripleGrowthSecondPercentage),
 
 		PastMaxPricePeriod: GetRandIntConfig(restrict.PastMaxPricePeriod),
+
+		SmoothGrowthCandles: GetRandIntConfig(restrict.SmoothGrowthCandles),
+		SmoothGrowthAngle:   GetRandFloat64Config(restrict.SmoothGrowthAngle),
 	}
 }

@@ -94,6 +94,9 @@ type BotConfig struct {
 
 	PastMaxPricePeriod int
 
+	SmoothGrowthCandles int
+	SmoothGrowthAngle   float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

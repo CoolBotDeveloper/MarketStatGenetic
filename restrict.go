@@ -92,6 +92,9 @@ type BotConfigRestriction struct {
 	TripleGrowthSecondPercentage MinMaxFloat64
 
 	PastMaxPricePeriod MinMaxInt
+
+	SmoothGrowthCandles MinMaxInt
+	SmoothGrowthAngle   MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -365,12 +368,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		FlatLineSearchWindowCandles: MinMaxInt{
-			min: 20,
+			min: 40,
 			max: 60 * 3,
 		},
 		FlatLineSearchWindowsCount: MinMaxInt{
-			min: 1,
-			max: 1,
+			min: 2,
+			max: 4,
 		},
 		FlatLineSearchDispersionPercentage: MinMaxFloat64{
 			min: 0.5,
@@ -399,6 +402,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		PastMaxPricePeriod: MinMaxInt{
 			min: 60 * 2,
 			max: 60 * 3,
+		},
+
+		// -----------------------------------------------------
+		SmoothGrowthCandles: MinMaxInt{
+			min: 4,
+			max: 8,
+		},
+		SmoothGrowthAngle: MinMaxFloat64{
+			min: 25,
+			max: 50,
 		},
 	}
 }

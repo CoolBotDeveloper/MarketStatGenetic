@@ -209,6 +209,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		TripleGrowthSecondPercentage: convertToFloat64(dataFrame["TripleGrowthSecondPercentage"]),
 
 		PastMaxPricePeriod: convertToInt(dataFrame["PastMaxPricePeriod"]),
+
+		SmoothGrowthCandles: convertToInt(dataFrame["SmoothGrowthCandles"]),
+		SmoothGrowthAngle:   convertToFloat64(dataFrame["SmoothGrowthAngle"]),
 	}
 }
 

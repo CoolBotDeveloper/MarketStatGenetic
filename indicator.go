@@ -594,3 +594,32 @@ func (indicator PastMaxPriceIndicator) HasBuySignal(candles []Candle) bool {
 
 	return max < currentPrice
 }
+
+// Smooth growth indicator
+type SmoothGrowthIndicator struct {
+	config BotConfig
+}
+
+func NewSmoothGrowthIndicator(config BotConfig) SmoothGrowthIndicator {
+	return SmoothGrowthIndicator{config: config}
+}
+
+func (indicator SmoothGrowthIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.SmoothGrowthCandles
+	if count < needCount {
+		return false
+	}
+
+	angle := indicator.calcGrowthAngle(GetClosePrice(candles, needCount))
+
+	return indicator.config.SmoothGrowthAngle <= angle
+}
+
+func (indicator *SmoothGrowthIndicator) calcGrowthAngle(prices []float64) float64 {
+	candlesCount := len(prices)
+	firstPrice := prices[0]
+	lastPrice := prices[candlesCount-1]
+
+	return (lastPrice - firstPrice) / float64(candlesCount)
+}

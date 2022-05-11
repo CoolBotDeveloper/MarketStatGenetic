@@ -102,6 +102,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesInt64("PastMaxPricePeriod", nil),
 
+		dataframe.NewSeriesInt64("SmoothGrowthCandles", nil),
+		dataframe.NewSeriesFloat64("SmoothGrowthAngle", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -295,6 +298,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"PastMaxPricePeriod": bot["PastMaxPricePeriod"],
 
+		"SmoothGrowthCandles": bot["SmoothGrowthCandles"],
+		"SmoothGrowthAngle":   bot["SmoothGrowthAngle"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -426,10 +432,13 @@ func makeChild(
 		TripleGrowthSecondPercentage: GetFloatFatherOrMomGen(maleBotConfig.TripleGrowthSecondPercentage, femaleBotConfig.TripleGrowthSecondPercentage),
 
 		PastMaxPricePeriod: GetIntFatherOrMomGen(maleBotConfig.PastMaxPricePeriod, femaleBotConfig.PastMaxPricePeriod),
+
+		SmoothGrowthCandles: GetIntFatherOrMomGen(maleBotConfig.SmoothGrowthCandles, femaleBotConfig.SmoothGrowthCandles),
+		SmoothGrowthAngle:   GetFloatFatherOrMomGen(maleBotConfig.SmoothGrowthAngle, femaleBotConfig.SmoothGrowthAngle),
 	}
 
-	for i := 0; i < 54; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 62))
+	for i := 0; i < 56; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 64))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -524,6 +533,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"TripleGrowthSecondPercentage": botConfig.TripleGrowthSecondPercentage,
 
 		"PastMaxPricePeriod": botConfig.PastMaxPricePeriod,
+
+		"SmoothGrowthCandles": botConfig.SmoothGrowthCandles,
+		"SmoothGrowthAngle":   botConfig.SmoothGrowthAngle,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -622,6 +634,9 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 61, &(botConfig.TripleGrowthSecondPercentage), restrict.TripleGrowthSecondPercentage)
 
 	mutateGenInt(randGenNumber, 62, &(botConfig.PastMaxPricePeriod), restrict.PastMaxPricePeriod)
+
+	mutateGenInt(randGenNumber, 63, &(botConfig.SmoothGrowthCandles), restrict.SmoothGrowthCandles)
+	mutateGenFloat64(randGenNumber, 64, &(botConfig.SmoothGrowthAngle), restrict.SmoothGrowthAngle)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
