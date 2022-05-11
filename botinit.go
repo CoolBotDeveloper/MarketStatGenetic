@@ -89,5 +89,7 @@ func InitBotConfig() BotConfig {
 
 		TripleGrowthCandles:          GetRandIntConfig(restrict.TripleGrowthCandles),
 		TripleGrowthSecondPercentage: GetRandFloat64Config(restrict.TripleGrowthSecondPercentage),
+
+		PastMaxPricePeriod: GetRandIntConfig(restrict.PastMaxPricePeriod),
 	}
 }

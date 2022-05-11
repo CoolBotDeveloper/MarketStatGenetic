@@ -107,9 +107,11 @@ func ImportFromCsv(fileName string) []BotConfig {
 			TripleGrowthCandles:          convertStringToInt(row[60]),
 			TripleGrowthSecondPercentage: convertStringToFloat64(row[61]),
 
-			TotalRevenue:      convertStringToFloat64(row[62]),
-			SuccessPercentage: convertStringToFloat64(row[63]),
-			Selection:         convertStringToFloat64(row[64]),
+			PastMaxPricePeriod: convertStringToInt(row[62]),
+
+			TotalRevenue:      convertStringToFloat64(row[63]),
+			SuccessPercentage: convertStringToFloat64(row[64]),
+			Selection:         convertStringToFloat64(row[65]),
 		}
 
 		bots = append(bots, bot)

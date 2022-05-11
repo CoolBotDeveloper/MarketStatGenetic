@@ -96,6 +96,9 @@ func (bot *CoinBot) initIndicators() {
 
 	tripleGrowthIndicator := NewTripleGrowthIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &tripleGrowthIndicator)
+
+	//pastMaxPriceIndicator := NewPastMaxPriceIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &pastMaxPriceIndicator)
 }
 
 // Coin bot factory

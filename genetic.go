@@ -6,9 +6,9 @@ import (
 	"math/rand"
 )
 
-const BEST_BOTS_COUNT = 7
-const BEST_BOTS_FROM_PREV_GEN = 3
-const BOTS_COUNT = 25
+const BEST_BOTS_COUNT = 21
+const BEST_BOTS_FROM_PREV_GEN = 8
+const BOTS_COUNT = 80
 const GENERATION_COUNT = 2000
 const DEFAULT_REVENUE = -10000000
 
@@ -99,6 +99,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesInt64("TripleGrowthCandles", nil),
 		dataframe.NewSeriesFloat64("TripleGrowthSecondPercentage", nil),
+
+		dataframe.NewSeriesInt64("PastMaxPricePeriod", nil),
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
@@ -291,6 +293,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"TripleGrowthCandles":          bot["TripleGrowthCandles"],
 		"TripleGrowthSecondPercentage": bot["TripleGrowthSecondPercentage"],
 
+		"PastMaxPricePeriod": bot["PastMaxPricePeriod"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -420,10 +424,12 @@ func makeChild(
 
 		TripleGrowthCandles:          GetIntFatherOrMomGen(maleBotConfig.TripleGrowthCandles, femaleBotConfig.TripleGrowthCandles),
 		TripleGrowthSecondPercentage: GetFloatFatherOrMomGen(maleBotConfig.TripleGrowthSecondPercentage, femaleBotConfig.TripleGrowthSecondPercentage),
+
+		PastMaxPricePeriod: GetIntFatherOrMomGen(maleBotConfig.PastMaxPricePeriod, femaleBotConfig.PastMaxPricePeriod),
 	}
 
-	for i := 0; i < 53; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 61))
+	for i := 0; i < 54; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 62))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -516,6 +522,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"TripleGrowthCandles":          botConfig.TripleGrowthCandles,
 		"TripleGrowthSecondPercentage": botConfig.TripleGrowthSecondPercentage,
+
+		"PastMaxPricePeriod": botConfig.PastMaxPricePeriod,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -612,6 +620,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 60, &(botConfig.TripleGrowthCandles), restrict.TripleGrowthCandles)
 	mutateGenFloat64(randGenNumber, 61, &(botConfig.TripleGrowthSecondPercentage), restrict.TripleGrowthSecondPercentage)
+
+	mutateGenInt(randGenNumber, 62, &(botConfig.PastMaxPricePeriod), restrict.PastMaxPricePeriod)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

@@ -92,6 +92,8 @@ type BotConfig struct {
 	TripleGrowthCandles          int
 	TripleGrowthSecondPercentage float64
 
+	PastMaxPricePeriod int
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

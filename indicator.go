@@ -569,3 +569,28 @@ func (indicator TripleGrowthIndicator) HasBuySignal(candles []Candle) bool {
 
 	return 0.0 <= firstGrowth && firstGrowth < secondGrowth && indicator.config.TripleGrowthSecondPercentage <= secondGrowth
 }
+
+// Past max price indicator
+type PastMaxPriceIndicator struct {
+	config BotConfig
+}
+
+func NewPastMaxPriceIndicator(config BotConfig) PastMaxPriceIndicator {
+	return PastMaxPriceIndicator{config: config}
+}
+
+func (indicator PastMaxPriceIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.PastMaxPricePeriod
+	if count < needCount {
+		return false
+	}
+
+	closePrices := GetClosePrice(candles, needCount)
+	maxPrices := closePrices[:len(closePrices)-2]
+
+	max := Max(maxPrices)
+	currentPrice := closePrices[len(closePrices)-1]
+
+	return max < currentPrice
+}

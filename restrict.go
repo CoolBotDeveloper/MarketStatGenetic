@@ -90,6 +90,8 @@ type BotConfigRestriction struct {
 
 	TripleGrowthCandles          MinMaxInt
 	TripleGrowthSecondPercentage MinMaxFloat64
+
+	PastMaxPricePeriod MinMaxInt
 }
 
 type MinMaxInt struct {
@@ -391,6 +393,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TripleGrowthSecondPercentage: MinMaxFloat64{
 			min: 0.5,
 			max: 1.5,
+		},
+
+		// -----------------------------------------------------
+		PastMaxPricePeriod: MinMaxInt{
+			min: 60 * 2,
+			max: 60 * 3,
 		},
 	}
 }
