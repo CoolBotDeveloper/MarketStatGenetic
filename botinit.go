@@ -94,5 +94,9 @@ func InitBotConfig() BotConfig {
 
 		SmoothGrowthCandles: GetRandIntConfig(restrict.SmoothGrowthCandles),
 		SmoothGrowthAngle:   GetRandFloat64Config(restrict.SmoothGrowthAngle),
+
+		EachVolumeMinValueCandles:     GetRandIntConfig(restrict.EachVolumeMinValueCandles),
+		EachVolumeMinValueMinVolume:   GetRandFloat64Config(restrict.EachVolumeMinValueMinVolume),
+		EachVolumeMinValueSkipCandles: GetRandIntConfig(restrict.EachVolumeMinValueSkipCandles),
 	}
 }

@@ -102,6 +102,9 @@ func (bot *CoinBot) initIndicators() {
 
 	//smoothGrowthIndicator := NewSmoothGrowthIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &smoothGrowthIndicator)
+
+	eachVolumeMinValueIndicator := NewEachVolumeMinValueIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &eachVolumeMinValueIndicator)
 }
 
 // Coin bot factory

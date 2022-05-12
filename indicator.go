@@ -567,7 +567,7 @@ func (indicator TripleGrowthIndicator) HasBuySignal(candles []Candle) bool {
 	firstGrowth := CalcGrowth(firstHalf[0], firstHalf[len(firstHalf)-1])
 	secondGrowth := CalcGrowth(secondHalf[0], secondHalf[len(secondHalf)-1])
 
-	return 0.0 <= firstGrowth && firstGrowth < secondGrowth && indicator.config.TripleGrowthSecondPercentage <= secondGrowth
+	return 0.0 <= firstGrowth && 0.0 <= secondGrowth && firstGrowth < secondGrowth
 }
 
 // Past max price indicator
@@ -620,6 +620,36 @@ func (indicator *SmoothGrowthIndicator) calcGrowthAngle(prices []float64) float6
 	candlesCount := len(prices)
 	firstPrice := prices[0]
 	lastPrice := prices[candlesCount-1]
+	radians := math.Atan((lastPrice - firstPrice) / float64(candlesCount))
 
-	return (lastPrice - firstPrice) / float64(candlesCount)
+	return radians * (180 / math.Pi)
+}
+
+// Each volume min value indicator
+type EachVolumeMinValueIndicator struct {
+	config BotConfig
+}
+
+func NewEachVolumeMinValueIndicator(config BotConfig) EachVolumeMinValueIndicator {
+	return EachVolumeMinValueIndicator{config: config}
+}
+
+func (indicator EachVolumeMinValueIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.EachVolumeMinValueCandles + indicator.config.EachVolumeMinValueSkipCandles
+	if count < needCount {
+		return false
+	}
+
+	volumes := GetVolumes(candles, needCount)
+	end := len(volumes) - indicator.config.EachVolumeMinValueSkipCandles - 1
+	volumes = volumes[:end]
+
+	for _, volume := range volumes {
+		if indicator.config.EachVolumeMinValueMinVolume > volume {
+			return false
+		}
+	}
+
+	return true
 }

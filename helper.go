@@ -212,6 +212,10 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		SmoothGrowthCandles: convertToInt(dataFrame["SmoothGrowthCandles"]),
 		SmoothGrowthAngle:   convertToFloat64(dataFrame["SmoothGrowthAngle"]),
+
+		EachVolumeMinValueCandles:     convertToInt(dataFrame["EachVolumeMinValueCandles"]),
+		EachVolumeMinValueMinVolume:   convertToFloat64(dataFrame["EachVolumeMinValueMinVolume"]),
+		EachVolumeMinValueSkipCandles: convertToInt(dataFrame["EachVolumeMinValueSkipCandles"]),
 	}
 }
 
