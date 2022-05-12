@@ -624,3 +624,32 @@ func (indicator *SmoothGrowthIndicator) calcGrowthAngle(prices []float64) float6
 
 	return radians * (180 / math.Pi)
 }
+
+// Each volume min value indicator
+type EachVolumeMinValueIndicator struct {
+	config BotConfig
+}
+
+func NewEachVolumeMinValueIndicator(config BotConfig) EachVolumeMinValueIndicator {
+	return EachVolumeMinValueIndicator{config: config}
+}
+
+func (indicator EachVolumeMinValueIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	needCount := indicator.config.EachVolumeMinValueCandles + indicator.config.EachVolumeMinValueSkipCandles
+	if count < needCount {
+		return false
+	}
+
+	volumes := GetVolumes(candles, needCount)
+	end := len(volumes) - indicator.config.EachVolumeMinValueSkipCandles - 1
+	volumes = volumes[:end]
+
+	for _, volume := range volumes {
+		if indicator.config.EachVolumeMinValueMinVolume > volume {
+			return false
+		}
+	}
+
+	return true
+}

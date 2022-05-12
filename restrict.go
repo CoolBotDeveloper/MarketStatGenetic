@@ -95,6 +95,10 @@ type BotConfigRestriction struct {
 
 	SmoothGrowthCandles MinMaxInt
 	SmoothGrowthAngle   MinMaxFloat64
+
+	EachVolumeMinValueCandles     MinMaxInt
+	EachVolumeMinValueMinVolume   MinMaxFloat64
+	EachVolumeMinValueSkipCandles MinMaxInt
 }
 
 type MinMaxInt struct {
@@ -412,6 +416,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		SmoothGrowthAngle: MinMaxFloat64{
 			min: 5,
 			max: 30,
+		},
+
+		// -----------------------------------------------------
+		EachVolumeMinValueCandles: MinMaxInt{
+			min: 60,
+			max: 60 * 2,
+		},
+		EachVolumeMinValueMinVolume: MinMaxFloat64{
+			min: 50_000,
+			max: 1_000_000,
+		},
+		EachVolumeMinValueSkipCandles: MinMaxInt{
+			min: 5,
+			max: 15,
 		},
 	}
 }

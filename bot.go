@@ -97,6 +97,10 @@ type BotConfig struct {
 	SmoothGrowthCandles int
 	SmoothGrowthAngle   float64
 
+	EachVolumeMinValueCandles     int
+	EachVolumeMinValueMinVolume   float64
+	EachVolumeMinValueSkipCandles int
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 

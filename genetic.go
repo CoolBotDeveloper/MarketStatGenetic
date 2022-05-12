@@ -105,6 +105,10 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("SmoothGrowthCandles", nil),
 		dataframe.NewSeriesFloat64("SmoothGrowthAngle", nil),
 
+		dataframe.NewSeriesInt64("EachVolumeMinValueCandles", nil),
+		dataframe.NewSeriesFloat64("EachVolumeMinValueMinVolume", nil),
+		dataframe.NewSeriesInt64("EachVolumeMinValueSkipCandles", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 
@@ -301,6 +305,10 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"SmoothGrowthCandles": bot["SmoothGrowthCandles"],
 		"SmoothGrowthAngle":   bot["SmoothGrowthAngle"],
 
+		"EachVolumeMinValueCandles":     bot["EachVolumeMinValueCandles"],
+		"EachVolumeMinValueMinVolume":   bot["EachVolumeMinValueMinVolume"],
+		"EachVolumeMinValueSkipCandles": bot["EachVolumeMinValueSkipCandles"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 
@@ -435,10 +443,14 @@ func makeChild(
 
 		SmoothGrowthCandles: GetIntFatherOrMomGen(maleBotConfig.SmoothGrowthCandles, femaleBotConfig.SmoothGrowthCandles),
 		SmoothGrowthAngle:   GetFloatFatherOrMomGen(maleBotConfig.SmoothGrowthAngle, femaleBotConfig.SmoothGrowthAngle),
+
+		EachVolumeMinValueCandles:     GetIntFatherOrMomGen(maleBotConfig.EachVolumeMinValueCandles, femaleBotConfig.EachVolumeMinValueCandles),
+		EachVolumeMinValueMinVolume:   GetFloatFatherOrMomGen(maleBotConfig.EachVolumeMinValueMinVolume, femaleBotConfig.EachVolumeMinValueMinVolume),
+		EachVolumeMinValueSkipCandles: GetIntFatherOrMomGen(maleBotConfig.EachVolumeMinValueSkipCandles, femaleBotConfig.EachVolumeMinValueSkipCandles),
 	}
 
-	for i := 0; i < 56; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 64))
+	for i := 0; i < 59; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 67))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -536,6 +548,10 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"SmoothGrowthCandles": botConfig.SmoothGrowthCandles,
 		"SmoothGrowthAngle":   botConfig.SmoothGrowthAngle,
+
+		"EachVolumeMinValueCandles":     botConfig.EachVolumeMinValueCandles,
+		"EachVolumeMinValueMinVolume":   botConfig.EachVolumeMinValueMinVolume,
+		"EachVolumeMinValueSkipCandles": botConfig.EachVolumeMinValueSkipCandles,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -637,6 +653,10 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 63, &(botConfig.SmoothGrowthCandles), restrict.SmoothGrowthCandles)
 	mutateGenFloat64(randGenNumber, 64, &(botConfig.SmoothGrowthAngle), restrict.SmoothGrowthAngle)
+
+	mutateGenInt(randGenNumber, 65, &(botConfig.EachVolumeMinValueCandles), restrict.EachVolumeMinValueCandles)
+	mutateGenFloat64(randGenNumber, 66, &(botConfig.EachVolumeMinValueMinVolume), restrict.EachVolumeMinValueMinVolume)
+	mutateGenInt(randGenNumber, 67, &(botConfig.EachVolumeMinValueSkipCandles), restrict.EachVolumeMinValueSkipCandles)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
