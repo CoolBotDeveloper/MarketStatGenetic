@@ -567,7 +567,7 @@ func (indicator TripleGrowthIndicator) HasBuySignal(candles []Candle) bool {
 	firstGrowth := CalcGrowth(firstHalf[0], firstHalf[len(firstHalf)-1])
 	secondGrowth := CalcGrowth(secondHalf[0], secondHalf[len(secondHalf)-1])
 
-	return 0.0 <= firstGrowth && firstGrowth < secondGrowth && indicator.config.TripleGrowthSecondPercentage <= secondGrowth
+	return 0.0 <= firstGrowth && 0.0 <= secondGrowth && firstGrowth < secondGrowth
 }
 
 // Past max price indicator
