@@ -114,11 +114,11 @@ type MinMaxFloat64 struct {
 func GetBotConfigRestrictions() BotConfigRestriction {
 	return BotConfigRestriction{
 		HighSellPercentage: MinMaxFloat64{
-			min: 0.3,
+			min: 0.5,
 			max: 5.0,
 		},
 		LowSellPercentage: MinMaxFloat64{
-			min: 1.5,
+			min: 2.0,
 			max: 5,
 		},
 
@@ -198,12 +198,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
-			min: 60,
-			max: 600,
+			min: 30,
+			max: 120,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 5000000,
-			max: 50000000,
+			min: 300000,
+			max: 2000000,
 		},
 
 		// -----------------------------------------------------
@@ -404,8 +404,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		PastMaxPricePeriod: MinMaxInt{
-			min: 1000,
-			max: 3000,
+			min: 120,
+			max: 60 * 6,
 		},
 
 		// -----------------------------------------------------
@@ -420,16 +420,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		EachVolumeMinValueCandles: MinMaxInt{
-			min: 60,
+			min: 30,
 			max: 60 * 2,
 		},
 		EachVolumeMinValueMinVolume: MinMaxFloat64{
-			min: 50_000,
-			max: 1_000_000,
+			min: 500,
+			max: 2_000,
 		},
 		EachVolumeMinValueSkipCandles: MinMaxInt{
-			min: 5,
-			max: 15,
+			min: 0,
+			max: 0,
 		},
 	}
 }

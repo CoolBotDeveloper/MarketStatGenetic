@@ -59,8 +59,8 @@ func (bot *CoinBot) initIndicators() {
 	//superTrendIndicator := NewSuperTrendIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
 
-	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
+	//averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 
 	//priceFallIndicator := NewPriceFallIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
@@ -97,8 +97,8 @@ func (bot *CoinBot) initIndicators() {
 	tripleGrowthIndicator := NewTripleGrowthIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &tripleGrowthIndicator)
 
-	//pastMaxPriceIndicator := NewPastMaxPriceIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &pastMaxPriceIndicator)
+	pastMaxPriceIndicator := NewPastMaxPriceIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &pastMaxPriceIndicator)
 
 	//smoothGrowthIndicator := NewSmoothGrowthIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &smoothGrowthIndicator)

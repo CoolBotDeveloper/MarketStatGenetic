@@ -172,6 +172,15 @@ func updateBuys(
 		}
 	}
 
+	// --------------------------------------------------------------------------------------------------------
+
+	//unsoldBuys := exchangeManager.UpdateNormalBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+	//if len(unsoldBuys) > 0 {
+	//	*hasSecondPercentageBuySignal = false
+	//}
+
+	// --------------------------------------------------------------------------------------------------------
+
 	//unsoldBuys := exchangeManager.UpdateBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
 	//if len(unsoldBuys) > 0 {
 	//	*hasSecondPercentageBuySignal = false
