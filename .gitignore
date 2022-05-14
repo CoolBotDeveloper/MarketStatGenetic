@@ -1,5 +1,6 @@
 .idea
 datasets
+datasets1
 datasets2
 datasets3
 temp
@@ -7,3 +8,4 @@ go_build_MarketStatGeneticOnNewLib
 *.db
 generation_*.csv
 initial.csv
+*.txt
