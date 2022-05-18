@@ -59,8 +59,8 @@ func (bot *CoinBot) initIndicators() {
 	//superTrendIndicator := NewSuperTrendIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
 
-	//averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
+	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
 
 	//priceFallIndicator := NewPriceFallIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &priceFallIndicator)
@@ -91,11 +91,11 @@ func (bot *CoinBot) initIndicators() {
 	//halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
 
-	flatLineSearchIndicator := NewFlatLineSearchIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &flatLineSearchIndicator)
+	//flatLineSearchIndicator := NewFlatLineSearchIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &flatLineSearchIndicator)
 
-	tripleGrowthIndicator := NewTripleGrowthIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &tripleGrowthIndicator)
+	//tripleGrowthIndicator := NewTripleGrowthIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &tripleGrowthIndicator)
 
 	pastMaxPriceIndicator := NewPastMaxPriceIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &pastMaxPriceIndicator)
@@ -103,8 +103,8 @@ func (bot *CoinBot) initIndicators() {
 	//smoothGrowthIndicator := NewSmoothGrowthIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &smoothGrowthIndicator)
 
-	eachVolumeMinValueIndicator := NewEachVolumeMinValueIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &eachVolumeMinValueIndicator)
+	//eachVolumeMinValueIndicator := NewEachVolumeMinValueIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &eachVolumeMinValueIndicator)
 }
 
 // Coin bot factory

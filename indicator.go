@@ -406,13 +406,13 @@ func NewFlatLineSearchIndicator(config BotConfig) FlatLineSearchIndicator {
 
 func (indicator *FlatLineSearchIndicator) HasBuySignal(candles []Candle) bool {
 	count := len(candles)
-	needCount := indicator.config.FlatLineSearchRelativePeriodCandles
+	needCount := indicator.config.FlatLineSearchRelativePeriodCandles + 1
 	//needCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
 	if count < needCount {
 		return false
 	}
 
-	relativePrice := GetClosePrice(candles, needCount)[0]
+	relativePrice := GetClosePrice(candles, needCount-1)[0]
 	windowMoveNeedCount := indicator.config.FlatLineSearchWindowCandles * indicator.config.FlatLineSearchWindowsCount
 	normalizedPrices := indicator.normalizePrices(append(
 		[]float64{relativePrice},
@@ -425,6 +425,11 @@ func (indicator *FlatLineSearchIndicator) HasBuySignal(candles []Candle) bool {
 		end := start + indicator.config.FlatLineSearchWindowCandles
 
 		// If we have the line, it means that we already had the line before, and we are so late to make some buys
+		tasteNormalizedPrices := normalizedPrices[start:]
+		if len(tasteNormalizedPrices) < indicator.config.FlatLineSearchWindowCandles {
+			continue
+		}
+
 		windowPrices := normalizedPrices[start:end]
 		if indicator.isLine(windowPrices) {
 			return true
@@ -587,7 +592,7 @@ func (indicator PastMaxPriceIndicator) HasBuySignal(candles []Candle) bool {
 	}
 
 	closePrices := GetClosePrice(candles, needCount)
-	maxPrices := closePrices[:len(closePrices)-2]
+	maxPrices := closePrices[:len(closePrices)-1]
 
 	max := Max(maxPrices)
 	currentPrice := closePrices[len(closePrices)-1]
