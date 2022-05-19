@@ -99,6 +99,9 @@ type BotConfigRestriction struct {
 	EachVolumeMinValueCandles     MinMaxInt
 	EachVolumeMinValueMinVolume   MinMaxFloat64
 	EachVolumeMinValueSkipCandles MinMaxInt
+
+	TrailingFixationActivatePercentage MinMaxFloat64
+	TrailingFixationPercentage         MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -296,6 +299,14 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TrailingActivationPercentage: MinMaxFloat64{
 			min: 0.1,
 			max: 1.0,
+		},
+		TrailingFixationActivatePercentage: MinMaxFloat64{
+			min: 1.0,
+			max: 3.0,
+		},
+		TrailingFixationPercentage: MinMaxFloat64{
+			min: 0.1,
+			max: 0.99,
 		},
 
 		// -----------------------------------------------------
