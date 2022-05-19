@@ -5,11 +5,13 @@ import "fmt"
 type Trailing struct {
 	Items map[string]*TrailingSymbol
 
-	TopPercentage        float64
-	BottomPercentage     float64
-	ReducePercentage     float64
-	IncreasePercentage   float64
-	ActivationPercentage float64
+	TopPercentage              float64
+	BottomPercentage           float64
+	ReducePercentage           float64
+	IncreasePercentage         float64
+	ActivationPercentage       float64
+	FixationActivatePercentage float64
+	FixationPercentage         float64
 }
 
 type TrailingSymbol struct {
@@ -22,17 +24,21 @@ type TrailingSymbol struct {
 	PrevLastSellPrice    float64
 	UpdatesCount         int
 	ReduceNumber         int
+	FirstPrice           float64
+	FixationEnabled      bool
 }
 
 func NewTrailingSymbol(config BotConfig) Trailing {
 	return Trailing{
 		Items: map[string]*TrailingSymbol{},
 
-		TopPercentage:        config.TrailingTopPercentage,
-		BottomPercentage:     config.TrailingLowPercentage,
-		ReducePercentage:     config.TrailingReducePercentage,
-		IncreasePercentage:   config.TrailingIncreasePercentage,
-		ActivationPercentage: config.TrailingActivationPercentage,
+		TopPercentage:              config.TrailingTopPercentage,
+		BottomPercentage:           config.TrailingLowPercentage,
+		ReducePercentage:           config.TrailingReducePercentage,
+		IncreasePercentage:         config.TrailingIncreasePercentage,
+		ActivationPercentage:       config.TrailingActivationPercentage,
+		FixationActivatePercentage: config.TrailingFixationActivatePercentage,
+		FixationPercentage:         config.TrailingFixationPercentage,
 	}
 }
 
@@ -43,6 +49,9 @@ func (trailing *Trailing) Start(candle Candle) {
 func (trailing *Trailing) Update(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
 		trailingSymbol.UpdatesCount++
+
+		// just update the fixation activation flag
+		trailing.processFixation(candle, trailingSymbol)
 
 		// if there is not enough prices just skip it
 		if len(trailingSymbol.PreviousPrices) < 1 {
@@ -107,6 +116,18 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 		//if trailingSymbol.UpdatesCount == 1 && trailingSymbol.ReduceNumber == 1 {
 		//	return true
 		//}
+
+		if trailingSymbol.FixationEnabled {
+			fixationPrice := trailing.calculateFixationPrice(
+				trailingSymbol.FirstPrice,
+				trailing.FixationPercentage,
+			)
+
+			// if we have crossed the fixation price and the stopPrice less than fixation price
+			if candle.ClosePrice <= fixationPrice && fixationPrice > trailingSymbol.StopPrice {
+				return true
+			}
+		}
 
 		return trailingSymbol.StopPrice >= candle.ClosePrice || trailing.IsLastPercentage(candle)
 	}
@@ -196,10 +217,27 @@ func (trailing *Trailing) initiateSymbolTrailing(candle Candle) {
 		LastMaxPrice:         candle.ClosePrice,
 		IsPrevLastPercentage: false,
 		PrevLastSellPrice:    0.0,
+		FirstPrice:           candle.ClosePrice,
+		FixationEnabled:      false,
 
 		UpdatesCount: 0,
 		ReduceNumber: 0,
 	}
+}
+
+func (trailing *Trailing) processFixation(candle Candle, trailingSymbol *TrailingSymbol) {
+	fixationEnablePrice := trailing.calculateFixationPrice(
+		trailingSymbol.FirstPrice,
+		trailing.FixationActivatePercentage,
+	)
+
+	if candle.ClosePrice >= fixationEnablePrice {
+		trailingSymbol.FixationEnabled = true
+	}
+}
+
+func (trailing *Trailing) calculateFixationPrice(closePrice, percentage float64) float64 {
+	return closePrice + ((closePrice * percentage) / 100)
 }
 
 func (trailing *Trailing) calculateStopPrice(closePrice, percentage float64) float64 {
