@@ -53,12 +53,13 @@ func (trailing *Trailing) Update(candle Candle) bool {
 		// just update the fixation activation flag
 		trailing.processFixation(candle, trailingSymbol)
 
+		trailing.appendPrice(candle)
+
 		// if there is not enough prices just skip it
 		if len(trailingSymbol.PreviousPrices) < 1 {
 			return false
 		}
 
-		trailing.appendPrice(candle)
 		if trailing.isGrowing(candle) {
 			isHigherThanLastMaxPrice := candle.ClosePrice > trailingSymbol.LastMaxPrice
 			if isHigherThanLastMaxPrice {
