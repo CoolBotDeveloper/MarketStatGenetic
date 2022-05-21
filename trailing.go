@@ -5,13 +5,14 @@ import "fmt"
 type Trailing struct {
 	Items map[string]*TrailingSymbol
 
-	TopPercentage              float64
-	BottomPercentage           float64
-	ReducePercentage           float64
-	IncreasePercentage         float64
-	ActivationPercentage       float64
-	FixationActivatePercentage float64
-	FixationPercentage         float64
+	TopPercentage               float64
+	BottomPercentage            float64
+	ReducePercentage            float64
+	IncreasePercentage          float64
+	ActivationPercentage        float64
+	FixationActivatePercentage  float64
+	FixationPercentage          float64
+	SecondaryIncreasePercentage float64
 }
 
 type TrailingSymbol struct {
@@ -32,13 +33,14 @@ func NewTrailingSymbol(config BotConfig) Trailing {
 	return Trailing{
 		Items: map[string]*TrailingSymbol{},
 
-		TopPercentage:              config.TrailingTopPercentage,
-		BottomPercentage:           config.TrailingLowPercentage,
-		ReducePercentage:           config.TrailingReducePercentage,
-		IncreasePercentage:         config.TrailingIncreasePercentage,
-		ActivationPercentage:       config.TrailingActivationPercentage,
-		FixationActivatePercentage: config.TrailingFixationActivatePercentage,
-		FixationPercentage:         config.TrailingFixationPercentage,
+		TopPercentage:               config.TrailingTopPercentage,
+		BottomPercentage:            config.TrailingLowPercentage,
+		ReducePercentage:            config.TrailingReducePercentage,
+		IncreasePercentage:          config.TrailingIncreasePercentage,
+		ActivationPercentage:        config.TrailingActivationPercentage,
+		FixationActivatePercentage:  config.TrailingFixationActivatePercentage,
+		FixationPercentage:          config.TrailingFixationPercentage,
+		SecondaryIncreasePercentage: config.TrailingSecondaryIncreasePercentage,
 	}
 }
 
@@ -64,16 +66,15 @@ func (trailing *Trailing) Update(candle Candle) bool {
 			isHigherThanLastMaxPrice := candle.ClosePrice > trailingSymbol.LastMaxPrice
 			if isHigherThanLastMaxPrice {
 				trailingSymbol.LastMaxPrice = candle.ClosePrice
-			}
 
-			if isHigherThanLastMaxPrice {
 				trailing.increasePercentage(trailingSymbol)
 
 				fmt.Println(fmt.Sprintf("Trailing INCREASED %f, StopPrice: %f:, COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			} else {
 				// if not growing, step by step reduce low percentage
-				trailing.reducePercentage(trailingSymbol)
+				//trailing.reducePercentage(trailingSymbol)
+				trailing.increaseSecondaryPercentage(trailingSymbol)
 
 				fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
@@ -202,6 +203,21 @@ func (trailing *Trailing) increasePercentage(trailingSymbol *TrailingSymbol) {
 	}
 
 	increasedPercentage := trailingSymbol.CurrentPercentage + trailing.IncreasePercentage
+	if trailing.BottomPercentage < increasedPercentage {
+		increasedPercentage = trailing.BottomPercentage
+	}
+
+	trailingSymbol.CurrentPercentage = increasedPercentage
+}
+
+func (trailing *Trailing) increaseSecondaryPercentage(trailingSymbol *TrailingSymbol) {
+	if trailing.BottomPercentage == trailingSymbol.CurrentPercentage {
+		return
+	}
+
+	secondaryIncreaseValue := (trailing.IncreasePercentage * trailing.SecondaryIncreasePercentage) / 100
+	increasedPercentage := trailingSymbol.CurrentPercentage + secondaryIncreaseValue
+
 	if trailing.BottomPercentage < increasedPercentage {
 		increasedPercentage = trailing.BottomPercentage
 	}
