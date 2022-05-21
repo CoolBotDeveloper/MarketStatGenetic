@@ -101,8 +101,9 @@ type BotConfig struct {
 	EachVolumeMinValueMinVolume   float64
 	EachVolumeMinValueSkipCandles int
 
-	TrailingFixationActivatePercentage float64
-	TrailingFixationPercentage         float64
+	TrailingFixationActivatePercentage  float64
+	TrailingFixationPercentage          float64
+	TrailingSecondaryIncreasePercentage float64
 
 	TotalRevenue      float64
 	SuccessPercentage float64

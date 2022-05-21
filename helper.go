@@ -217,8 +217,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		EachVolumeMinValueMinVolume:   convertToFloat64(dataFrame["EachVolumeMinValueMinVolume"]),
 		EachVolumeMinValueSkipCandles: convertToInt(dataFrame["EachVolumeMinValueSkipCandles"]),
 
-		TrailingFixationActivatePercentage: convertToFloat64(dataFrame["TrailingFixationActivatePercentage"]),
-		TrailingFixationPercentage:         convertToFloat64(dataFrame["TrailingFixationPercentage"]),
+		TrailingFixationActivatePercentage:  convertToFloat64(dataFrame["TrailingFixationActivatePercentage"]),
+		TrailingFixationPercentage:          convertToFloat64(dataFrame["TrailingFixationPercentage"]),
+		TrailingSecondaryIncreasePercentage: convertToFloat64(dataFrame["TrailingSecondaryIncreasePercentage"]),
 	}
 }
 

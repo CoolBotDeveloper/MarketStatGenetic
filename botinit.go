@@ -101,5 +101,7 @@ func InitBotConfig() BotConfig {
 
 		TrailingFixationActivatePercentage: GetRandFloat64Config(restrict.TrailingFixationActivatePercentage),
 		TrailingFixationPercentage:         GetRandFloat64Config(restrict.TrailingFixationPercentage),
+
+		TrailingSecondaryIncreasePercentage: GetRandFloat64Config(restrict.TrailingSecondaryIncreasePercentage),
 	}
 }

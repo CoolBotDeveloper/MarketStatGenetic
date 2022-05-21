@@ -111,6 +111,7 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("TrailingFixationActivatePercentage", nil),
 		dataframe.NewSeriesFloat64("TrailingFixationPercentage", nil),
+		dataframe.NewSeriesFloat64("TrailingSecondaryIncreasePercentage", nil),
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
@@ -312,8 +313,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"EachVolumeMinValueMinVolume":   bot["EachVolumeMinValueMinVolume"],
 		"EachVolumeMinValueSkipCandles": bot["EachVolumeMinValueSkipCandles"],
 
-		"TrailingFixationActivatePercentage": bot["TrailingFixationActivatePercentage"],
-		"TrailingFixationPercentage":         bot["TrailingFixationPercentage"],
+		"TrailingFixationActivatePercentage":  bot["TrailingFixationActivatePercentage"],
+		"TrailingFixationPercentage":          bot["TrailingFixationPercentage"],
+		"TrailingSecondaryIncreasePercentage": bot["TrailingSecondaryIncreasePercentage"],
 
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
@@ -454,12 +456,13 @@ func makeChild(
 		EachVolumeMinValueMinVolume:   GetFloatFatherOrMomGen(maleBotConfig.EachVolumeMinValueMinVolume, femaleBotConfig.EachVolumeMinValueMinVolume),
 		EachVolumeMinValueSkipCandles: GetIntFatherOrMomGen(maleBotConfig.EachVolumeMinValueSkipCandles, femaleBotConfig.EachVolumeMinValueSkipCandles),
 
-		TrailingFixationActivatePercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingFixationActivatePercentage, femaleBotConfig.TrailingFixationActivatePercentage),
-		TrailingFixationPercentage:         GetFloatFatherOrMomGen(maleBotConfig.TrailingFixationPercentage, femaleBotConfig.TrailingFixationPercentage),
+		TrailingFixationActivatePercentage:  GetFloatFatherOrMomGen(maleBotConfig.TrailingFixationActivatePercentage, femaleBotConfig.TrailingFixationActivatePercentage),
+		TrailingFixationPercentage:          GetFloatFatherOrMomGen(maleBotConfig.TrailingFixationPercentage, femaleBotConfig.TrailingFixationPercentage),
+		TrailingSecondaryIncreasePercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingSecondaryIncreasePercentage, femaleBotConfig.TrailingSecondaryIncreasePercentage),
 	}
 
-	for i := 0; i < 61; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 69))
+	for i := 0; i < 62; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 70))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -562,8 +565,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"EachVolumeMinValueMinVolume":   botConfig.EachVolumeMinValueMinVolume,
 		"EachVolumeMinValueSkipCandles": botConfig.EachVolumeMinValueSkipCandles,
 
-		"TrailingFixationActivatePercentage": botConfig.TrailingFixationActivatePercentage,
-		"TrailingFixationPercentage":         botConfig.TrailingFixationPercentage,
+		"TrailingFixationActivatePercentage":  botConfig.TrailingFixationActivatePercentage,
+		"TrailingFixationPercentage":          botConfig.TrailingFixationPercentage,
+		"TrailingSecondaryIncreasePercentage": botConfig.TrailingSecondaryIncreasePercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -672,6 +676,7 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenFloat64(randGenNumber, 68, &(botConfig.TrailingFixationActivatePercentage), restrict.TrailingFixationActivatePercentage)
 	mutateGenFloat64(randGenNumber, 69, &(botConfig.TrailingFixationPercentage), restrict.TrailingFixationPercentage)
+	mutateGenFloat64(randGenNumber, 70, &(botConfig.TrailingSecondaryIncreasePercentage), restrict.TrailingSecondaryIncreasePercentage)
 
 }
 
