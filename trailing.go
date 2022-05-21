@@ -143,6 +143,13 @@ func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 		//	return candle.ClosePrice, true
 		//}
 
+		if trailingSymbol.FixationEnabled {
+			fixationPrice := trailing.calculateFixationPrice(trailingSymbol.FirstPrice, trailing.FixationPercentage)
+			if fixationPrice >= candle.ClosePrice && fixationPrice > trailingSymbol.StopPrice {
+				return fixationPrice, true
+			}
+		}
+
 		if trailingSymbol.StopPrice >= candle.ClosePrice {
 			return trailingSymbol.StopPrice, true
 		}
