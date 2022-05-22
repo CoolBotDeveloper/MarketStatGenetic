@@ -115,6 +115,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
+		dataframe.NewSeriesFloat64("PlusRevenue", nil),
+		dataframe.NewSeriesFloat64("MinusRevenue", nil),
 
 		dataframe.NewSeriesFloat64("Selection", nil),
 	)
@@ -138,10 +140,18 @@ func GetInitialBotsFromFile(fileName string) *dataframe.DataFrame {
 	return initialBotsDataFrame
 }
 
-func SetBotTotalRevenue(bots *dataframe.DataFrame, botNumber int, revenue, successPercentage float64) {
+func SetBotTotalRevenue(
+	bots *dataframe.DataFrame,
+	botNumber int, revenue,
+	successPercentage float64,
+	plusRevenue float64,
+	minusRevenue float64,
+) {
 	bots.UpdateRow(botNumber, nil, map[string]interface{}{
 		"TotalRevenue":      revenue,
 		"SuccessPercentage": successPercentage,
+		"PlusRevenue":       plusRevenue,
+		"MinusRevenue":      minusRevenue,
 		"Selection":         CalcSelection(revenue, successPercentage),
 	})
 }
@@ -319,6 +329,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
+		"PlusRevenue":       bot["PlusRevenue"],
+		"MinusRevenue":      bot["MinusRevenue"],
 
 		"Selection": bot["Selection"],
 	}
@@ -571,6 +583,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
+		"PlusRevenue":       botConfig.PlusRevenue,
+		"MinusRevenue":      botConfig.MinusRevenue,
 
 		"Selection": botConfig.Selection,
 	}

@@ -82,13 +82,15 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 
 	if buyCount > 0 {
 		prevPlusRevenue := exchangeManager.GetPlusRevenue() - float64(success)*COMMISSION
-		if prevPlusRevenue > 0.0 {
+		if prevPlusRevenue >= 0.0 {
 			plusRevenue = prevPlusRevenue
 		} else {
 			minusRevenue = prevPlusRevenue
 		}
 
-		minusRevenue = math.Abs(exchangeManager.GetMinusRevenue() - float64(failed)*COMMISSION - minusRevenue)
+		minusRevenue = math.Abs(exchangeManager.GetMinusRevenue()) +
+			math.Abs(float64(failed)*COMMISSION) +
+			math.Abs(minusRevenue)
 	}
 
 	exchangeManager.Close()

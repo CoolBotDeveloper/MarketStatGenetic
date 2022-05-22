@@ -26,10 +26,12 @@ func main() {
 			if *botNumber < BEST_BOTS_FROM_PREV_GEN && generation > 0 {
 				rev := convertToFloat64(bot["TotalRevenue"])
 				successPercentage := convertToFloat64(bot["SuccessPercentage"])
+				plusRevenue := convertToFloat64(bot["PlusRevenue"])
+				minusRevenue := convertToFloat64(bot["MinusRevenue"])
 
 				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d", generation, *botNumber))
 				fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Revenue: %f, SuccessPercentage: %f\n", generation, *botNumber, rev, successPercentage))
-				SetBotTotalRevenue(bots, *botNumber, rev, successPercentage)
+				SetBotTotalRevenue(bots, *botNumber, rev, successPercentage, plusRevenue, minusRevenue)
 				continue
 			}
 
@@ -47,7 +49,7 @@ func main() {
 			botRevenue := <-botRevenueChan
 			rev := fixRevenue(botRevenue.Revenue)
 			successPercentage := CalcSuccessBuysPercentage(botRevenue)
-			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev, successPercentage)
+			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev, successPercentage, botRevenue.PlusRevenue, botRevenue.MinusRevenue)
 			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f, SuccessPercentage: %f, Selection: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev, successPercentage, CalcSelection(rev, successPercentage)))
 		}
 		close(botRevenueChan)

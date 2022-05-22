@@ -414,8 +414,8 @@ func (storage *Storage) GetMinusRevenue() float64 {
 	query := `
 		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
 		FROM sells 
-		WHERE rev <= 0.0
 		GROUP BY symbol
+		HAVING rev < 0.0
 	`
 	row := (*storage).connect.QueryRow(query)
 	row.Scan(&rev.value)
@@ -428,8 +428,8 @@ func (storage *Storage) GetPlusRevenue() float64 {
 	query := `
 		SELECT (SUM(revenue) - COUNT(id) * 100) AS rev 
 		FROM sells 
-		WHERE rev > 0.0
 		GROUP BY symbol
+		HAVING rev >= 0.0
 	`
 	row := (*storage).connect.QueryRow(query)
 	row.Scan(&rev.value)
