@@ -48,7 +48,8 @@ func main() {
 		for i := 0; i < channelsCount; i++ {
 			botRevenue := <-botRevenueChan
 			rev := fixRevenue(botRevenue.Revenue)
-			successPercentage := CalcSuccessBuysPercentage(botRevenue)
+			//successPercentage := CalcSuccessBuysPercentage(botRevenue)
+			successPercentage := CalcSuccessPercentageByRevenue(botRevenue)
 			SetBotTotalRevenue(bots, botRevenue.BotNumber, rev, successPercentage, botRevenue.PlusRevenue, botRevenue.MinusRevenue)
 			fmt.Println(fmt.Sprintf("Gen: %d, Bot: %d, Buys Count: %d, Success: %d, Failed: %d, Revenue: %f, SuccessPercentage: %f, Selection: %f\n", generation, botRevenue.BotNumber, botRevenue.TotalBuysCount, botRevenue.SuccessBuysCount, botRevenue.FailedBuysCount, rev, successPercentage, CalcSelection(rev, successPercentage)))
 		}
