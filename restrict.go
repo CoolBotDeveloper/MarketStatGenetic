@@ -103,6 +103,9 @@ type BotConfigRestriction struct {
 	TrailingFixationActivatePercentage  MinMaxFloat64
 	TrailingFixationPercentage          MinMaxFloat64
 	TrailingSecondaryIncreasePercentage MinMaxFloat64
+
+	AltCoinMaxCandles    MinMaxInt
+	AltCoinMaxPercentage MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -129,29 +132,30 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
 			min: 4,
-			max: 500,
+			max: 20,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
 			min: 0.5,
-			max: 10,
+			max: 3,
 		},
+
 		AltCoinMinBuySecondPeriodMinutes: MinMaxInt{
-			min: 4,
-			max: 20,
+			min: 3,
+			max: 10,
 		},
 		AltCoinMinBuySecondPercentage: MinMaxFloat64{
 			min: 0.5,
-			max: 10,
+			max: 3,
 		},
 		AltCoinMinBuyMaxSecondPercentage: MinMaxFloat64{
 			min: 1,
-			max: 10,
+			max: 3,
 		},
 
 		// -----------------------------------------------------
 		BtcMinBuyPeriodMinutes: MinMaxInt{
-			min: 1440,
-			max: 1440,
+			min: 120,
+			max: 500,
 		},
 		BtcMinBuyPercentage: MinMaxFloat64{
 			min: 0.0,
@@ -202,8 +206,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
-			min: 30,
-			max: 120,
+			min: 10,
+			max: 30,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
 			min: 300000,
@@ -282,35 +286,35 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		TrailingLowPercentage: MinMaxFloat64{ // Real trailing low is = TrailingActivationPercentage + TrailingLowPercentage
-			min: 14,
-			max: 15,
+			min: 9,
+			max: 10,
 		},
 		TrailingTopPercentage: MinMaxFloat64{
 			min: 0.5,
 			max: 1.5,
 		},
 		TrailingReducePercentage: MinMaxFloat64{
-			min: 5,
-			max: 6,
+			min: 2.7,
+			max: 3,
 		},
 		TrailingIncreasePercentage: MinMaxFloat64{
-			min: 6,
-			max: 7,
+			min: 4,
+			max: 5,
 		},
 		TrailingActivationPercentage: MinMaxFloat64{
 			min: 0.1,
 			max: 1.0,
 		},
 		TrailingFixationActivatePercentage: MinMaxFloat64{
-			min: 1.0,
-			max: 3.0,
+			min: 20.0,
+			max: 20.0,
 		},
 		TrailingFixationPercentage: MinMaxFloat64{
 			min: 0.1,
 			max: 0.99,
 		},
 		TrailingSecondaryIncreasePercentage: MinMaxFloat64{
-			min: 50,
+			min: 10,
 			max: 80,
 		},
 
@@ -358,8 +362,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 1440,
 		},
 		AltCoinMarketMinPercentage: MinMaxFloat64{
-			min: -1,
-			max: 30,
+			min: 2,
+			max: 5,
 		},
 
 		// -----------------------------------------------------
@@ -420,8 +424,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		PastMaxPricePeriod: MinMaxInt{
-			min: 120,
-			max: 60 * 6,
+			min: 60,
+			max: 320,
 		},
 
 		// -----------------------------------------------------
@@ -446,6 +450,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		EachVolumeMinValueSkipCandles: MinMaxInt{
 			min: 0,
 			max: 0,
+		},
+
+		// -----------------------------------------------------
+		AltCoinMaxCandles: MinMaxInt{
+			min: 30,
+			max: 60 * 2,
+		},
+		AltCoinMaxPercentage: MinMaxFloat64{
+			min: 1,
+			max: 3,
 		},
 	}
 }

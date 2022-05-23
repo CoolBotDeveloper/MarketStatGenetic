@@ -220,6 +220,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		TrailingFixationActivatePercentage:  convertToFloat64(dataFrame["TrailingFixationActivatePercentage"]),
 		TrailingFixationPercentage:          convertToFloat64(dataFrame["TrailingFixationPercentage"]),
 		TrailingSecondaryIncreasePercentage: convertToFloat64(dataFrame["TrailingSecondaryIncreasePercentage"]),
+
+		AltCoinMaxCandles:    convertToInt(dataFrame["AltCoinMaxCandles"]),
+		AltCoinMaxPercentage: convertToFloat64(dataFrame["AltCoinMaxPercentage"]),
 	}
 }
 

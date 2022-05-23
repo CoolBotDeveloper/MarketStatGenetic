@@ -99,9 +99,11 @@ func InitBotConfig() BotConfig {
 		EachVolumeMinValueMinVolume:   GetRandFloat64Config(restrict.EachVolumeMinValueMinVolume),
 		EachVolumeMinValueSkipCandles: GetRandIntConfig(restrict.EachVolumeMinValueSkipCandles),
 
-		TrailingFixationActivatePercentage: GetRandFloat64Config(restrict.TrailingFixationActivatePercentage),
-		TrailingFixationPercentage:         GetRandFloat64Config(restrict.TrailingFixationPercentage),
-
+		TrailingFixationActivatePercentage:  GetRandFloat64Config(restrict.TrailingFixationActivatePercentage),
+		TrailingFixationPercentage:          GetRandFloat64Config(restrict.TrailingFixationPercentage),
 		TrailingSecondaryIncreasePercentage: GetRandFloat64Config(restrict.TrailingSecondaryIncreasePercentage),
+
+		AltCoinMaxCandles:    GetRandIntConfig(restrict.AltCoinMaxCandles),
+		AltCoinMaxPercentage: GetRandFloat64Config(restrict.AltCoinMaxPercentage),
 	}
 }

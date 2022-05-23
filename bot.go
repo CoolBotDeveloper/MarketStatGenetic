@@ -10,8 +10,9 @@ type BotConfig struct {
 	HighSellPercentage float64
 	LowSellPercentage  float64
 
-	AltCoinMinBuyFirstPeriodMinutes  int
-	AltCoinMinBuyFirstPercentage     float64
+	AltCoinMinBuyFirstPeriodMinutes int
+	AltCoinMinBuyFirstPercentage    float64
+
 	AltCoinMinBuySecondPeriodMinutes int
 	AltCoinMinBuySecondPercentage    float64
 	AltCoinMinBuyMaxSecondPercentage float64
@@ -104,6 +105,9 @@ type BotConfig struct {
 	TrailingFixationActivatePercentage  float64
 	TrailingFixationPercentage          float64
 	TrailingSecondaryIncreasePercentage float64
+
+	AltCoinMaxCandles    int
+	AltCoinMaxPercentage float64
 
 	TotalRevenue      float64
 	SuccessPercentage float64

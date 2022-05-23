@@ -45,6 +45,20 @@ func (marketStat *CandleMarketStat) GetSymbolPercentageForPeriod(candle Candle, 
 	return growth, true
 }
 
+func (marketStat *CandleMarketStat) HasNotCoinMaxPercentage(candle Candle) bool {
+	growthPercentage, hasPercentage := marketStat.GetSymbolPercentageForPeriod(
+		candle,
+		candle.Symbol,
+		marketStat.config.AltCoinMaxCandles,
+	)
+
+	if hasPercentage {
+		return 0.0 < growthPercentage && growthPercentage < marketStat.config.AltCoinMaxPercentage
+	}
+
+	return false
+}
+
 func (marketStat *CandleMarketStat) HasCoinGoodSingleTrend(candle Candle) bool {
 	secondGrowthPercentage, hasSecondPercentage := marketStat.GetSymbolPercentageForPeriod(
 		candle,

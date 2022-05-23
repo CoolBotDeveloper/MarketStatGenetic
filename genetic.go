@@ -113,6 +113,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("TrailingFixationPercentage", nil),
 		dataframe.NewSeriesFloat64("TrailingSecondaryIncreasePercentage", nil),
 
+		dataframe.NewSeriesInt64("AltCoinMaxCandles", nil),
+		dataframe.NewSeriesFloat64("AltCoinMaxPercentage", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 		dataframe.NewSeriesFloat64("PlusRevenue", nil),
@@ -327,6 +330,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"TrailingFixationPercentage":          bot["TrailingFixationPercentage"],
 		"TrailingSecondaryIncreasePercentage": bot["TrailingSecondaryIncreasePercentage"],
 
+		"AltCoinMaxCandles":    bot["AltCoinMaxCandles"],
+		"AltCoinMaxPercentage": bot["AltCoinMaxPercentage"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 		"PlusRevenue":       bot["PlusRevenue"],
@@ -471,10 +477,13 @@ func makeChild(
 		TrailingFixationActivatePercentage:  GetFloatFatherOrMomGen(maleBotConfig.TrailingFixationActivatePercentage, femaleBotConfig.TrailingFixationActivatePercentage),
 		TrailingFixationPercentage:          GetFloatFatherOrMomGen(maleBotConfig.TrailingFixationPercentage, femaleBotConfig.TrailingFixationPercentage),
 		TrailingSecondaryIncreasePercentage: GetFloatFatherOrMomGen(maleBotConfig.TrailingSecondaryIncreasePercentage, femaleBotConfig.TrailingSecondaryIncreasePercentage),
+
+		AltCoinMaxCandles:    GetIntFatherOrMomGen(maleBotConfig.AltCoinMaxCandles, femaleBotConfig.AltCoinMaxCandles),
+		AltCoinMaxPercentage: GetFloatFatherOrMomGen(maleBotConfig.AltCoinMaxPercentage, femaleBotConfig.AltCoinMaxPercentage),
 	}
 
-	for i := 0; i < 62; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 70))
+	for i := 0; i < 64; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 72))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -580,6 +589,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"TrailingFixationActivatePercentage":  botConfig.TrailingFixationActivatePercentage,
 		"TrailingFixationPercentage":          botConfig.TrailingFixationPercentage,
 		"TrailingSecondaryIncreasePercentage": botConfig.TrailingSecondaryIncreasePercentage,
+
+		"AltCoinMaxCandles":    botConfig.AltCoinMaxCandles,
+		"AltCoinMaxPercentage": botConfig.AltCoinMaxPercentage,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -692,6 +704,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 69, &(botConfig.TrailingFixationPercentage), restrict.TrailingFixationPercentage)
 	mutateGenFloat64(randGenNumber, 70, &(botConfig.TrailingSecondaryIncreasePercentage), restrict.TrailingSecondaryIncreasePercentage)
 
+	mutateGenInt(randGenNumber, 71, &(botConfig.AltCoinMaxCandles), restrict.AltCoinMaxCandles)
+	mutateGenFloat64(randGenNumber, 72, &(botConfig.AltCoinMaxPercentage), restrict.AltCoinMaxPercentage)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
