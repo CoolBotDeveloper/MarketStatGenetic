@@ -3,6 +3,7 @@ datasets
 datasets1
 datasets2
 datasets3
+acceptable_settings
 temp
 go_build_MarketStatGeneticOnNewLib
 *.db
