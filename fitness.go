@@ -137,8 +137,7 @@ func candleHandler(
 		bot.HasBuySignal() {
 
 		//if positiveApproach.HasSignal(candle) {
-		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
-			exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
+		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) && exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
 			// Do buy
 
 			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
