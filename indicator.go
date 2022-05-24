@@ -136,8 +136,8 @@ func NewHalfVolumeIndicator(config BotConfig) HalfVolumeIndicator {
 
 func (indicator *HalfVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	count := len(candles)
-	//needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeSecondCandles
-	needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeFirstCandles
+	//needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeSecondCandles // отдельно для каждого
+	needCount := indicator.config.HalfVolumeFirstCandles + indicator.config.HalfVolumeFirstCandles // делит пополам
 	if count < needCount {
 		return false
 	}
