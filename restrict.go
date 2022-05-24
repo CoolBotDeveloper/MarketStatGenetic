@@ -106,6 +106,9 @@ type BotConfigRestriction struct {
 
 	AltCoinMaxCandles    MinMaxInt
 	AltCoinMaxPercentage MinMaxFloat64
+
+	WaitAfterPeriod     MinMaxInt
+	WaitAfterMinRevenue MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -458,6 +461,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 60 * 2,
 		},
 		AltCoinMaxPercentage: MinMaxFloat64{
+			min: 1,
+			max: 3,
+		},
+
+		// -----------------------------------------------------
+		WaitAfterPeriod: MinMaxInt{
+			min: 60 * 10,
+			max: 60 * 24,
+		},
+		WaitAfterMinRevenue: MinMaxFloat64{
 			min: 1,
 			max: 3,
 		},
