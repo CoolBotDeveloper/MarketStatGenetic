@@ -105,5 +105,8 @@ func InitBotConfig() BotConfig {
 
 		AltCoinMaxCandles:    GetRandIntConfig(restrict.AltCoinMaxCandles),
 		AltCoinMaxPercentage: GetRandFloat64Config(restrict.AltCoinMaxPercentage),
+
+		WaitAfterPeriod:     GetRandIntConfig(restrict.WaitAfterPeriod),
+		WaitAfterMinRevenue: GetRandFloat64Config(restrict.WaitAfterMinRevenue),
 	}
 }

@@ -116,6 +116,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("AltCoinMaxCandles", nil),
 		dataframe.NewSeriesFloat64("AltCoinMaxPercentage", nil),
 
+		dataframe.NewSeriesInt64("WaitAfterPeriod", nil),
+		dataframe.NewSeriesFloat64("WaitAfterMinRevenue", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 		dataframe.NewSeriesFloat64("PlusRevenue", nil),
@@ -333,6 +336,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"AltCoinMaxCandles":    bot["AltCoinMaxCandles"],
 		"AltCoinMaxPercentage": bot["AltCoinMaxPercentage"],
 
+		"WaitAfterPeriod":     bot["WaitAfterPeriod"],
+		"WaitAfterMinRevenue": bot["WaitAfterMinRevenue"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 		"PlusRevenue":       bot["PlusRevenue"],
@@ -480,10 +486,13 @@ func makeChild(
 
 		AltCoinMaxCandles:    GetIntFatherOrMomGen(maleBotConfig.AltCoinMaxCandles, femaleBotConfig.AltCoinMaxCandles),
 		AltCoinMaxPercentage: GetFloatFatherOrMomGen(maleBotConfig.AltCoinMaxPercentage, femaleBotConfig.AltCoinMaxPercentage),
+
+		WaitAfterPeriod:     GetIntFatherOrMomGen(maleBotConfig.WaitAfterPeriod, femaleBotConfig.WaitAfterPeriod),
+		WaitAfterMinRevenue: GetFloatFatherOrMomGen(maleBotConfig.WaitAfterMinRevenue, femaleBotConfig.WaitAfterMinRevenue),
 	}
 
-	for i := 0; i < 64; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 72))
+	for i := 0; i < 66; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 74))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -592,6 +601,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"AltCoinMaxCandles":    botConfig.AltCoinMaxCandles,
 		"AltCoinMaxPercentage": botConfig.AltCoinMaxPercentage,
+
+		"WaitAfterPeriod":     botConfig.WaitAfterPeriod,
+		"WaitAfterMinRevenue": botConfig.WaitAfterMinRevenue,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -706,6 +718,9 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 71, &(botConfig.AltCoinMaxCandles), restrict.AltCoinMaxCandles)
 	mutateGenFloat64(randGenNumber, 72, &(botConfig.AltCoinMaxPercentage), restrict.AltCoinMaxPercentage)
+
+	mutateGenInt(randGenNumber, 73, &(botConfig.WaitAfterPeriod), restrict.WaitAfterPeriod)
+	mutateGenFloat64(randGenNumber, 74, &(botConfig.WaitAfterMinRevenue), restrict.WaitAfterMinRevenue)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

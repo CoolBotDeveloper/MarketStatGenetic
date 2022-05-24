@@ -109,6 +109,9 @@ type BotConfig struct {
 	AltCoinMaxCandles    int
 	AltCoinMaxPercentage float64
 
+	WaitAfterPeriod     int
+	WaitAfterMinRevenue float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 	PlusRevenue       float64

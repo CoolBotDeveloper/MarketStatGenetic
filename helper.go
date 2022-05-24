@@ -223,6 +223,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		AltCoinMaxCandles:    convertToInt(dataFrame["AltCoinMaxCandles"]),
 		AltCoinMaxPercentage: convertToFloat64(dataFrame["AltCoinMaxPercentage"]),
+
+		WaitAfterPeriod:     convertToInt(dataFrame["WaitAfterPeriod"]),
+		WaitAfterMinRevenue: convertToFloat64(dataFrame["WaitAfterMinRevenue"]),
 	}
 }
 
