@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Trailing struct {
 	Items map[string]*TrailingSymbol
@@ -13,6 +16,8 @@ type Trailing struct {
 	FixationActivatePercentage  float64
 	FixationPercentage          float64
 	SecondaryIncreasePercentage float64
+	IncreaseSpeedCoefficient    float64
+	ReduceSpeedCoefficient      float64
 }
 
 type TrailingSymbol struct {
@@ -41,6 +46,8 @@ func NewTrailingSymbol(config BotConfig) Trailing {
 		FixationActivatePercentage:  config.TrailingFixationActivatePercentage,
 		FixationPercentage:          config.TrailingFixationPercentage,
 		SecondaryIncreasePercentage: config.TrailingSecondaryIncreasePercentage,
+		IncreaseSpeedCoefficient:    config.TrailingIncreaseSpeedCoefficient,
+		ReduceSpeedCoefficient:      config.TrailingReduceSpeedCoefficient,
 	}
 }
 
@@ -52,10 +59,10 @@ func (trailing *Trailing) Update(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
 		trailingSymbol.UpdatesCount++
 
+		trailing.appendPrice(candle)
+
 		// just update the fixation activation flag
 		trailing.processFixation(candle, trailingSymbol)
-
-		trailing.appendPrice(candle)
 
 		// if there is not enough prices just skip it
 		if len(trailingSymbol.PreviousPrices) < 1 {
@@ -74,14 +81,16 @@ func (trailing *Trailing) Update(candle Candle) bool {
 			} else {
 				// if not growing, step by step reduce low percentage
 				//trailing.reducePercentage(trailingSymbol)
-				trailing.increaseSecondaryPercentage(trailingSymbol)
+				//trailing.increaseSecondaryPercentage(trailingSymbol)
+				trailing.increasePercentageByCoefficient(trailingSymbol)
 
 				fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			}
 		} else {
 			// if not growing, step by step reduce low percentage
-			trailing.reducePercentage(trailingSymbol)
+			//trailing.reducePercentage(trailingSymbol)
+			trailing.reducePercentageByCoefficient(trailingSymbol)
 
 			fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 				trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
@@ -215,6 +224,51 @@ func (trailing *Trailing) increasePercentage(trailingSymbol *TrailingSymbol) {
 	}
 
 	trailingSymbol.CurrentPercentage = increasedPercentage
+}
+
+func (trailing *Trailing) increasePercentageByCoefficient(trailingSymbol *TrailingSymbol) {
+	if trailing.BottomPercentage == trailingSymbol.CurrentPercentage {
+		return
+	}
+
+	speed := trailing.calcSpeed(trailingSymbol)
+	percentageBySpeed := trailing.IncreaseSpeedCoefficient * speed
+	increasedPercentage := trailingSymbol.CurrentPercentage + percentageBySpeed
+
+	if trailing.BottomPercentage < increasedPercentage {
+		increasedPercentage = trailing.BottomPercentage
+	}
+
+	trailingSymbol.CurrentPercentage = increasedPercentage
+}
+
+func (trailing *Trailing) reducePercentageByCoefficient(trailingSymbol *TrailingSymbol) {
+	trailingSymbol.ReduceNumber++
+
+	if trailing.TopPercentage == trailingSymbol.CurrentPercentage {
+		return
+	}
+
+	speed := trailing.calcSpeed(trailingSymbol)
+	percentageBySpeed := trailing.ReduceSpeedCoefficient * speed
+	reducedPercentage := trailingSymbol.CurrentPercentage - percentageBySpeed
+
+	if trailing.TopPercentage > reducedPercentage {
+		reducedPercentage = trailing.TopPercentage
+	}
+
+	trailingSymbol.CurrentPercentage = reducedPercentage
+}
+
+func (trailing *Trailing) calcSpeed(trailingSymbol *TrailingSymbol) float64 {
+	last := len(trailingSymbol.PreviousPrices) - 1
+	startPrice := trailingSymbol.PreviousPrices[last-1] // previous price
+	endPrice := trailingSymbol.PreviousPrices[last]     // current price
+
+	delta := CalcGrowth(startPrice, endPrice)
+	x2 := 1.0
+
+	return math.Abs(delta / x2)
 }
 
 func (trailing *Trailing) increaseSecondaryPercentage(trailingSymbol *TrailingSymbol) {

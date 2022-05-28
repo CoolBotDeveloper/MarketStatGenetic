@@ -110,5 +110,8 @@ func InitBotConfig() BotConfig {
 		WaitAfterMinRevenue: GetRandFloat64Config(restrict.WaitAfterMinRevenue),
 
 		MinQuoteVolume: GetRandFloat64Config(restrict.MinQuoteVolume),
+
+		TrailingIncreaseSpeedCoefficient: GetRandFloat64Config(restrict.TrailingIncreaseSpeedCoefficient),
+		TrailingReduceSpeedCoefficient:   GetRandFloat64Config(restrict.TrailingReduceSpeedCoefficient),
 	}
 }

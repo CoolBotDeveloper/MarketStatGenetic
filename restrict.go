@@ -111,6 +111,9 @@ type BotConfigRestriction struct {
 	WaitAfterMinRevenue MinMaxFloat64
 
 	MinQuoteVolume MinMaxFloat64
+
+	TrailingIncreaseSpeedCoefficient MinMaxFloat64
+	TrailingReduceSpeedCoefficient   MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -321,6 +324,14 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		TrailingSecondaryIncreasePercentage: MinMaxFloat64{
 			min: 0,
 			max: 40,
+		},
+		TrailingIncreaseSpeedCoefficient: MinMaxFloat64{
+			min: 0.1,
+			max: 1.0,
+		},
+		TrailingReduceSpeedCoefficient: MinMaxFloat64{
+			min: 0.1,
+			max: 2.0,
 		},
 
 		// -----------------------------------------------------

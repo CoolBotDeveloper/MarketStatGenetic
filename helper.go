@@ -228,6 +228,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 		WaitAfterMinRevenue: convertToFloat64(dataFrame["WaitAfterMinRevenue"]),
 
 		MinQuoteVolume: convertToFloat64(dataFrame["MinQuoteVolume"]),
+
+		TrailingIncreaseSpeedCoefficient: convertToFloat64(dataFrame["TrailingIncreaseSpeedCoefficient"]),
+		TrailingReduceSpeedCoefficient:   convertToFloat64(dataFrame["TrailingReduceSpeedCoefficient"]),
 	}
 }
 

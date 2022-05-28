@@ -114,6 +114,9 @@ type BotConfig struct {
 
 	MinQuoteVolume float64
 
+	TrailingIncreaseSpeedCoefficient float64
+	TrailingReduceSpeedCoefficient   float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 	PlusRevenue       float64

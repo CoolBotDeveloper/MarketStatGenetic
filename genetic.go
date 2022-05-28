@@ -121,6 +121,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 
 		dataframe.NewSeriesFloat64("MinQuoteVolume", nil),
 
+		dataframe.NewSeriesFloat64("TrailingIncreaseSpeedCoefficient", nil),
+		dataframe.NewSeriesFloat64("TrailingReduceSpeedCoefficient", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 		dataframe.NewSeriesFloat64("PlusRevenue", nil),
@@ -343,6 +346,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 
 		"MinQuoteVolume": bot["MinQuoteVolume"],
 
+		"TrailingIncreaseSpeedCoefficient": bot["TrailingIncreaseSpeedCoefficient"],
+		"TrailingReduceSpeedCoefficient":   bot["TrailingReduceSpeedCoefficient"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 		"PlusRevenue":       bot["PlusRevenue"],
@@ -495,10 +501,13 @@ func makeChild(
 		WaitAfterMinRevenue: GetFloatFatherOrMomGen(maleBotConfig.WaitAfterMinRevenue, femaleBotConfig.WaitAfterMinRevenue),
 
 		MinQuoteVolume: GetFloatFatherOrMomGen(maleBotConfig.MinQuoteVolume, femaleBotConfig.MinQuoteVolume),
+
+		TrailingIncreaseSpeedCoefficient: GetFloatFatherOrMomGen(maleBotConfig.TrailingIncreaseSpeedCoefficient, femaleBotConfig.TrailingIncreaseSpeedCoefficient),
+		TrailingReduceSpeedCoefficient:   GetFloatFatherOrMomGen(maleBotConfig.TrailingReduceSpeedCoefficient, femaleBotConfig.TrailingReduceSpeedCoefficient),
 	}
 
-	for i := 0; i < 67; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 75))
+	for i := 0; i < 69; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 77))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -612,6 +621,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 		"WaitAfterMinRevenue": botConfig.WaitAfterMinRevenue,
 
 		"MinQuoteVolume": botConfig.MinQuoteVolume,
+
+		"TrailingIncreaseSpeedCoefficient": botConfig.TrailingIncreaseSpeedCoefficient,
+		"TrailingReduceSpeedCoefficient":   botConfig.TrailingReduceSpeedCoefficient,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -731,6 +743,9 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 	mutateGenFloat64(randGenNumber, 74, &(botConfig.WaitAfterMinRevenue), restrict.WaitAfterMinRevenue)
 
 	mutateGenFloat64(randGenNumber, 75, &(botConfig.MinQuoteVolume), restrict.MinQuoteVolume)
+
+	mutateGenFloat64(randGenNumber, 76, &(botConfig.TrailingIncreaseSpeedCoefficient), restrict.TrailingIncreaseSpeedCoefficient)
+	mutateGenFloat64(randGenNumber, 77, &(botConfig.TrailingReduceSpeedCoefficient), restrict.TrailingReduceSpeedCoefficient)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {
