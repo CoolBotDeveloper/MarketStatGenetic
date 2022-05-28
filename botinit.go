@@ -108,5 +108,7 @@ func InitBotConfig() BotConfig {
 
 		WaitAfterPeriod:     GetRandIntConfig(restrict.WaitAfterPeriod),
 		WaitAfterMinRevenue: GetRandFloat64Config(restrict.WaitAfterMinRevenue),
+
+		MinQuoteVolume: GetRandFloat64Config(restrict.MinQuoteVolume),
 	}
 }

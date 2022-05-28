@@ -226,6 +226,8 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		WaitAfterPeriod:     convertToInt(dataFrame["WaitAfterPeriod"]),
 		WaitAfterMinRevenue: convertToFloat64(dataFrame["WaitAfterMinRevenue"]),
+
+		MinQuoteVolume: convertToFloat64(dataFrame["MinQuoteVolume"]),
 	}
 }
 

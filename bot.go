@@ -112,6 +112,8 @@ type BotConfig struct {
 	WaitAfterPeriod     int
 	WaitAfterMinRevenue float64
 
+	MinQuoteVolume float64
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 	PlusRevenue       float64

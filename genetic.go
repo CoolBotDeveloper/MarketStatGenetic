@@ -119,6 +119,8 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesInt64("WaitAfterPeriod", nil),
 		dataframe.NewSeriesFloat64("WaitAfterMinRevenue", nil),
 
+		dataframe.NewSeriesFloat64("MinQuoteVolume", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 		dataframe.NewSeriesFloat64("PlusRevenue", nil),
@@ -339,6 +341,8 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"WaitAfterPeriod":     bot["WaitAfterPeriod"],
 		"WaitAfterMinRevenue": bot["WaitAfterMinRevenue"],
 
+		"MinQuoteVolume": bot["MinQuoteVolume"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 		"PlusRevenue":       bot["PlusRevenue"],
@@ -489,10 +493,12 @@ func makeChild(
 
 		WaitAfterPeriod:     GetIntFatherOrMomGen(maleBotConfig.WaitAfterPeriod, femaleBotConfig.WaitAfterPeriod),
 		WaitAfterMinRevenue: GetFloatFatherOrMomGen(maleBotConfig.WaitAfterMinRevenue, femaleBotConfig.WaitAfterMinRevenue),
+
+		MinQuoteVolume: GetFloatFatherOrMomGen(maleBotConfig.MinQuoteVolume, femaleBotConfig.MinQuoteVolume),
 	}
 
-	for i := 0; i < 66; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 74))
+	for i := 0; i < 67; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 75))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -604,6 +610,8 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"WaitAfterPeriod":     botConfig.WaitAfterPeriod,
 		"WaitAfterMinRevenue": botConfig.WaitAfterMinRevenue,
+
+		"MinQuoteVolume": botConfig.MinQuoteVolume,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -721,6 +729,8 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenInt(randGenNumber, 73, &(botConfig.WaitAfterPeriod), restrict.WaitAfterPeriod)
 	mutateGenFloat64(randGenNumber, 74, &(botConfig.WaitAfterMinRevenue), restrict.WaitAfterMinRevenue)
+
+	mutateGenFloat64(randGenNumber, 75, &(botConfig.MinQuoteVolume), restrict.MinQuoteVolume)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

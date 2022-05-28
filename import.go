@@ -126,11 +126,13 @@ func ImportFromCsv(fileName string) []BotConfig {
 			WaitAfterPeriod:     convertStringToInt(row[73]),
 			WaitAfterMinRevenue: convertStringToFloat64(row[74]),
 
-			TotalRevenue:      convertStringToFloat64(row[75]),
-			SuccessPercentage: convertStringToFloat64(row[76]),
-			PlusRevenue:       convertStringToFloat64(row[77]),
-			MinusRevenue:      convertStringToFloat64(row[78]),
-			Selection:         convertStringToFloat64(row[79]),
+			MinQuoteVolume: convertStringToFloat64(row[75]),
+
+			TotalRevenue:      convertStringToFloat64(row[76]),
+			SuccessPercentage: convertStringToFloat64(row[77]),
+			PlusRevenue:       convertStringToFloat64(row[78]),
+			MinusRevenue:      convertStringToFloat64(row[79]),
+			Selection:         convertStringToFloat64(row[80]),
 		}
 
 		bots = append(bots, bot)

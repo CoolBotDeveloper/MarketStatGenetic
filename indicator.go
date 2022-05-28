@@ -658,3 +658,23 @@ func (indicator EachVolumeMinValueIndicator) HasBuySignal(candles []Candle) bool
 
 	return true
 }
+
+// Each volume min value indicator
+type MinQuoteVolumeIndicator struct {
+	config BotConfig
+}
+
+func NewMinQuoteVolumeIndicator(config BotConfig) MinQuoteVolumeIndicator {
+	return MinQuoteVolumeIndicator{config: config}
+}
+
+func (indicator MinQuoteVolumeIndicator) HasBuySignal(candles []Candle) bool {
+	count := len(candles)
+	if count < 1 {
+		return false
+	}
+
+	quoteVolume := candles[count-1].QuoteAssetVolume
+
+	return indicator.config.MinQuoteVolume <= quoteVolume
+}

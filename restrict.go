@@ -109,6 +109,8 @@ type BotConfigRestriction struct {
 
 	WaitAfterPeriod     MinMaxInt
 	WaitAfterMinRevenue MinMaxFloat64
+
+	MinQuoteVolume MinMaxFloat64
 }
 
 type MinMaxInt struct {
@@ -473,6 +475,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		WaitAfterMinRevenue: MinMaxFloat64{
 			min: 100,
 			max: 100,
+		},
+
+		// -----------------------------------------------------
+		MinQuoteVolume: MinMaxFloat64{
+			min: 1_000_000,
+			max: 5_000_000,
 		},
 	}
 }

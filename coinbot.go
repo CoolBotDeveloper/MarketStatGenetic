@@ -105,6 +105,9 @@ func (bot *CoinBot) initIndicators() {
 
 	//eachVolumeMinValueIndicator := NewEachVolumeMinValueIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &eachVolumeMinValueIndicator)
+
+	minQuoteVolumeIndicator := NewMinQuoteVolumeIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &minQuoteVolumeIndicator)
 }
 
 // Coin bot factory
