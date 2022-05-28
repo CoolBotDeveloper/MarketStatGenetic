@@ -84,7 +84,7 @@ func (trailing *Trailing) Update(candle Candle) bool {
 				//trailing.increaseSecondaryPercentage(trailingSymbol)
 				trailing.increasePercentageByCoefficient(trailingSymbol)
 
-				fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
+				fmt.Println(fmt.Sprintf("Trailing INCREASE COEFFICIENT %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			}
 		} else {
