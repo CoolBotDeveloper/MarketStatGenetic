@@ -249,8 +249,8 @@ func GetMarketBuyCurrentPrice(price float64) float64 {
 }
 
 func GetMarketSellCurrentPrice(price float64) float64 {
-	minPercentage := 0.03
-	maxPercentage := 0.3
+	minPercentage := 0.0
+	maxPercentage := 0.0
 
 	offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
 	offset := (offsetPercentage * price) / 100

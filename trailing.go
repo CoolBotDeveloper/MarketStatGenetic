@@ -32,6 +32,7 @@ type TrailingSymbol struct {
 	ReduceNumber         int
 	FirstPrice           float64
 	FixationEnabled      bool
+	LastPrice            float64
 }
 
 func NewTrailingSymbol(config BotConfig) Trailing {
@@ -58,6 +59,7 @@ func (trailing *Trailing) Start(candle Candle) {
 func (trailing *Trailing) Update(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
 		trailingSymbol.UpdatesCount++
+		trailingSymbol.LastPrice = candle.ClosePrice
 
 		trailing.appendPrice(candle)
 
@@ -81,16 +83,16 @@ func (trailing *Trailing) Update(candle Candle) bool {
 			} else {
 				// if not growing, step by step reduce low percentage
 				//trailing.reducePercentage(trailingSymbol)
-				trailing.increaseSecondaryPercentage(trailingSymbol)
-				//trailing.increasePercentageByCoefficient(trailingSymbol)
+				//trailing.increaseSecondaryPercentage(trailingSymbol) //без Coefficient
+				trailing.increasePercentageByCoefficient(trailingSymbol) //c Coefficient
 
 				fmt.Println(fmt.Sprintf("Trailing INCREASE COEFFICIENT %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 					trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
 			}
 		} else {
 			// if not growing, step by step reduce low percentage
-			trailing.reducePercentage(trailingSymbol)
-			//trailing.reducePercentageByCoefficient(trailingSymbol)
+			//trailing.reducePercentage(trailingSymbol) //без Coefficient
+			trailing.reducePercentageByCoefficient(trailingSymbol) //c Coefficient
 
 			fmt.Println(fmt.Sprintf("Trailing REDUCED %f, StopPrice: %f, : COIN: %s, EXCHANGE_RATE: %f, TIME: %s",
 				trailingSymbol.CurrentPercentage, trailingSymbol.StopPrice, candle.Symbol, candle.ClosePrice, candle.CloseTime))
@@ -165,8 +167,8 @@ func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 		}
 
 		if trailingSymbol.IsPrevLastPercentage {
-			offsetPrice := trailing.calculateOffsetPrice(candle.ClosePrice, 0.15)
-
+			//offsetPrice := trailing.calculateOffsetPrice(candle.ClosePrice, 0.15)
+			offsetPrice := trailing.calculateOffsetPrice(trailingSymbol.LastPrice, 0.15) // от последней
 			return offsetPrice, true
 		}
 
@@ -306,6 +308,7 @@ func (trailing *Trailing) initiateSymbolTrailing(candle Candle) {
 		PrevLastSellPrice:    0.0,
 		FirstPrice:           candle.ClosePrice,
 		FixationEnabled:      false,
+		LastPrice:            candle.ClosePrice,
 
 		UpdatesCount: 0,
 		ReduceNumber: 0,
