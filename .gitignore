@@ -2,7 +2,7 @@
 datasets
 datasets1
 datasets2
-datasets3
+datasets13
 acceptable_settings
 temp
 go_build_MarketStatGeneticOnNewLib
@@ -10,3 +10,4 @@ go_build_MarketStatGeneticOnNewLib
 generation_*.csv
 initial.csv
 *.txt
+*.csv

@@ -235,15 +235,16 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 }
 
 func GetMarketBuyCurrentPrice(price float64) float64 {
-	minPercentage := 0.03
-	maxPercentage := 0.3
+	//minPercentage := 0.03
+	//maxPercentage := 0.15
+	//offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
 
-	offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
+	offsetPercentage := 0.15
 	offset := (offsetPercentage * price) / 100
 
-	if GetRandInt(0, 2) == 1 {
-		offset = -1.0 * offset
-	}
+	//if GetRandInt(0, 2) == 1 {
+	//	offset = -1.0 * offset
+	//}
 
 	return price + offset
 }

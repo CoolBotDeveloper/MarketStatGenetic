@@ -139,7 +139,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		AltCoinMinBuyFirstPeriodMinutes: MinMaxInt{
-			min: 10,
+			min: 8,
 			max: 60,
 		},
 		AltCoinMinBuyFirstPercentage: MinMaxFloat64{
@@ -215,11 +215,11 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		AverageVolumeCandles: MinMaxInt{
 			min: 5,
-			max: 10,
+			max: 30,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 10000,
-			max: 30000,
+			min: 50000,
+			max: 150000,
 		},
 
 		// -----------------------------------------------------
@@ -294,28 +294,28 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		TrailingLowPercentage: MinMaxFloat64{ // Real trailing low is = TrailingActivationPercentage + TrailingLowPercentage
-			min: 2,
-			max: 10,
+			min: 5,
+			max: 6,
 		},
 		TrailingTopPercentage: MinMaxFloat64{
 			min: 0.0,
-			max: 1.5,
+			max: 0.0,
 		},
 		TrailingReducePercentage: MinMaxFloat64{
-			min: 0.5,
-			max: 3,
+			min: 1.5,
+			max: 2,
 		},
 		TrailingIncreasePercentage: MinMaxFloat64{
 			min: 0.5,
-			max: 3,
+			max: 2,
 		},
 		TrailingActivationPercentage: MinMaxFloat64{
 			min: 0.1,
 			max: 1.0,
 		},
 		TrailingFixationActivatePercentage: MinMaxFloat64{
-			min: 20.0,
-			max: 20.0,
+			min: 1.5,
+			max: 6.0,
 		},
 		TrailingFixationPercentage: MinMaxFloat64{
 			min: 0.1,
@@ -325,14 +325,14 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			min: 0,
 			max: 40,
 		},
-		TrailingIncreaseSpeedCoefficient: MinMaxFloat64{
-			min: 0.1,
-			max: 1.5,
-		},
-		TrailingReduceSpeedCoefficient: MinMaxFloat64{
-			min: 0.7,
-			max: 3.0,
-		},
+		//TrailingIncreaseSpeedCoefficient: MinMaxFloat64{
+		//	min: 0.2,
+		//	max: 1.5,
+		//},
+		//TrailingReduceSpeedCoefficient: MinMaxFloat64{
+		//	min: 0.2,
+		//	max: 1.5,
+		//},
 
 		// -----------------------------------------------------
 		FlatLineCandles: MinMaxInt{
@@ -378,8 +378,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 1440,
 		},
 		AltCoinMarketMinPercentage: MinMaxFloat64{
-			min: 0,
-			max: 6,
+			min: -3,
+			max: 3,
 		},
 
 		// -----------------------------------------------------
@@ -394,7 +394,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		HalfVolumeFirstCandles: MinMaxInt{
-			min: 4,
+			min: 3,
 			max: 60,
 		},
 		HalfVolumeSecondCandles: MinMaxInt{ // этот не испльзуется
@@ -402,8 +402,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 7,
 		},
 		HalfVolumeGrowthPercentage: MinMaxFloat64{
-			min: 300,
-			max: 1500,
+			min: 400,
+			max: 2500,
 		},
 
 		// -----------------------------------------------------
@@ -441,7 +441,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		PastMaxPricePeriod: MinMaxInt{
 			min: 2,
-			max: 300,
+			max: 60,
 		},
 
 		// -----------------------------------------------------
@@ -471,7 +471,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		AltCoinMaxCandles: MinMaxInt{
 			min: 1,
-			max: 10,
+			max: 2,
 		},
 		AltCoinMaxPercentage: MinMaxFloat64{
 			min: 2,
