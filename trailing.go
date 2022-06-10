@@ -132,6 +132,10 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 			}
 		}
 
+		//if trailing.isTriggerReached(candle) {
+		//	return true
+		//}
+
 		return trailingSymbol.StopPrice >= candle.ClosePrice
 	}
 
@@ -151,12 +155,30 @@ func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 			}
 		}
 
+		//if trailing.isTriggerReached(candle) {
+		//	offsetPrice := trailing.calculateOffsetPrice(trailingSymbol.StopPrice, 0.15) // от последней
+		//
+		//	return offsetPrice, true
+		//}
+
 		offsetPrice := trailing.calculateOffsetPrice(trailingSymbol.LastPrice, 0.15) // от последней
 
 		return offsetPrice, true
 	}
 
 	return 0.0, false
+}
+
+func (trailing *Trailing) isTriggerReached(candle Candle) bool {
+	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		triggerPercentage := CalcGrowth(trailingSymbol.StopPrice, candle.ClosePrice)
+		//triggerPercentageLow := CalcGrowth(trailingSymbol.StopPrice, candle.LowPrice)
+
+		return trailing.ActivationPercentage >= triggerPercentage /* ||
+		trailing.ActivationPercentage >= triggerPercentageLow*/
+	}
+
+	return false
 }
 
 func (trailing *Trailing) IsPrevLastPercentage(candle Candle) bool {
