@@ -156,8 +156,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 3,
 		},
 		AltCoinMinBuyMaxSecondPercentage: MinMaxFloat64{
-			min: 1,
-			max: 10,
+			min: 100,
+			max: 100,
 		},
 
 		// -----------------------------------------------------
@@ -218,8 +218,8 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 			max: 30,
 		},
 		AverageVolumeMinimal: MinMaxFloat64{
-			min: 50000,
-			max: 150000,
+			min: 25000,
+			max: 99000,
 		},
 
 		// -----------------------------------------------------
@@ -294,20 +294,20 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		TrailingLowPercentage: MinMaxFloat64{ // Real trailing low is = TrailingActivationPercentage + TrailingLowPercentage
-			min: 5,
-			max: 6,
+			min: 2.5,
+			max: 3,
 		},
 		TrailingTopPercentage: MinMaxFloat64{
 			min: 0.0,
 			max: 0.0,
 		},
 		TrailingReducePercentage: MinMaxFloat64{
-			min: 1.5,
-			max: 2,
+			min: 0.2,
+			max: 1,
 		},
 		TrailingIncreasePercentage: MinMaxFloat64{
-			min: 0.5,
-			max: 2,
+			min: 0.2,
+			max: 0.5,
 		},
 		TrailingActivationPercentage: MinMaxFloat64{
 			min: 0.1,
@@ -323,7 +323,7 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		},
 		TrailingSecondaryIncreasePercentage: MinMaxFloat64{
 			min: 0,
-			max: 40,
+			max: 100,
 		},
 		//TrailingIncreaseSpeedCoefficient: MinMaxFloat64{
 		//	min: 0.2,
@@ -395,15 +395,15 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		// -----------------------------------------------------
 		HalfVolumeFirstCandles: MinMaxInt{
 			min: 3,
-			max: 60,
+			max: 6,
 		},
 		HalfVolumeSecondCandles: MinMaxInt{ // этот не испльзуется
 			min: 7,
 			max: 7,
 		},
 		HalfVolumeGrowthPercentage: MinMaxFloat64{
-			min: 400,
-			max: 2500,
+			min: 50,
+			max: 100,
 		},
 
 		// -----------------------------------------------------

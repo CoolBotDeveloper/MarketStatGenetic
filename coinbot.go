@@ -88,8 +88,8 @@ func (bot *CoinBot) initIndicators() {
 	//wholeDayTotalVolumeIndicator := NewWholeDayTotalVolumeIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &wholeDayTotalVolumeIndicator)
 
-	halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
+	//halfVolumeIndicator := NewHalfVolumeIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &halfVolumeIndicator)
 
 	//flatLineSearchIndicator := NewFlatLineSearchIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &flatLineSearchIndicator)
