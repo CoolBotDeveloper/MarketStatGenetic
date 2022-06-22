@@ -152,6 +152,8 @@ func candleHandler(
 		}
 		//}
 	}
+
+	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
 }
 
 func isGreenCandle(candle Candle) bool {
