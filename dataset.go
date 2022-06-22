@@ -41,10 +41,11 @@ func ImportDatasets() *[]Dataset {
 			"2022-02",
 			"2022-03",
 			"2022-04",
+			"2022-05",
 		}
 		locDatasets := []Dataset{}
 		for _, date := range dates {
-			btcFileName := "./datasets/BTCUSDT-1m-" + date + ".csv"
+			btcFileName := "./datasets/BTCUSDT-15m-" + date + ".csv"
 			csvFiles := GetCsvFileNamesInDir(dir, date)
 			bd := CsvFileToCandles(btcFileName, "BTCUSDT")
 

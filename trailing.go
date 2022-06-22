@@ -136,7 +136,7 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 		//	return true
 		//}
 
-		return trailingSymbol.StopPrice >= candle.ClosePrice
+		return trailingSymbol.StopPrice >= candle.ClosePrice || trailingSymbol.StopPrice >= candle.LowPrice
 	}
 
 	return false
@@ -145,15 +145,15 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
 
-		if trailingSymbol.FixationEnabled {
-			fixationPrice := trailing.calculateFixationPrice(trailingSymbol.FirstPrice, trailing.FixationPercentage)
-
-			if fixationPrice >= candle.ClosePrice && fixationPrice > trailingSymbol.StopPrice {
-				offsetPrice := trailing.calculateOffsetPrice(fixationPrice, 0.15)
-
-				return offsetPrice, true
-			}
-		}
+		//if trailingSymbol.FixationEnabled {
+		//	fixationPrice := trailing.calculateFixationPrice(trailingSymbol.FirstPrice, trailing.FixationPercentage)
+		//
+		//	if fixationPrice >= candle.ClosePrice && fixationPrice > trailingSymbol.StopPrice {
+		//		offsetPrice := trailing.calculateOffsetPrice(fixationPrice, 0.0)
+		//
+		//		return offsetPrice, true
+		//	}
+		//}
 
 		//if trailing.isTriggerReached(candle) {
 		//	offsetPrice := trailing.calculateOffsetPrice(trailingSymbol.StopPrice, 0.15) // от последней
@@ -161,7 +161,7 @@ func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 		//	return offsetPrice, true
 		//}
 
-		offsetPrice := trailing.calculateOffsetPrice(trailingSymbol.LastPrice, 0.15) // от последней
+		offsetPrice := trailing.calculateOffsetPrice(trailingSymbol.StopPrice, 0.0) // от последней
 
 		return offsetPrice, true
 	}
