@@ -143,7 +143,7 @@ func candleHandler(
 
 			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
 
-			currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
+			currentPrice := GetMarketBuyCurrentPrice(candle.OpenPrice)
 			exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
 
 			*hasSecondPercentageBuySignal = true
