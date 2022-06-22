@@ -23,6 +23,7 @@ type Candle struct {
 	TakerBuyQuoteAssetVolume float64
 	Ignore                   int
 
+	Index        int
 	currentPrice float64
 }
 
@@ -63,13 +64,13 @@ func CsvFileToCandles(fileName string, symbol string) []Candle {
 
 	for i := 0; i < csvDataFrame.Nrow(); i++ {
 		row := csvDataFrame.Subset(i)
-		candles = append(candles, CsvRowToCandle(row, symbol))
+		candles = append(candles, CsvRowToCandle(row, symbol, i))
 	}
 
 	return candles
 }
 
-func CsvRowToCandle(candleDataFrame dataframe.DataFrame, symbol string) Candle {
+func CsvRowToCandle(candleDataFrame dataframe.DataFrame, symbol string, index int) Candle {
 	firstRow := 0
 	openTime, _ := candleDataFrame.Elem(firstRow, OPEN_TIME).Int()
 	closeTime, _ := candleDataFrame.Elem(firstRow, CLOSE_TIME).Int()
@@ -88,6 +89,8 @@ func CsvRowToCandle(candleDataFrame dataframe.DataFrame, symbol string) Candle {
 		TakerBuyBaseAssetVolume:  candleDataFrame.Elem(firstRow, TAKER_BUY_BASE_ASSET_VOLUME).Float(),
 		TakerBuyQuoteAssetVolume: candleDataFrame.Elem(firstRow, TAKER_BUY_QUOTE_ASSET_VOLUME).Float(),
 		Ignore:                   0,
+
+		Index: index,
 	}
 }
 
@@ -99,7 +102,7 @@ func GetCsvFileNamesInDir(dir string, date string) []string {
 	for _, file := range files {
 		name := file.Name()
 		matchedPrefix, _ := regexp.MatchString(`^BTCUSDT-`, name)
-		matchedSuffix, _ := regexp.MatchString(`15m-`+date+`\.csv$`, name)
+		matchedSuffix, _ := regexp.MatchString(`1m-`+date+`\.csv$`, name)
 		if !matchedPrefix && matchedSuffix {
 			filesNames = append(filesNames, filepath.Join(path, file.Name()))
 		}
