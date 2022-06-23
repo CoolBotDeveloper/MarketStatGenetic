@@ -591,7 +591,8 @@ func (indicator PastMaxPriceIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	closePrices := GetClosePrice(candles, needCount)
+	//closePrices := GetClosePrice(candles, needCount)
+	closePrices := GetHighPrice(candles, needCount)
 	maxPrices := closePrices[:len(closePrices)-1]
 
 	max := Max(maxPrices)

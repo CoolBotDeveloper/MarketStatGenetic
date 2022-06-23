@@ -235,7 +235,7 @@ func (trailing *Trailing) willBeReduceToFinal(candle Candle) (bool, float64) {
 		}
 
 		if newStopPrice > trailingSymbol.StopPrice {
-			isCrossedStop := newStopPrice >= candle.ClosePrice
+			isCrossedStop := newStopPrice >= candle.ClosePrice || newStopPrice >= candle.LowPrice
 
 			return isCrossedStop, newStopPrice
 		}
