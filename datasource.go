@@ -25,6 +25,16 @@ func (dataSource *DataSource) GetPrevCandle(symbol string, index int) Candle {
 	return candles[index-1]
 }
 
+func (dataSource *DataSource) GetNextCandle(symbol string, index int) (Candle, bool) {
+	candles := dataSource.GetCandlesFor(symbol)
+	lastIdx := len(candles)
+	if lastIdx == index {
+		return Candle{}, false
+	}
+
+	return candles[index+1], true
+}
+
 func (dataSource *DataSource) GetCandlesFor(symbol string) []Candle {
 	if candles, ok := dataSource.symbolCandlesMap[symbol]; ok {
 		return candles

@@ -17,6 +17,8 @@ type Trailing struct {
 	SecondaryIncreasePercentage float64
 	IncreaseSpeedCoefficient    float64
 	ReduceSpeedCoefficient      float64
+
+	dataSource *DataSource
 }
 
 type TrailingSymbol struct {
@@ -34,7 +36,7 @@ type TrailingSymbol struct {
 	LastPrice            float64
 }
 
-func NewTrailingSymbol(config BotConfig) Trailing {
+func NewTrailingSymbol(config BotConfig, dataSource *DataSource) Trailing {
 	return Trailing{
 		Items:                       map[string]*TrailingSymbol{},
 		TopPercentage:               config.TrailingTopPercentage,
@@ -47,6 +49,8 @@ func NewTrailingSymbol(config BotConfig) Trailing {
 		SecondaryIncreasePercentage: config.TrailingSecondaryIncreasePercentage,
 		IncreaseSpeedCoefficient:    config.TrailingIncreaseSpeedCoefficient,
 		ReduceSpeedCoefficient:      config.TrailingReduceSpeedCoefficient,
+
+		dataSource: dataSource,
 	}
 }
 
@@ -231,9 +235,9 @@ func (trailing *Trailing) willBeReduceToFinal(candle Candle) (bool, float64) {
 		}
 
 		if newStopPrice > trailingSymbol.StopPrice {
-			newStopPrice = trailingSymbol.StopPrice
+			isCrossedStop := newStopPrice >= candle.ClosePrice
 
-			return true, newStopPrice
+			return isCrossedStop, newStopPrice
 		}
 
 		//if reducePercentage == trailing.TopPercentage {
@@ -261,11 +265,16 @@ func (trailing *Trailing) getReducePercentage(trailingSymbol *TrailingSymbol) fl
 
 func (trailing *Trailing) isGrowingFinal(candle Candle) bool {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
+		if len(trailingSymbol.PreviousPrices) < 2 {
+			return true
+		}
+
 		last := len(trailingSymbol.PreviousPrices) - 1
 
-		previousPrice := trailingSymbol.PreviousPrices[last]
+		firstPrice := trailingSymbol.PreviousPrices[0]
+		currentPrice := trailingSymbol.PreviousPrices[last]
 
-		return candle.ClosePrice > previousPrice
+		return currentPrice > firstPrice
 	}
 
 	panic("There is no prices")

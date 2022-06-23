@@ -50,7 +50,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 	exchangeManager := NewExchangeManager(botConfig)
 	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
 	positiveApproach := NewPositiveApproach(botConfig, &exchangeManager, &candleMarketStat)
-	trailing := NewTrailingSymbol(botConfig)
+	trailing := NewTrailingSymbol(botConfig, &dataSource)
 
 	for candleNum, candle := range dataset.AltCoinCandles {
 		btcDataset := *dataset.BtcCandles
