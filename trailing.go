@@ -124,9 +124,9 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 		//	return true
 		//}
 
-		if ok2, _ := trailing.willBeReduceToFinal(candle); ok2 {
-			return true
-		}
+		//if ok2, _ := trailing.willBeReduceToFinal(candle); ok2 {
+		//	return true
+		//}
 
 		//if trailingSymbol.FixationEnabled {
 		//	fixationPrice := trailing.calculateFixationPrice(
@@ -153,11 +153,11 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
 
-		if ok2, _ := trailing.willBeReduceToFinal(candle); ok2 {
-			offsetPrice := trailing.calculateOffsetPrice(candle.ClosePrice, 0.0) // от последней
-
-			return offsetPrice, true
-		}
+		//if ok2, _ := trailing.willBeReduceToFinal(candle); ok2 {
+		//	offsetPrice := trailing.calculateOffsetPrice(candle.ClosePrice, 0.0) // от последней
+		//
+		//	return offsetPrice, true
+		//}
 
 		//if trailingSymbol.FixationEnabled {
 		//	fixationPrice := trailing.calculateFixationPrice(trailingSymbol.FirstPrice, trailing.FixationPercentage)
@@ -270,11 +270,14 @@ func (trailing *Trailing) isGrowingFinal(candle Candle) bool {
 		}
 
 		last := len(trailingSymbol.PreviousPrices) - 1
+		//firstPrice := trailingSymbol.PreviousPrices[0]
+		lastPrice := trailingSymbol.PreviousPrices[last]
 
-		firstPrice := trailingSymbol.PreviousPrices[0]
-		currentPrice := trailingSymbol.PreviousPrices[last]
+		if futureCandle, ok2 := trailing.dataSource.GetNextCandle(candle.Symbol, candle.Index); ok2 {
+			return futureCandle.ClosePrice > lastPrice
+		}
 
-		return currentPrice > firstPrice
+		return true
 	}
 
 	panic("There is no prices")
