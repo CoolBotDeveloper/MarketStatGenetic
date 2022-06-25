@@ -153,11 +153,11 @@ func (trailing *Trailing) CanSellByStop(candle Candle) bool {
 func (trailing *Trailing) GetStopPrice(candle Candle) (float64, bool) {
 	if trailingSymbol, ok := trailing.Items[candle.Symbol]; ok {
 
-		if ok2, _ := trailing.willBeReduceToFinal(candle); ok2 {
-			offsetPrice := trailing.calculateOffsetPrice(candle.ClosePrice, 0.0) // от последней
-
-			return offsetPrice, true
-		}
+		//if ok2, _ := trailing.willBeReduceToFinal(candle); ok2 {
+		//	offsetPrice := trailing.calculateOffsetPrice(candle.ClosePrice, 0.0) // от последней
+		//
+		//	return offsetPrice, true
+		//}
 
 		//if trailingSymbol.FixationEnabled {
 		//	fixationPrice := trailing.calculateFixationPrice(trailingSymbol.FirstPrice, trailing.FixationPercentage)
