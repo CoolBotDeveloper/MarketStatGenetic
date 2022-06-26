@@ -128,22 +128,25 @@ func candleHandler(
 	//	fmt.Println(fmt.Sprintf("TrailingUpdate: COIN: %s, EXCHANGE_RATE: %f, TIME: %s", candle.Symbol, candle.ClosePrice, candle.CloseTime))
 	//}
 
+	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
+
 	if !*hasSecondPercentageBuySignal &&
 		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
 		//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
-		//candleMarketStat.HasNotCoinMaxPercentage(candle) &&
+		candleMarketStat.HasNotCoinMaxPercentage(candle) &&
 		//candleMarketStat.HasBtcBuyPercentage() &&
 		//isGreenCandle(candle) &&
 		bot.HasBuySignal() {
 
 		//if positiveApproach.HasSignal(candle) {
-		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) && exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
+		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
+			exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
 			// Do buy
 
 			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
 
-			currentPrice := GetMarketBuyCurrentPrice(candle.OpenPrice)
+			currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
 			exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
 
 			*hasSecondPercentageBuySignal = true
@@ -152,8 +155,6 @@ func candleHandler(
 		}
 		//}
 	}
-
-	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
 }
 
 func isGreenCandle(candle Candle) bool {
