@@ -51,6 +51,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
 	positiveApproach := NewPositiveApproach(botConfig, &exchangeManager, &candleMarketStat)
 	trailing := NewTrailingSymbol(botConfig, &dataSource)
+	deferredCheck := NewDeferredCheck(&dataSource)
 
 	for candleNum, candle := range dataset.AltCoinCandles {
 		btcDataset := *dataset.BtcCandles
@@ -67,6 +68,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 			positiveApproach,
 			&trailing,
 			&hasSecondPercentageBuySignal,
+			deferredCheck,
 		)
 	}
 
@@ -114,6 +116,7 @@ func candleHandler(
 	positiveApproach PositiveApproach,
 	trailing *Trailing,
 	hasSecondPercentageBuySignal *bool,
+	deferredCheck DeferredCheck,
 ) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
@@ -130,7 +133,7 @@ func candleHandler(
 
 	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
 
-	if !*hasSecondPercentageBuySignal &&
+	if !deferredCheck.HasDeferred(candle) && !*hasSecondPercentageBuySignal &&
 		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
 		//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
@@ -143,17 +146,20 @@ func candleHandler(
 		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
 			exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
 			// Do buy
-
-			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
-
-			currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
-			exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
-
-			*hasSecondPercentageBuySignal = true
-			trailing.Start(candle)
-			//bot.ResetHasReached()
+			deferredCheck.AddForCandle(candle)
 		}
 		//}
+	}
+
+	if deferredCheck.CheckForCandle(candle) {
+		fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
+
+		currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
+		exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
+
+		*hasSecondPercentageBuySignal = true
+		trailing.Start(candle)
+		//bot.ResetHasReached()
 	}
 }
 

@@ -294,16 +294,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		TrailingLowPercentage: MinMaxFloat64{ // Real trailing low is = TrailingActivationPercentage + TrailingLowPercentage
-			min: 70,
-			max: 99,
+			min: 5,
+			max: 10,
 		},
 		TrailingTopPercentage: MinMaxFloat64{
 			min: 1,
 			max: 1.5,
 		},
 		TrailingReducePercentage: MinMaxFloat64{
-			min: 0.1,
-			max: 3,
+			min: 0.5,
+			max: 2,
 		},
 		TrailingIncreasePercentage: MinMaxFloat64{
 			min: 0.1,
