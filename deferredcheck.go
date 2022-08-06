@@ -33,6 +33,10 @@ func (deferred *DeferredCheck) HasDeferred(candle Candle) bool {
 }
 
 func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
+	if INTERVAL == 0 {
+		return true
+	}
+
 	if signalCandle, ok := deferred.signals[candle.Symbol]; ok {
 		cur := ConvertDateStringToTime(candle.CloseTime)
 		diff := cur.Unix() - ConvertDateStringToTime(signalCandle.CloseTime).Unix()
