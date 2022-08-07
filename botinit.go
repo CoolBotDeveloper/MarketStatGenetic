@@ -113,5 +113,8 @@ func InitBotConfig() BotConfig {
 
 		TrailingIncreaseSpeedCoefficient: GetRandFloat64Config(restrict.TrailingIncreaseSpeedCoefficient),
 		TrailingReduceSpeedCoefficient:   GetRandFloat64Config(restrict.TrailingReduceSpeedCoefficient),
+
+		DeferredCheckInterval: GetRandIntConfig(restrict.DeferredCheckInterval),
+		DeferredSellInterval:  GetRandIntConfig(restrict.DeferredSellInterval),
 	}
 }

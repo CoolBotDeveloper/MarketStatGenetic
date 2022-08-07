@@ -124,6 +124,9 @@ func InitBotsDataFrame() *dataframe.DataFrame {
 		dataframe.NewSeriesFloat64("TrailingIncreaseSpeedCoefficient", nil),
 		dataframe.NewSeriesFloat64("TrailingReduceSpeedCoefficient", nil),
 
+		dataframe.NewSeriesInt64("DeferredCheckInterval", nil),
+		dataframe.NewSeriesInt64("DeferredSellInterval", nil),
+
 		dataframe.NewSeriesFloat64("TotalRevenue", nil),
 		dataframe.NewSeriesFloat64("SuccessPercentage", nil),
 		dataframe.NewSeriesFloat64("PlusRevenue", nil),
@@ -349,6 +352,9 @@ func createBotDataFrameRow(bot map[interface{}]interface{}) map[string]interface
 		"TrailingIncreaseSpeedCoefficient": bot["TrailingIncreaseSpeedCoefficient"],
 		"TrailingReduceSpeedCoefficient":   bot["TrailingReduceSpeedCoefficient"],
 
+		"DeferredCheckInterval": bot["DeferredCheckInterval"],
+		"DeferredSellInterval":  bot["DeferredSellInterval"],
+
 		"TotalRevenue":      bot["TotalRevenue"],
 		"SuccessPercentage": bot["SuccessPercentage"],
 		"PlusRevenue":       bot["PlusRevenue"],
@@ -504,10 +510,13 @@ func makeChild(
 
 		TrailingIncreaseSpeedCoefficient: GetFloatFatherOrMomGen(maleBotConfig.TrailingIncreaseSpeedCoefficient, femaleBotConfig.TrailingIncreaseSpeedCoefficient),
 		TrailingReduceSpeedCoefficient:   GetFloatFatherOrMomGen(maleBotConfig.TrailingReduceSpeedCoefficient, femaleBotConfig.TrailingReduceSpeedCoefficient),
+
+		DeferredCheckInterval: GetIntFatherOrMomGen(maleBotConfig.DeferredCheckInterval, femaleBotConfig.DeferredCheckInterval),
+		DeferredSellInterval:  GetIntFatherOrMomGen(maleBotConfig.DeferredSellInterval, femaleBotConfig.DeferredSellInterval),
 	}
 
-	for i := 0; i < 69; i++ {
-		mutateGens(&childBotConfig, GetRandInt(0, 77))
+	for i := 0; i < 71; i++ {
+		mutateGens(&childBotConfig, GetRandInt(0, 79))
 	}
 
 	return GetBotConfigMapInterface(childBotConfig)
@@ -624,6 +633,9 @@ func GetBotConfigMapInterface(botConfig BotConfig) map[string]interface{} {
 
 		"TrailingIncreaseSpeedCoefficient": botConfig.TrailingIncreaseSpeedCoefficient,
 		"TrailingReduceSpeedCoefficient":   botConfig.TrailingReduceSpeedCoefficient,
+
+		"DeferredCheckInterval": botConfig.DeferredCheckInterval,
+		"DeferredSellInterval":  botConfig.DeferredSellInterval,
 
 		"TotalRevenue":      botConfig.TotalRevenue,
 		"SuccessPercentage": botConfig.SuccessPercentage,
@@ -746,6 +758,9 @@ func mutateGens(botConfig *BotConfig, randGenNumber int) {
 
 	mutateGenFloat64(randGenNumber, 76, &(botConfig.TrailingIncreaseSpeedCoefficient), restrict.TrailingIncreaseSpeedCoefficient)
 	mutateGenFloat64(randGenNumber, 77, &(botConfig.TrailingReduceSpeedCoefficient), restrict.TrailingReduceSpeedCoefficient)
+
+	mutateGenInt(randGenNumber, 78, &(botConfig.DeferredCheckInterval), restrict.DeferredCheckInterval)
+	mutateGenInt(randGenNumber, 79, &(botConfig.DeferredSellInterval), restrict.DeferredSellInterval)
 }
 
 func mutateGenFloat64(randGenNumber, genNumber int, genValue *float64, restrictMinMax MinMaxFloat64) {

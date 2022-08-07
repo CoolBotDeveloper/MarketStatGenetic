@@ -1,14 +1,14 @@
 package main
 
-const INTERVAL = 5
-
 type DeferredCheck struct {
 	signals    map[string]Candle
+	config     *BotConfig
 	dataSource *DataSource
 }
 
-func NewDeferredCheck(dataSource *DataSource) DeferredCheck {
+func NewDeferredCheck(config *BotConfig, dataSource *DataSource) DeferredCheck {
 	return DeferredCheck{
+		config:     config,
 		dataSource: dataSource,
 		signals:    map[string]Candle{},
 	}
@@ -33,7 +33,7 @@ func (deferred *DeferredCheck) HasDeferred(candle Candle) bool {
 }
 
 func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
-	if INTERVAL == 0 {
+	if deferred.config.DeferredCheckInterval == 0 {
 		return true
 	}
 
@@ -41,11 +41,15 @@ func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
 		cur := ConvertDateStringToTime(candle.CloseTime)
 		diff := cur.Unix() - ConvertDateStringToTime(signalCandle.CloseTime).Unix()
 
-		if diff < (60 * INTERVAL) {
+		if diff < int64(60*deferred.config.DeferredCheckInterval) {
 			return false
 		}
 
-		isMore := candle.ClosePrice > signalCandle.ClosePrice
+		candles := deferred.dataSource.GetCandlesFor(candle.Symbol)
+		closePrices := GetHighPrice(candles, deferred.config.DeferredCheckInterval)
+		max := Max(closePrices)
+
+		isMore := max < candle.ClosePrice
 		deferred.DeleteForSymbol(candle.Symbol)
 
 		return isMore

@@ -231,6 +231,9 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 
 		TrailingIncreaseSpeedCoefficient: convertToFloat64(dataFrame["TrailingIncreaseSpeedCoefficient"]),
 		TrailingReduceSpeedCoefficient:   convertToFloat64(dataFrame["TrailingReduceSpeedCoefficient"]),
+
+		DeferredCheckInterval: convertToInt(dataFrame["DeferredCheckInterval"]),
+		DeferredSellInterval:  convertToInt(dataFrame["DeferredSellInterval"]),
 	}
 }
 

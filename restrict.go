@@ -114,6 +114,9 @@ type BotConfigRestriction struct {
 
 	TrailingIncreaseSpeedCoefficient MinMaxFloat64
 	TrailingReduceSpeedCoefficient   MinMaxFloat64
+
+	DeferredCheckInterval MinMaxInt
+	DeferredSellInterval  MinMaxInt
 }
 
 type MinMaxInt struct {
@@ -492,6 +495,16 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 		MinQuoteVolume: MinMaxFloat64{
 			min: 1_000_000,
 			max: 5_000_000,
+		},
+
+		// -----------------------------------------------------
+		DeferredCheckInterval: MinMaxInt{
+			min: 1,
+			max: 5,
+		},
+		DeferredSellInterval: MinMaxInt{
+			min: 1,
+			max: 5,
 		},
 	}
 }

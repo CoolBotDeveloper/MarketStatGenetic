@@ -51,7 +51,8 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
 	positiveApproach := NewPositiveApproach(botConfig, &exchangeManager, &candleMarketStat)
 	trailing := NewTrailingSymbol(botConfig, &dataSource)
-	deferredCheck := NewDeferredCheck(&dataSource)
+	deferredCheck := NewDeferredCheck(&botConfig, &dataSource)
+	deferredSell := NewDeferredSell(&botConfig)
 
 	for candleNum, candle := range dataset.AltCoinCandles {
 		btcDataset := *dataset.BtcCandles
@@ -69,6 +70,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 			&trailing,
 			&hasSecondPercentageBuySignal,
 			deferredCheck,
+			deferredSell,
 		)
 	}
 
@@ -117,21 +119,22 @@ func candleHandler(
 	trailing *Trailing,
 	hasSecondPercentageBuySignal *bool,
 	deferredCheck DeferredCheck,
+	deferredSell DeferredSell,
 ) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
-	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
+	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal, deferredSell)
 	//positiveApproach.UpdateBuys(candle)
 
 	/* !Important to update trailing each candle update */
-	trailing.Update(candle)
+	//trailing.Update(candle)
 	//if isUpdated {
 	//	fmt.Println(fmt.Sprintf("TrailingUpdate: COIN: %s, EXCHANGE_RATE: %f, TIME: %s", candle.Symbol, candle.ClosePrice, candle.CloseTime))
 	//}
 
-	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
+	//updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal, deferredSell)
 
 	if !deferredCheck.HasDeferred(candle) && !*hasSecondPercentageBuySignal &&
 		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
@@ -158,8 +161,10 @@ func candleHandler(
 		exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
 
 		*hasSecondPercentageBuySignal = true
-		trailing.Start(candle)
+		//trailing.Start(candle)
 		//bot.ResetHasReached()
+
+		deferredSell.Start(candle)
 	}
 }
 
@@ -173,17 +178,28 @@ func updateBuys(
 	candleMarketStat CandleMarketStat,
 	trailing *Trailing,
 	hasSecondPercentageBuySignal *bool,
+	deferredSell DeferredSell,
 ) {
-	if trailing.CanSellByStop(candle) {
-		if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
-			currentPrice := GetMarketSellCurrentPrice(trailingStopPrice)
-			trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, currentPrice, candle.CloseTime)
-			if len(trailingUnsoldBuys) > 0 {
-				*hasSecondPercentageBuySignal = false
-			}
-			trailing.Finish(candle)
+	if deferredSell.CanSell(candle) {
+		currentPrice := GetMarketSellCurrentPrice(candle.ClosePrice)
+		trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, currentPrice, candle.CloseTime)
+		if len(trailingUnsoldBuys) > 0 {
+			*hasSecondPercentageBuySignal = false
 		}
+
+		deferredSell.Finish(candle.Symbol)
 	}
+
+	//if trailing.CanSellByStop(candle) {
+	//	if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
+	//		currentPrice := GetMarketSellCurrentPrice(trailingStopPrice)
+	//		trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, currentPrice, candle.CloseTime)
+	//		if len(trailingUnsoldBuys) > 0 {
+	//			*hasSecondPercentageBuySignal = false
+	//		}
+	//		trailing.Finish(candle)
+	//	}
+	//}
 
 	// --------------------------------------------------------------------------------------------------------
 

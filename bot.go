@@ -117,6 +117,9 @@ type BotConfig struct {
 	TrailingIncreaseSpeedCoefficient float64
 	TrailingReduceSpeedCoefficient   float64
 
+	DeferredCheckInterval int
+	DeferredSellInterval  int
+
 	TotalRevenue      float64
 	SuccessPercentage float64
 	PlusRevenue       float64
