@@ -499,12 +499,12 @@ func GetBotConfigRestrictions() BotConfigRestriction {
 
 		// -----------------------------------------------------
 		DeferredCheckInterval: MinMaxInt{
-			min: 1,
-			max: 5,
+			min: 3,
+			max: 7,
 		},
 		DeferredSellInterval: MinMaxInt{
-			min: 1,
-			max: 5,
+			min: 7,
+			max: 30,
 		},
 	}
 }

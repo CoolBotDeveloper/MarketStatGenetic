@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	//bots := GetInitialBotsFromFile("generation_5.csv")
+	//bots := GetInitialBotsFromFile("initial.csv")
 	bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 

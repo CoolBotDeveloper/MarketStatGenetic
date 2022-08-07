@@ -46,13 +46,26 @@ func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
 		}
 
 		candles := deferred.dataSource.GetCandlesFor(candle.Symbol)
-		closePrices := GetHighPrice(candles, deferred.config.DeferredCheckInterval)
-		max := Max(closePrices)
+		closePrices := GetClosePrice(candles, deferred.config.DeferredCheckInterval)
 
-		isMore := max < candle.ClosePrice
+		isAllGrowing := true
+		for index := range closePrices {
+			if 0 == index || index == (deferred.config.DeferredCheckInterval-1) {
+				continue
+			}
+
+			prev := closePrices[index-1]
+			current := closePrices[index]
+
+			if prev > current {
+				isAllGrowing = false
+				break
+			}
+		}
+
 		deferred.DeleteForSymbol(candle.Symbol)
 
-		return isMore
+		return isAllGrowing
 	}
 
 	return false
