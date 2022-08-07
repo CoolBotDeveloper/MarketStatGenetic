@@ -50,7 +50,7 @@ func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
 
 		isAllGrowing := true
 		for index := range closePrices {
-			if 0 == index || index == (deferred.config.DeferredCheckInterval-1) {
+			if 0 == index {
 				continue
 			}
 
