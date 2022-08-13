@@ -10,6 +10,8 @@ import (
 
 func main() {
 	//bots := GetInitialBotsFromFile("initial.csv")
+	RunKeras()
+	return
 	bots := GetInitialBots()
 	fitnessDatasets := ImportDatasets()
 

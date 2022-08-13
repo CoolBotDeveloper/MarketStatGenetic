@@ -3,6 +3,8 @@ module MarketStatGeneticOnNewLib
 go 1.17
 
 require (
+	github.com/galeone/tensorflow/tensorflow/go v0.0.0-20220620094824-6bb01e3a58fa
+	github.com/galeone/tfgo v0.0.0-20220622151904-fc7b7ccad83b
 	github.com/go-gota/gota v0.12.0
 	github.com/markcheno/go-talib v0.0.0-20190307022042-cd53a9264d70
 	github.com/mattn/go-sqlite3 v1.14.11
@@ -19,7 +21,7 @@ require (
 	github.com/frankban/quicktest v1.5.0 // indirect
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/google/btree v1.0.0 // indirect
-	github.com/google/go-cmp v0.4.0 // indirect
+	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/guptarohit/asciigraph v0.5.1 // indirect
 	github.com/klauspost/compress v1.9.7 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
@@ -42,4 +44,5 @@ require (
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	gonum.org/v1/gonum v0.9.1 // indirect
+	google.golang.org/protobuf v1.28.0 // indirect
 )
