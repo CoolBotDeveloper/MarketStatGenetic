@@ -424,6 +424,11 @@ func convertStringToFloat64(typeValue string) float64 {
 	return value
 }
 
+func convertStringToFloat32(typeValue string) float32 {
+	value, _ := strconv.ParseFloat(typeValue, 32)
+	return float32(value)
+}
+
 func convertStringToInt(typeValue string) int {
 	value, _ := strconv.ParseInt(typeValue, 10, 64)
 	return int(value)

@@ -22,10 +22,10 @@ func RunKeras() {
 
 	result, err := model.Session.Run(
 		map[tf.Output]*tf.Tensor{
-			model.Graph.Operation("inputLayer_input").Output(0): r[0], // Replace this with your input layer name
+			model.Graph.Operation("serving_default_dense_19_input").Output(0): r, // Replace this with your input layer name
 		},
 		[]tf.Output{
-			model.Graph.Operation("inferenceLayer/Sigmoid").Output(0), // Replace this with your output layer name
+			model.Graph.Operation("StatefulPartitionedCall").Output(0), // Replace this with your output layer name
 		},
 		nil,
 	)
@@ -38,7 +38,7 @@ func RunKeras() {
 	fmt.Printf("Result value: %v \n", result[0].Value())
 }
 
-func ImportDataset() []*tf.Tensor {
+func ImportDataset() *tf.Tensor {
 	fileName := "perfect_5_minutes.csv"
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -48,7 +48,7 @@ func ImportDataset() []*tf.Tensor {
 	csvReader := csv.NewReader(file)
 	rows, err := csvReader.ReadAll()
 
-	tensors := []*tf.Tensor{}
+	var tensorRaw [][][]float32
 
 	for index, candles := range rows {
 		if index == 0 {
@@ -58,7 +58,7 @@ func ImportDataset() []*tf.Tensor {
 		beforeCount := 3
 		afterCount := 1
 		candlesCount := 100
-		datum := []float64{}
+		var datum []float32
 
 		for dataIndex, candle := range candles {
 			afterIndex := beforeCount + candlesCount*2 + afterCount
@@ -66,16 +66,44 @@ func ImportDataset() []*tf.Tensor {
 				continue
 			}
 
-			datum = append(datum, convertStringToFloat64(candle))
+			datum = append(datum, convertStringToFloat32(candle))
 		}
 
 		newTensor, err := tf.NewTensor(datum)
 		if err != nil {
 			fmt.Println("Error tensor")
 		}
+		return newTensor
 
-		tensors = append(tensors, newTensor)
+		tensorRaw = append(tensorRaw, [][]float32{datum})
 	}
 
-	return tensors
+	newTensor, err := tf.NewTensor(tensorRaw)
+	if err != nil {
+		fmt.Println("Error tensor")
+	}
+
+	return newTensor
 }
+
+//func observationsToTensor(observations [batchSize]Observation) *tf.Tensor {
+//
+//	var sensorData [batchSize][1][3]float32
+//	size := len(observations)
+//	if size < batchSize {
+//		log.Fatalf("Observations size %d < batch size %d", size, batchSize)
+//	}
+//
+//	for i := 0; i < size; i++ {
+//		sensorData[i][0] = [3]float32{observations[i].X, observations[i].Y, observations[i].Z}
+//	}
+//
+//	var err error
+//	var sensorTensor *tf.Tensor
+//
+//	if sensorTensor, err = tf.NewTensor(sensorData); err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	return sensorTensor
+//}
