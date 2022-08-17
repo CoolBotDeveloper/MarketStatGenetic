@@ -684,14 +684,22 @@ func (indicator MinQuoteVolumeIndicator) HasBuySignal(candles []Candle) bool {
 
 // Neural network indicator
 type NeuralNetworkIndicator struct {
-	config BotConfig
+	config  BotConfig
+	tfModel *tf.SavedModel
 }
 
 func NewNeuralNetworkIndicator(config BotConfig) NeuralNetworkIndicator {
-	return NeuralNetworkIndicator{config: config}
+	tfModel, err := tf.LoadSavedModel("test_model", []string{"serve"}, nil)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading saved model: %s\n", err.Error()))
+	}
+
+	// defer tfModel.Session.Close()
+
+	return NeuralNetworkIndicator{config: config, tfModel: tfModel}
 }
 
-func (indicator NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
+func (indicator *NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
 	minMaxNeedCount := 60 * 24
 	count := len(candles)
 
@@ -725,21 +733,14 @@ func (indicator NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
 	return prediction >= 0.70
 }
 
-func (indicator NeuralNetworkIndicator) predictByModel(tensor *tf.Tensor) float32 {
-	// Load existing model
-	model, err := tf.LoadSavedModel("test_model", []string{"serve"}, nil)
-	if err != nil {
-		panic(fmt.Sprintf("Error loading saved model: %s\n", err.Error()))
-	}
-	defer model.Session.Close()
-
+func (indicator *NeuralNetworkIndicator) predictByModel(tensor *tf.Tensor) float32 {
 	// Run model
-	result, err := model.Session.Run(
+	result, err := indicator.tfModel.Session.Run(
 		map[tf.Output]*tf.Tensor{
-			model.Graph.Operation("serving_default_dense_4_input").Output(0): tensor,
+			indicator.tfModel.Graph.Operation("serving_default_dense_4_input").Output(0): tensor,
 		},
 		[]tf.Output{
-			model.Graph.Operation("StatefulPartitionedCall").Output(0),
+			indicator.tfModel.Graph.Operation("StatefulPartitionedCall").Output(0),
 		},
 		nil,
 	)
@@ -750,7 +751,7 @@ func (indicator NeuralNetworkIndicator) predictByModel(tensor *tf.Tensor) float3
 	return result[0].Value().([][]float32)[0][0]
 }
 
-func (indicator NeuralNetworkIndicator) buildTensor(values []float32) *tf.Tensor {
+func (indicator *NeuralNetworkIndicator) buildTensor(values []float32) *tf.Tensor {
 	tensor, err := tf.NewTensor([][]float32{values})
 	if err != nil {
 		panic("Could not create the tensor for values.")
