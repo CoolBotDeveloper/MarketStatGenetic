@@ -701,11 +701,19 @@ func (indicator NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
 
 	minClosePrice := 1.0
 	maxClosePrice := 2.0
-	closePrices := MinMaxNormalization(GetClosePrice(candles, needCount), minClosePrice, maxClosePrice)
+	closePrices := MinMaxNormalization(
+		Float64ToFloat32Slice(GetClosePrice(candles, needCount)),
+		float32(minClosePrice),
+		float32(maxClosePrice),
+	)
 
 	minVolume := 1.0
 	maxVolume := 2.0
-	volumes := MinMaxNormalization(GetVolumes(candles, needCount), minVolume, maxVolume)
+	volumes := MinMaxNormalization(
+		Float64ToFloat32Slice(GetVolumes(candles, needCount)),
+		float32(minVolume),
+		float32(maxVolume),
+	)
 
 	tensor := indicator.buildTensor(append(closePrices, volumes...))
 	prediction := indicator.predictByModel(tensor)
@@ -738,14 +746,8 @@ func (indicator NeuralNetworkIndicator) predictByModel(tensor *tf.Tensor) float3
 	return result[0].Value().([][]float32)[0][0]
 }
 
-func (indicator NeuralNetworkIndicator) buildTensor(values []float64) *tf.Tensor {
-	var convertedToFloat32 []float32
-
-	for _, value := range values {
-		convertedToFloat32 = append(convertedToFloat32, float32(value))
-	}
-
-	tensor, err := tf.NewTensor([][]float32{convertedToFloat32})
+func (indicator NeuralNetworkIndicator) buildTensor(values []float32) *tf.Tensor {
+	tensor, err := tf.NewTensor([][]float32{values})
 	if err != nil {
 		panic("Could not create the tensor for values.")
 	}

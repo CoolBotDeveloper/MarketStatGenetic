@@ -120,8 +120,25 @@ func GetCurrentMinusTime(candleTime time.Time, minutes int) time.Time {
 	return candleTime
 }
 
-func MinMaxNormalization(values []float64, min, max float64) []float64 {
-	return values
+func MinMaxNormalization(values []float32, min, max float32) []float32 {
+	var scaled []float32
+
+	for _, value := range values {
+		xScaled := (value - min) / (max - min)
+		scaled = append(scaled, xScaled)
+	}
+
+	return scaled
+}
+
+func Float64ToFloat32Slice(values []float64) []float32 {
+	var convertedToFloat32 []float32
+
+	for _, value := range values {
+		convertedToFloat32 = append(convertedToFloat32, float32(value))
+	}
+
+	return convertedToFloat32
 }
 
 func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfig {
