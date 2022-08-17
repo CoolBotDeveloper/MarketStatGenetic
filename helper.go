@@ -120,6 +120,10 @@ func GetCurrentMinusTime(candleTime time.Time, minutes int) time.Time {
 	return candleTime
 }
 
+func MinMaxNormalization(values []float64, min, max float64) []float64 {
+	return values
+}
+
 func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfig {
 	return BotConfig{
 		HighSellPercentage: convertToFloat64(dataFrame["HighSellPercentage"]),

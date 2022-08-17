@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	tf "github.com/galeone/tensorflow/tensorflow/go"
 	"github.com/markcheno/go-talib"
 	taindic "github.com/xyths/go-indicators"
 	"math"
@@ -678,4 +680,75 @@ func (indicator MinQuoteVolumeIndicator) HasBuySignal(candles []Candle) bool {
 	quoteVolume := candles[count-1].QuoteAssetVolume
 
 	return indicator.config.MinQuoteVolume <= quoteVolume
+}
+
+// Neural network indicator
+type NeuralNetworkIndicator struct {
+	config BotConfig
+}
+
+func NewNeuralNetworkIndicator(config BotConfig) NeuralNetworkIndicator {
+	return NeuralNetworkIndicator{config: config}
+}
+
+func (indicator NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
+	needCount := 101
+	count := len(candles)
+
+	if count < needCount {
+		return false
+	}
+
+	minClosePrice := 1.0
+	maxClosePrice := 2.0
+	closePrices := MinMaxNormalization(GetClosePrice(candles, needCount), minClosePrice, maxClosePrice)
+
+	minVolume := 1.0
+	maxVolume := 2.0
+	volumes := MinMaxNormalization(GetVolumes(candles, needCount), minVolume, maxVolume)
+
+	tensor := indicator.buildTensor(append(closePrices, volumes...))
+	prediction := indicator.predictByModel(tensor)
+
+	return prediction >= 0.70
+}
+
+func (indicator NeuralNetworkIndicator) predictByModel(tensor *tf.Tensor) float32 {
+	// Load existing model
+	model, err := tf.LoadSavedModel("test_model", []string{"serve"}, nil)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading saved model: %s\n", err.Error()))
+	}
+	defer model.Session.Close()
+
+	// Run model
+	result, err := model.Session.Run(
+		map[tf.Output]*tf.Tensor{
+			model.Graph.Operation("serving_default_dense_4_input").Output(0): tensor,
+		},
+		[]tf.Output{
+			model.Graph.Operation("StatefulPartitionedCall").Output(0),
+		},
+		nil,
+	)
+	if err != nil {
+		panic(fmt.Sprintf("Error running the session with input, err: %s\n", err.Error()))
+	}
+
+	return result[0].Value().([][]float32)[0][0]
+}
+
+func (indicator NeuralNetworkIndicator) buildTensor(values []float64) *tf.Tensor {
+	var convertedToFloat32 []float32
+
+	for _, value := range values {
+		convertedToFloat32 = append(convertedToFloat32, float32(value))
+	}
+
+	tensor, err := tf.NewTensor([][]float32{convertedToFloat32})
+	if err != nil {
+		panic("Could not create the tensor for values.")
+	}
+
+	return tensor
 }

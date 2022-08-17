@@ -22,7 +22,7 @@ func RunKeras() {
 
 	result, err := model.Session.Run(
 		map[tf.Output]*tf.Tensor{
-			model.Graph.Operation("serving_default_dense_19_input").Output(0): r, // Replace this with your input layer name
+			model.Graph.Operation("serving_default_dense_4_input").Output(0): r, // Replace this with your input layer name
 		},
 		[]tf.Output{
 			model.Graph.Operation("StatefulPartitionedCall").Output(0), // Replace this with your output layer name
@@ -69,11 +69,18 @@ func ImportDataset() *tf.Tensor {
 			datum = append(datum, convertStringToFloat32(candle))
 		}
 
-		newTensor, err := tf.NewTensor(datum)
-		if err != nil {
-			fmt.Println("Error tensor")
+		if index == (71 - 1) {
+			newTensor, err := tf.NewTensor([][]float32{datum})
+			if err != nil {
+				fmt.Println("Error tensor")
+			}
+			return newTensor
 		}
-		return newTensor
+		//newTensor, err := tf.NewTensor([][]float32{datum})
+		//if err != nil {
+		//	fmt.Println("Error tensor")
+		//}
+		//return newTensor
 
 		tensorRaw = append(tensorRaw, [][]float32{datum})
 	}
@@ -85,25 +92,3 @@ func ImportDataset() *tf.Tensor {
 
 	return newTensor
 }
-
-//func observationsToTensor(observations [batchSize]Observation) *tf.Tensor {
-//
-//	var sensorData [batchSize][1][3]float32
-//	size := len(observations)
-//	if size < batchSize {
-//		log.Fatalf("Observations size %d < batch size %d", size, batchSize)
-//	}
-//
-//	for i := 0; i < size; i++ {
-//		sensorData[i][0] = [3]float32{observations[i].X, observations[i].Y, observations[i].Z}
-//	}
-//
-//	var err error
-//	var sensorTensor *tf.Tensor
-//
-//	if sensorTensor, err = tf.NewTensor(sensorData); err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	return sensorTensor
-//}
