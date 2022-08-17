@@ -692,25 +692,29 @@ func NewNeuralNetworkIndicator(config BotConfig) NeuralNetworkIndicator {
 }
 
 func (indicator NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
-	needCount := 101
+	minMaxNeedCount := 60 * 24
 	count := len(candles)
 
-	if count < needCount {
+	if count < minMaxNeedCount {
 		return false
 	}
 
-	minClosePrice := 1.0
-	maxClosePrice := 2.0
+	neuralNeedCount := 101
+
+	// Normalize prices
+	minClosePrice := Min(GetClosePrice(candles, minMaxNeedCount))
+	maxClosePrice := Max(GetClosePrice(candles, minMaxNeedCount))
 	closePrices := MinMaxNormalization(
-		Float64ToFloat32Slice(GetClosePrice(candles, needCount)),
+		Float64ToFloat32Slice(GetClosePrice(candles, neuralNeedCount)),
 		float32(minClosePrice),
 		float32(maxClosePrice),
 	)
 
-	minVolume := 1.0
-	maxVolume := 2.0
+	// Normalize volumes
+	minVolume := Min(GetVolumes(candles, minMaxNeedCount))
+	maxVolume := Max(GetVolumes(candles, minMaxNeedCount))
 	volumes := MinMaxNormalization(
-		Float64ToFloat32Slice(GetVolumes(candles, needCount)),
+		Float64ToFloat32Slice(GetVolumes(candles, neuralNeedCount)),
 		float32(minVolume),
 		float32(maxVolume),
 	)
