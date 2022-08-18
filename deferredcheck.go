@@ -33,11 +33,12 @@ func (deferred *DeferredCheck) HasDeferred(candle Candle) bool {
 }
 
 func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
-	if deferred.config.DeferredCheckInterval == 0 {
-		return true
-	}
-
 	if signalCandle, ok := deferred.signals[candle.Symbol]; ok {
+		if deferred.config.DeferredCheckInterval == 0 {
+			deferred.DeleteForSymbol(candle.Symbol)
+			return true
+		}
+
 		cur := ConvertDateStringToTime(candle.CloseTime)
 		diff := cur.Unix() - ConvertDateStringToTime(signalCandle.CloseTime).Unix()
 
@@ -72,11 +73,12 @@ func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
 }
 
 func (deferred *DeferredCheck) CheckForCandleByNeural(candle Candle) bool {
-	if deferred.config.DeferredCheckInterval == 0 {
-		return true
-	}
-
 	if signalCandle, ok := deferred.signals[candle.Symbol]; ok {
+		if deferred.config.DeferredCheckInterval == 0 {
+			deferred.DeleteForSymbol(candle.Symbol)
+			return true
+		}
+
 		cur := ConvertDateStringToTime(candle.CloseTime)
 		diff := cur.Unix() - ConvertDateStringToTime(signalCandle.CloseTime).Unix()
 
