@@ -141,6 +141,16 @@ func Float64ToFloat32Slice(values []float64) []float32 {
 	return convertedToFloat32
 }
 
+func Float32ToFloat64Slice(values []float32) []float64 {
+	var convertedToFloat32 []float64
+
+	for _, value := range values {
+		convertedToFloat32 = append(convertedToFloat32, float64(value))
+	}
+
+	return convertedToFloat32
+}
+
 func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfig {
 	return BotConfig{
 		HighSellPercentage: convertToFloat64(dataFrame["HighSellPercentage"]),

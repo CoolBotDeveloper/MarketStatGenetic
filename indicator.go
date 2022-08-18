@@ -707,25 +707,34 @@ func (indicator *NeuralNetworkIndicator) HasBuySignal(candles []Candle) bool {
 		return false
 	}
 
-	neuralNeedCount := 101
+	inTimePeriod := 5
+	neuralNeedCount := 101 + inTimePeriod - 1
 
 	// Normalize prices
 	minClosePrice := Min(GetClosePrice(candles, minMaxNeedCount))
 	maxClosePrice := Max(GetClosePrice(candles, minMaxNeedCount))
-	closePrices := MinMaxNormalization(
+	rawClosePrices := MinMaxNormalization(
 		Float64ToFloat32Slice(GetClosePrice(candles, neuralNeedCount)),
 		float32(minClosePrice),
 		float32(maxClosePrice),
 	)
+	closePrices := Float64ToFloat32Slice(talib.Sma(
+		Float32ToFloat64Slice(rawClosePrices),
+		inTimePeriod,
+	)[(inTimePeriod - 1):])
 
 	// Normalize volumes
 	minVolume := Min(GetVolumes(candles, minMaxNeedCount))
 	maxVolume := Max(GetVolumes(candles, minMaxNeedCount))
-	volumes := MinMaxNormalization(
+	rawVolumes := MinMaxNormalization(
 		Float64ToFloat32Slice(GetVolumes(candles, neuralNeedCount)),
 		float32(minVolume),
 		float32(maxVolume),
 	)
+	volumes := Float64ToFloat32Slice(talib.Sma(
+		Float32ToFloat64Slice(rawVolumes),
+		inTimePeriod,
+	)[(inTimePeriod - 1):])
 
 	tensor := indicator.buildTensor(append(closePrices, volumes...))
 	prediction := indicator.predictByModel(tensor)
