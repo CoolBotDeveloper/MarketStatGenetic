@@ -109,8 +109,8 @@ func (bot *CoinBot) initIndicators() {
 	//minQuoteVolumeIndicator := NewMinQuoteVolumeIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &minQuoteVolumeIndicator)
 
-	neuralNetworkIndicator := NewNeuralNetworkIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &neuralNetworkIndicator)
+	//neuralNetworkIndicator := NewNeuralNetworkIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &neuralNetworkIndicator)
 }
 
 // Coin bot factory

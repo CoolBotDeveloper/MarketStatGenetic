@@ -70,3 +70,28 @@ func (deferred *DeferredCheck) CheckForCandle(candle Candle) bool {
 
 	return false
 }
+
+func (deferred *DeferredCheck) CheckForCandleByNeural(candle Candle) bool {
+	if deferred.config.DeferredCheckInterval == 0 {
+		return true
+	}
+
+	if signalCandle, ok := deferred.signals[candle.Symbol]; ok {
+		cur := ConvertDateStringToTime(candle.CloseTime)
+		diff := cur.Unix() - ConvertDateStringToTime(signalCandle.CloseTime).Unix()
+
+		if diff < int64(60*deferred.config.DeferredCheckInterval) {
+			return false
+		}
+
+		candles := deferred.dataSource.GetCandlesFor(candle.Symbol)
+		neuralIndicator := NewNeuralNetworkIndicator(*deferred.config)
+		hasBuySignal := neuralIndicator.HasBuySignal(candles)
+
+		deferred.DeleteForSymbol(candle.Symbol)
+
+		return hasBuySignal
+	}
+
+	return false
+}
