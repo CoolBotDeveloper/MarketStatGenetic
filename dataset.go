@@ -45,20 +45,20 @@ func ImportDatasets() *[]Dataset {
 		}
 		locDatasets := []Dataset{}
 		for _, date := range dates {
-			btcFileName := "./datasets/BTCUSDT-1m-" + date + ".csv"
+			//btcFileName := "./datasets/BTCUSDT-1m-" + date + ".csv"
 			csvFiles := GetCsvFileNamesInDir(dir, date)
-			bd := CsvFileToCandles(btcFileName, "BTCUSDT")
+			//bd := CsvFileToCandles(btcFileName, "BTCUSDT")
 
 			for _, fileName := range csvFiles {
 				symbol := GetCoinSymbolFromCsvFileName(fileName)
-				btcDatasetCandles = &bd
+				//btcDatasetCandles = &bd
 
 				altCoinCandles := CsvFileToCandles(fileName, symbol)
-				if len(*btcDatasetCandles) == len(altCoinCandles) {
+				if /* len(*btcDatasetCandles) ==*/ 0 < len(altCoinCandles) {
 					locDatasets = append(locDatasets, Dataset{
 						AltCoinName:    symbol,
 						AltCoinCandles: altCoinCandles,
-						BtcCandles:     btcDatasetCandles,
+						//BtcCandles:     btcDatasetCandles,
 					})
 				}
 			}

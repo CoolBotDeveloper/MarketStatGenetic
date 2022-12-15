@@ -53,13 +53,13 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 	trailing := NewTrailingSymbol(botConfig, &dataSource)
 	deferredCheck := NewDeferredCheck(&dataSource)
 
-	for candleNum, candle := range dataset.AltCoinCandles {
-		btcDataset := *dataset.BtcCandles
+	for _, candle := range dataset.AltCoinCandles {
+		//btcDataset := *dataset.BtcCandles
 		hasSecondPercentageBuySignal := false
 
 		candleHandler(
 			candle,
-			btcDataset[candleNum],
+			//btcDataset[candleNum],
 			botConfig,
 			dataSource,
 			coinBotFactory,
@@ -107,7 +107,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 
 func candleHandler(
 	candle Candle,
-	btcCandle Candle,
+	//btcCandle Candle,
 	botConfig BotConfig,
 	dataSource DataSource,
 	coinBotFactory CoinBotFactory,
@@ -119,48 +119,69 @@ func candleHandler(
 	deferredCheck DeferredCheck,
 ) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
-	dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
+	//dataSource.AddCandleFor(btcCandle.Symbol, btcCandle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
 	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
 	//positiveApproach.UpdateBuys(candle)
 
 	/* !Important to update trailing each candle update */
-	trailing.Update(candle)
+	//trailing.Update(candle)
 	//if isUpdated {
 	//	fmt.Println(fmt.Sprintf("TrailingUpdate: COIN: %s, EXCHANGE_RATE: %f, TIME: %s", candle.Symbol, candle.ClosePrice, candle.CloseTime))
 	//}
 
 	updateBuys(candle, exchangeManager, candleMarketStat, trailing, hasSecondPercentageBuySignal)
 
-	if !deferredCheck.HasDeferred(candle) && !*hasSecondPercentageBuySignal &&
-		candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
+	if !*hasSecondPercentageBuySignal &&
+		//candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
 		//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
 		//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
-		candleMarketStat.HasNotCoinMaxPercentage(candle) &&
+		//candleMarketStat.HasNotCoinMaxPercentage(candle) &&
 		//candleMarketStat.HasBtcBuyPercentage() &&
 		//isGreenCandle(candle) &&
 		bot.HasBuySignal() {
 
 		//if positiveApproach.HasSignal(candle) {
-		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
-			exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
+		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) /*&& exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime)*/ {
+
 			// Do buy
-			deferredCheck.AddForCandle(candle)
+			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
+			currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
+			exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
+			*hasSecondPercentageBuySignal = true
 		}
 		//}
 	}
 
-	if deferredCheck.CheckForCandle(candle) {
-		fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
+	//if !deferredCheck.HasDeferred(candle) && !*hasSecondPercentageBuySignal &&
+	//	candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
+	//	//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
+	//	//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
+	//	candleMarketStat.HasNotCoinMaxPercentage(candle) &&
+	//	//candleMarketStat.HasBtcBuyPercentage() &&
+	//	//isGreenCandle(candle) &&
+	//	bot.HasBuySignal() {
+	//
+	//	//if positiveApproach.HasSignal(candle) {
+	//	if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) &&
+	//		exchangeManager.CanBuyInGivenPeriodMoreThanRevenue(candle.Symbol, candle.CloseTime) {
+	//		// Do buy
+	//		deferredCheck.AddForCandle(candle)
+	//	}
+	//	//}
+	//}
 
-		currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
-		exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
-
-		*hasSecondPercentageBuySignal = true
-		trailing.Start(candle)
-		//bot.ResetHasReached()
-	}
+	//if deferredCheck.CheckForCandle(candle) {
+	//	fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
+	//
+	//	currentPrice := GetMarketBuyCurrentPrice(candle.ClosePrice)
+	//	exchangeManager.Buy(candle.Symbol, currentPrice, candle.CloseTime)
+	//
+	//	*hasSecondPercentageBuySignal = true
+	//	trailing.Start(candle)
+	//	//bot.ResetHasReached()
+	//}
 }
 
 func isGreenCandle(candle Candle) bool {
@@ -174,23 +195,23 @@ func updateBuys(
 	trailing *Trailing,
 	hasSecondPercentageBuySignal *bool,
 ) {
-	if trailing.CanSellByStop(candle) {
-		if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
-			currentPrice := GetMarketSellCurrentPrice(trailingStopPrice)
-			trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, currentPrice, candle.CloseTime)
-			if len(trailingUnsoldBuys) > 0 {
-				*hasSecondPercentageBuySignal = false
-			}
-			trailing.Finish(candle)
-		}
-	}
+	//if trailing.CanSellByStop(candle) {
+	//	if trailingStopPrice, ok := trailing.GetStopPrice(candle); ok {
+	//		currentPrice := GetMarketSellCurrentPrice(trailingStopPrice)
+	//		trailingUnsoldBuys := exchangeManager.UpdateAllExitSymbols(candle.Symbol, currentPrice, candle.CloseTime)
+	//		if len(trailingUnsoldBuys) > 0 {
+	//			*hasSecondPercentageBuySignal = false
+	//		}
+	//		trailing.Finish(candle)
+	//	}
+	//}
 
 	// --------------------------------------------------------------------------------------------------------
 
-	//unsoldBuys := exchangeManager.UpdateNormalBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
-	//if len(unsoldBuys) > 0 {
-	//	*hasSecondPercentageBuySignal = false
-	//}
+	unsoldBuys := exchangeManager.UpdateNormalBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+	if len(unsoldBuys) > 0 {
+		*hasSecondPercentageBuySignal = false
+	}
 
 	// --------------------------------------------------------------------------------------------------------
 

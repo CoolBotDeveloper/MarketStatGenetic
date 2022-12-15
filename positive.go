@@ -53,9 +53,9 @@ func (pa *PositiveApproach) UpdateBuys(candle Candle) {
 	pa.updateFirstSellZombies(candle)
 	pa.updateExitZombies(candle)
 
-	if pa.candleMarketStat.HasBtcSellPercentage() {
-		pa.updateAllExitSymbols(candle)
-	}
+	//if pa.candleMarketStat.HasBtcSellPercentage() {
+	//	pa.updateAllExitSymbols(candle)
+	//}
 }
 
 func (pa *PositiveApproach) updateNormalBuys(candle Candle) {

@@ -34,7 +34,7 @@ func (bot *CoinBot) HasBuySignal() bool {
 	//	return false
 	//}
 
-	bot.SetHasReached()
+	//bot.SetHasReached()
 	for _, indicator := range bot.buyIndicators {
 		candles := bot.dataSource.GetCandlesFor(bot.symbol)
 		if !indicator.HasBuySignal(candles) {
@@ -56,8 +56,8 @@ func (bot *CoinBot) ResetHasReached() {
 func (bot *CoinBot) initIndicators() {
 	bot.buyIndicators = []BuyTechnicalIndicator{}
 
-	//superTrendIndicator := NewSuperTrendIndicator(bot.config)
-	//bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
+	superTrendIndicator := NewSuperTrendIndicator(bot.config)
+	bot.buyIndicators = append(bot.buyIndicators, &superTrendIndicator)
 
 	averageVolumeIndicator := NewAverageVolumeIndicator(bot.config)
 	bot.buyIndicators = append(bot.buyIndicators, &averageVolumeIndicator)
@@ -97,8 +97,8 @@ func (bot *CoinBot) initIndicators() {
 	//tripleGrowthIndicator := NewTripleGrowthIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &tripleGrowthIndicator)
 
-	pastMaxPriceIndicator := NewPastMaxPriceIndicator(bot.config)
-	bot.buyIndicators = append(bot.buyIndicators, &pastMaxPriceIndicator)
+	//pastMaxPriceIndicator := NewPastMaxPriceIndicator(bot.config)
+	//bot.buyIndicators = append(bot.buyIndicators, &pastMaxPriceIndicator)
 
 	//smoothGrowthIndicator := NewSmoothGrowthIndicator(bot.config)
 	//bot.buyIndicators = append(bot.buyIndicators, &smoothGrowthIndicator)

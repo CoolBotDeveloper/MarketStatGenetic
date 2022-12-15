@@ -101,9 +101,9 @@ func GetCsvFileNamesInDir(dir string, date string) []string {
 
 	for _, file := range files {
 		name := file.Name()
-		matchedPrefix, _ := regexp.MatchString(`^BTCUSDT-`, name)
+		//matchedPrefix, _ := regexp.MatchString(`^BTCUSDT-`, name)
 		matchedSuffix, _ := regexp.MatchString(`1m-`+date+`\.csv$`, name)
-		if !matchedPrefix && matchedSuffix {
+		if /*!matchedPrefix &&*/ matchedSuffix {
 			filesNames = append(filesNames, filepath.Join(path, file.Name()))
 		}
 	}

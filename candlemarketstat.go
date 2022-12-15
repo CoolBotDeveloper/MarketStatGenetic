@@ -9,27 +9,27 @@ func NewCandleMarketStat(config BotConfig, dataSource *DataSource) CandleMarketS
 	return CandleMarketStat{config: config, dataSource: dataSource}
 }
 
-func (marketStat *CandleMarketStat) HasBtcBuyPercentage() bool {
-	if lastCandle, ok := marketStat.dataSource.GetLastCandleFor(BITCOIN_SYMBOL); ok {
-		percentage, hasPercentage := marketStat.GetSymbolPercentageForPeriod(lastCandle, BITCOIN_SYMBOL, marketStat.config.BtcMinBuyPeriodMinutes)
-		if hasPercentage {
-			return percentage >= marketStat.config.BtcMinBuyPercentage
-		}
-	}
+//func (marketStat *CandleMarketStat) HasBtcBuyPercentage() bool {
+//	if lastCandle, ok := marketStat.dataSource.GetLastCandleFor(BITCOIN_SYMBOL); ok {
+//		percentage, hasPercentage := marketStat.GetSymbolPercentageForPeriod(lastCandle, BITCOIN_SYMBOL, marketStat.config.BtcMinBuyPeriodMinutes)
+//		if hasPercentage {
+//			return percentage >= marketStat.config.BtcMinBuyPercentage
+//		}
+//	}
+//
+//	return false
+//}
 
-	return false
-}
-
-func (marketStat *CandleMarketStat) HasBtcSellPercentage() bool {
-	if lastCandle, ok := marketStat.dataSource.GetLastCandleFor(BITCOIN_SYMBOL); ok {
-		percentage, hasPercentage := marketStat.GetSymbolPercentageForPeriod(lastCandle, BITCOIN_SYMBOL, marketStat.config.BtcSellPeriodMinutes)
-		if hasPercentage {
-			return percentage <= marketStat.config.BtcSellPercentage
-		}
-	}
-
-	return false
-}
+//func (marketStat *CandleMarketStat) HasBtcSellPercentage() bool {
+//	if lastCandle, ok := marketStat.dataSource.GetLastCandleFor(BITCOIN_SYMBOL); ok {
+//		percentage, hasPercentage := marketStat.GetSymbolPercentageForPeriod(lastCandle, BITCOIN_SYMBOL, marketStat.config.BtcSellPeriodMinutes)
+//		if hasPercentage {
+//			return percentage <= marketStat.config.BtcSellPercentage
+//		}
+//	}
+//
+//	return false
+//}
 
 func (marketStat *CandleMarketStat) GetSymbolPercentageForPeriod(candle Candle, symbol string, periodMinutes int) (float64, bool) {
 	candles := marketStat.dataSource.GetCandlesFor(symbol)
