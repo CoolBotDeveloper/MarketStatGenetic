@@ -14,12 +14,13 @@ type Storage struct {
 
 func NewStorage() Storage {
 	return Storage{
-		name: time.Now().Format("exchange_2006_01_02__15_04_05.db"),
+		name: time.Now().Format("base/exchange_2006_01_02__15_04_05.db"),
 	}
 }
 
 func (storage *Storage) Open() {
 	storage.connect, _ = sql.Open("sqlite3", storage.name)
+	//storage.connect, _ = sql.Open("sqlite3", ":memory:")
 
 	storage.CreateBuysTable()
 	storage.CreateSellsTable()
