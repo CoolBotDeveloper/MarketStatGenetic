@@ -11,3 +11,4 @@ generation_*.csv
 initial.csv
 *.txt
 *.csv
+*.db-journal
