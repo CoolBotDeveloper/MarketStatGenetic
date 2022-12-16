@@ -125,4 +125,5 @@ func updateBuys(
 	exchangeManager ExchangeManager,
 ) {
 	exchangeManager.UpdateNormalBuys(candle.Symbol, candle.ClosePrice, candle.CloseTime)
+	exchangeManager.UpdateExitZombies(candle.Symbol, candle.ClosePrice, candle.CloseTime)
 }

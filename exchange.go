@@ -573,7 +573,7 @@ func (em *ExchangeManager) UpdateBuys(symbol string, exchangeRate float64, creat
 
 	normal := em.UpdateNormalBuys(symbol, exchangeRate, createdAt)
 	firstSell := em.updateFirstSellZombies(symbol, exchangeRate, createdAt)
-	exit := em.updateExitZombies(symbol, exchangeRate, createdAt)
+	exit := em.UpdateExitZombies(symbol, exchangeRate, createdAt)
 
 	result := append(normal, firstSell...)
 
@@ -648,7 +648,7 @@ func (em *ExchangeManager) getFirstSellZombies(symbol string, exchangeRate float
 	return em.storage.FindFirstSellZombies(symbol, exchangeRate, createdAt, minutes, sellPercentage)
 }
 
-func (em *ExchangeManager) updateExitZombies(symbol string, exchangeRate float64, createdAt string) []UnsoldBuy {
+func (em *ExchangeManager) UpdateExitZombies(symbol string, exchangeRate float64, createdAt string) []UnsoldBuy {
 	reportUnsoldBuys := []UnsoldBuy{}
 	exitZombies := em.getExitZombies(symbol, createdAt, em.config.UnsoldFinalSellDurationMinutes)
 	for _, expiredBuy := range exitZombies {
