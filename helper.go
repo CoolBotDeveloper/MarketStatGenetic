@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/montanaflynn/stats"
 	"math"
 	"strconv"
@@ -291,10 +290,6 @@ func GetSignedVolumes(candles []Candle, count int) []float64 {
 	}
 
 	return volumes
-}
-
-func PrintNeuralData(symbol, boughtAt, soldAt string, revenue float64) {
-	fmt.Println(fmt.Sprintf("NeuralNetwork|%s,%s,%s,%f", symbol, boughtAt, soldAt, revenue))
 }
 
 func Min(values []float64) float64 {

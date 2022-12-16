@@ -106,10 +106,15 @@ func candleHandler(
 	//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
 	//candleMarketStat.HasNotCoinMaxPercentage(candle) &&
 	bot.HasBuySignal() {
-
 		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) {
 			// Do buy
-			fmt.Println(fmt.Sprintf("COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f", candle.Symbol, candle.CloseTime, candle.GetCurrentPrice(), candle.Volume))
+			fmt.Println(fmt.Sprintf(
+				"COIN: %s, BUY: %s, EXCHANGE_RATE: %f, Volume: %f",
+				candle.Symbol,
+				candle.CloseTime,
+				candle.GetCurrentPrice(),
+				candle.Volume))
+
 			exchangeManager.Buy(candle.Symbol, candle.GetCurrentPrice(), candle.CloseTime)
 		}
 	}

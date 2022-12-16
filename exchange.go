@@ -588,7 +588,6 @@ type UnsoldBuy struct {
 
 func (em *ExchangeManager) UpdateNormalBuys(symbol string, exchangeRate float64, createdAt string) []UnsoldBuy {
 	reportUnsoldBuys := []UnsoldBuy{}
-	//createdAt := time.Now().Format("2006-01-02 15:04:05")
 	unsoldBuys := em.GetUnsoldBuys(symbol, exchangeRate, createdAt)
 
 	for _, buy := range unsoldBuys {
@@ -598,8 +597,6 @@ func (em *ExchangeManager) UpdateNormalBuys(symbol string, exchangeRate float64,
 			ExchangeRate: exchangeRate,
 			Revenue:      calcedRevenue,
 		})
-
-		PrintNeuralData(symbol, buy.createdAt, createdAt, calcedRevenue)
 
 		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Volume, %f, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, 0.0, exchangeRate, calcedRevenue-100))
 		em.storage.AddSell(
@@ -633,8 +630,6 @@ func (em *ExchangeManager) updateFirstSellZombies(symbol string, exchangeRate fl
 			Revenue:      calcedRevenue,
 		})
 
-		PrintNeuralData(symbol, expiredBuy.createdAt, createdAt, calcedRevenue)
-
 		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Volume: %f, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, 0.0, exchangeRate, expiredBuy.coins*exchangeRate-100))
 		em.storage.AddSell(
 			symbol,
@@ -664,8 +659,6 @@ func (em *ExchangeManager) updateExitZombies(symbol string, exchangeRate float64
 			Revenue:      calcedRevenue,
 		})
 
-		PrintNeuralData(symbol, expiredBuy.createdAt, createdAt, calcedRevenue)
-
 		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Volume: %f, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, 0.0, exchangeRate, expiredBuy.coins*exchangeRate-100))
 		em.storage.AddSell(
 			symbol,
@@ -691,8 +684,6 @@ func (em *ExchangeManager) UpdateAllExitSymbols(symbol string, exchangeRate floa
 			ExchangeRate: exchangeRate,
 			Revenue:      calcedRevenue,
 		})
-
-		PrintNeuralData(symbol, expiredBuy.createdAt, createdAt, calcedRevenue)
 
 		fmt.Println(fmt.Sprintf("COIN: %s, SELL: %s, Volume: %f, EXCHANGE_RATE: %f, Revenue: %f", symbol, createdAt, 0.0, exchangeRate, calcedRevenue-100))
 		em.storage.AddSell(
