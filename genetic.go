@@ -153,7 +153,8 @@ func GetInitialBotsFromFile(fileName string) *dataframe.DataFrame {
 
 func SetBotTotalRevenue(
 	bots *dataframe.DataFrame,
-	botNumber int, revenue,
+	botNumber int,
+	revenue,
 	successPercentage float64,
 	plusRevenue float64,
 	minusRevenue float64,

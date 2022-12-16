@@ -234,46 +234,6 @@ func ConvertDataFrameToBotConfig(dataFrame map[interface{}]interface{}) BotConfi
 	}
 }
 
-func GetMarketBuyCurrentPrice(price float64) float64 {
-	//minPercentage := 0.03
-	//maxPercentage := 0.15
-	//offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
-
-	offsetPercentage := 0.05
-	offset := (offsetPercentage * price) / 100
-
-	//if GetRandInt(0, 2) == 1 {
-	//	offset = -1.0 * offset
-	//}
-
-	return price + offset
-}
-
-func GetMarketSellCurrentPrice(price float64) float64 {
-	minPercentage := 0.0
-	maxPercentage := 0.0
-
-	offsetPercentage := GetRandFloat64(minPercentage, maxPercentage)
-	offset := (offsetPercentage * price) / 100
-
-	randInt := GetRandInt(0, 3)
-	if randInt > 0 {
-		offset = -1.0 * offset
-	}
-
-	return price + offset
-}
-
-func InArray(needle float64, array *[]float64) bool {
-	searchArray := *array
-	for _, element := range searchArray {
-		if needle == element {
-			return true
-		}
-	}
-	return false
-}
-
 func CountInArray(needle float64, array *[]float64) int {
 	count := 0
 	searchArray := *array
@@ -288,14 +248,6 @@ func CountInArray(needle float64, array *[]float64) int {
 func Median(values []float64) float64 {
 	median, _ := stats.Median(values)
 	return median
-}
-
-func CalcSuccessBuysPercentage(botRevenue BotRevenue) float64 {
-	if botRevenue.TotalBuysCount == 0 {
-		return 0.0
-	}
-
-	return float64(botRevenue.SuccessBuysCount*100) / float64(botRevenue.TotalBuysCount)
 }
 
 func CalcSuccessPercentageByRevenue(botRevenue BotRevenue) float64 {
@@ -316,16 +268,6 @@ func CalcSuccessPercentageByRevenue(botRevenue BotRevenue) float64 {
 }
 
 func CalcSelection(revenue, successPercentage float64) float64 {
-	//if successPercentage > 70 {
-	//	successPercentage = successPercentage + 40
-	//} else if successPercentage > 60 {
-	//	successPercentage = successPercentage + 30
-	//} else if successPercentage > 53 {
-	//	successPercentage = successPercentage + 10
-	//} else {
-	//	successPercentage = successPercentage - 10
-	//}
-
 	if revenue == DEFAULT_REVENUE {
 		return DEFAULT_REVENUE
 	}

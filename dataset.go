@@ -31,7 +31,6 @@ func ImportDatasets() *[]Dataset {
 		locDatasets = append(locDatasets, Dataset{
 			AltCoinName:    "BTCUSDT",
 			AltCoinCandles: altCoinCandles,
-			//BtcCandles:     btcDatasetCandles,
 		})
 
 		datasets = &locDatasets

@@ -42,18 +42,6 @@ const IGNORE = 11
 
 func (candle *Candle) GetCurrentPrice() float64 {
 	return candle.ClosePrice
-	if candle.currentPrice == 0.0 {
-		randInt := GetRandInt(0, 2)
-		if randInt == 0 {
-			candle.currentPrice = candle.HighPrice
-		} else if randInt == 1 {
-			candle.currentPrice = candle.LowPrice
-		} else {
-			candle.currentPrice = candle.ClosePrice
-		}
-	}
-
-	return candle.currentPrice
 }
 
 func CsvFileToCandles(fileName string, symbol string) []Candle {
@@ -101,9 +89,8 @@ func GetCsvFileNamesInDir(dir string, date string) []string {
 
 	for _, file := range files {
 		name := file.Name()
-		//matchedPrefix, _ := regexp.MatchString(`^BTCUSDT-`, name)
 		matchedSuffix, _ := regexp.MatchString(`1m-`+date+`\.csv$`, name)
-		if /*!matchedPrefix &&*/ matchedSuffix {
+		if matchedSuffix {
 			filesNames = append(filesNames, filepath.Join(path, file.Name()))
 		}
 	}
