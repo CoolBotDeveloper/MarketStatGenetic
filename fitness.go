@@ -47,6 +47,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 	dataSource := NewDataSource()
 	coinBotFactory := NewCoinBotFactory(&dataSource)
 	exchangeManager := NewExchangeManager(botConfig)
+	candleMarketStat := NewCandleMarketStat(botConfig, &dataSource)
 
 	for _, candle := range dataset.AltCoinCandles {
 		candleHandler(
@@ -55,6 +56,7 @@ func doBuysAndSells(dataset Dataset, botConfig BotConfig) (float64, int, int, fl
 			dataSource,
 			coinBotFactory,
 			exchangeManager,
+			candleMarketStat,
 		)
 	}
 
@@ -95,17 +97,18 @@ func candleHandler(
 	dataSource DataSource,
 	coinBotFactory CoinBotFactory,
 	exchangeManager ExchangeManager,
+	candleMarketStat CandleMarketStat,
 ) {
 	dataSource.AddCandleFor(candle.Symbol, candle)
 	bot := coinBotFactory.FactoryCoinBot(candle.Symbol, botConfig)
 
 	updateBuys(candle, exchangeManager)
 
-	if //candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
-	//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
-	//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
-	//candleMarketStat.HasNotCoinMaxPercentage(candle) &&
-	bot.HasBuySignal() {
+	if candleMarketStat.HasCoinGoodDoubleTrend(candle) &&
+		//candleMarketStat.HasAltCoinMarketPercentage(candle) &&
+		//candleMarketStat.HasCoinGoodSingleTrend(candle) &&
+		//candleMarketStat.HasNotCoinMaxPercentage(candle) &&
+		bot.HasBuySignal() {
 		if SIMULTANEOUS_BUYS_COUNT > exchangeManager.CountUnsoldBuys(candle.Symbol) {
 			// Do buy
 			fmt.Println(fmt.Sprintf(
