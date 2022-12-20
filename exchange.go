@@ -519,7 +519,7 @@ func (storage *Storage) GetSuccessBuysCount() int {
 		SELECT COUNT(b.id) AS c
 		FROM buys AS b
 		INNER JOIN sells s ON b.id = s.buy_id
-		WHERE s.revenue > 100;
+		WHERE s.revenue >= 100;
 	`
 	row := (*storage).connect.QueryRow(query)
 	row.Scan(&count.value)
